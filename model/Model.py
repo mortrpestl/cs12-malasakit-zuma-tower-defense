@@ -1,0 +1,4 @@
+# pyright: strict
+
+class Model:
+    ...

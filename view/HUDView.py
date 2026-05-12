@@ -1,8 +1,8 @@
 # pyright: strict
-from model.Model import Model
 from Renderer import Renderer
+from model.Model import Model
 
-class GameRender(Renderer):
+class HUDRenderer(Renderer):
     def draw(self, model: Model):
         ...
         # renders the game
