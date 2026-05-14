@@ -1,5 +1,6 @@
 # pyright: strict
 from Utils import *
+from copy import deepcopy
 import json
 
 class Leaderboard:
@@ -7,6 +8,9 @@ class Leaderboard:
         self._mode = mode
         self._winners: list[LeaderboardEntry] = []
     
+    def get_winners(self) -> list[LeaderboardEntry]:
+        return [deepcopy(entry) for entry in self._winners]
+
     def sort_winners(self):
         self._winners.sort(key=lambda v: (-v.score, v.name))
 
