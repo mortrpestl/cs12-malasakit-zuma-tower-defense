@@ -38,8 +38,8 @@ class Direction(Enum):
     RIGHT = (1, 0)
 
 class GameMode(Enum):
-    CAMPAIGN = auto()
-    ENDLESS = auto()
+    CAMPAIGN = "campaign"
+    ENDLESS = "endless"
 
 @dataclass
 class LeaderboardEntry:
