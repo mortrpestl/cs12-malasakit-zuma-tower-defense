@@ -1,13 +1,17 @@
 # pyright: strict
 
 from abc import ABC
-from utils import *
+from Utils import *
 
 class Entity(ABC):
-    def __init__(self, pos: tuple[int, int], color: Color):
-        self._pos = pos
-        self._color = color
+    def __init__(self):
+        self._y = -1 # out of render maybe?
+        self._x = -1
     
-    @property    
-    def pos(self):
-        return self._pos
+    @property
+    def x(self) -> int:
+        return self._x
+    
+    @property
+    def y(self) -> int:
+        return self._y
