@@ -2,6 +2,7 @@
 
 from enum import Enum, auto
 from dataclasses import dataclass
+from model.entities.enemy import Enemy
 
 class Color(Enum):
     RED = auto()

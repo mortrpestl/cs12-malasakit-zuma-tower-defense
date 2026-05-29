@@ -1,9 +1,9 @@
 # pyright: strict
 
-from Entity import Entity
+from entity import Entity
 from game_config import GameConfig
 from math import atan2
-from entities.Bullet import Bullet
+from entities.bullet import Bullet
 
 # restrict v to [lo, hi]
 def clamp(v: int, lo: int, hi: int):

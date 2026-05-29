@@ -1,10 +1,10 @@
 # pyright: strict
-from Player import Player
-from Stage import Stage
-from Round import Round
-from Utils import *
+from player import Player
+from stage import Stage
+from round import Round
+from utils import *
 from game_config import GameConfig
-from Grid import Grid
+from grid import Grid
 
 class Game:
     def __init__(self, config: GameConfig, mode: GameMode):

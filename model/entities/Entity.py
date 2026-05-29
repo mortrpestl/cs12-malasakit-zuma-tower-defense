@@ -1,7 +1,7 @@
 # pyright: strict
 
 from abc import ABC
-from Utils import *
+from utils import *
 
 class Entity(ABC):
     def __init__(self):
