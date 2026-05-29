@@ -2,7 +2,7 @@
 
 from enum import Enum, auto
 from dataclasses import dataclass
-from model.entities.enemy import Enemy
+from path import Path
 
 class Color(Enum):
     RED = auto()
@@ -42,6 +42,11 @@ class GameMode(Enum):
     CAMPAIGN = "campaign"
     ENDLESS = "endless"
 
+class EnemyType(Enum):
+    NORMAL = auto()
+    CHAMELEON = auto()
+    REGENERATOR = auto()
+
 @dataclass
 class LeaderboardEntry:
     name: str
@@ -52,3 +57,9 @@ class LeaderboardEntry:
 class Settings:
     enemies_count: int
     player_lives: int
+
+@dataclass
+class WaveConfig:
+    colors: list[Color]
+    paths: list[Path]
+    special_types: list[EnemyType]

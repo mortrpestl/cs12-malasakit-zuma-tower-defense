@@ -1,16 +1,18 @@
 # pyright: strict
 
 from entity import Entity
+from path import Path
 from utils import *
 
 class Enemy(Entity):
-    def __init__(self, color: Color, path_index: int):
+    def __init__(self, color: Color, path: Path):
         # default settings
         super().__init__()
         self._lives = 1
         self._exp = 10
         self._color = color
-        self._path_index = path_index
+        self._path = path
+        self.y, self.x = path.start.y, path.start.x # start at beginning of path
     
     @property
     def lives(self) -> int:
@@ -25,8 +27,8 @@ class Enemy(Entity):
         return self._color
     
     @property
-    def path_index(self) -> int:
-        return self._path_index
+    def path(self) -> Path:
+        return self._path
     
     def take_hit(self, color: Color) -> bool:
         res = self.color == color

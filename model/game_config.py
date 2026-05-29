@@ -11,6 +11,7 @@ class GameConfig:
         self.__cols = 10
         self.__width = 1280
         self.__height = 720
+        self.__paths_count = 2
 
     @property
     def enemies(self) -> int:
@@ -36,6 +37,10 @@ class GameConfig:
     def height(self) -> int:
         return self.__height
 
+    @property
+    def paths_count(self) -> int:
+        return self.__paths_count
+
     def fetch_config(self, file: str):
         try:
             with open(file, 'r') as f:
@@ -46,5 +51,6 @@ class GameConfig:
                 self.__cols = data["cols"]
                 self.__width = data["width"]
                 self.__height = data["height"]
+                self.__paths_count = data["paths_count"]
         except FileNotFoundError:
             print(f"Config file {file} not found!")
