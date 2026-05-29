@@ -1,6 +1,6 @@
 # pyright: strict
 
-from enemy import Enemy
+from model.entities.enemy import Enemy
 
 class Regenerator(Enemy):
     ...

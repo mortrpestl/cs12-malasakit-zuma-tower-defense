@@ -1,6 +1,6 @@
 # pyright: strict
-from game_config import GameConfig
-from cell import Cell
+from model.game_config import GameConfig
+from model.cell import Cell
 from random import Random
 
 class Grid:

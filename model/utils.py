@@ -2,7 +2,6 @@
 
 from enum import Enum, auto
 from dataclasses import dataclass
-from path import Path
 
 class Color(Enum):
     RED = auto()
@@ -61,5 +60,5 @@ class Settings:
 @dataclass
 class WaveConfig:
     colors: list[Color]
-    paths: list[Path]
+    paths: list[int]
     special_types: list[EnemyType]

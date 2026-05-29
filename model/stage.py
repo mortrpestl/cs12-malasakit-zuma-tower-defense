@@ -1,7 +1,7 @@
 # pyright: strict
-from game_config import GameConfig
-from grid import Grid
-from path import Path
+from model.game_config import GameConfig
+from model.grid import Grid
+from model.path import Path
 
 class Stage:
     def __init__(self, config: GameConfig):

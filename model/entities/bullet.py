@@ -1,6 +1,6 @@
 # pyright: strict
 
-from entity import Entity
+from model.entities.entity import Entity
 from math import sin, cos
 
 class Bullet(Entity):

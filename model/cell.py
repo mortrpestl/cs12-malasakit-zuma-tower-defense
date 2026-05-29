@@ -1,5 +1,5 @@
 # pyright: strict
-from entities.entity import Entity
+from model.entities.entity import Entity
 
 class Cell:
     def __init__(self, x: int, y: int, is_tunnel: bool = False):

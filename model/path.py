@@ -1,6 +1,6 @@
 # pyright: strict
 
-from cell import Cell
+from model.cell import Cell
 
 class Path:
     def __init__(self, cells: list[Cell]):

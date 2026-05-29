@@ -1,5 +1,5 @@
 # pyright: strict
-from utils import *
+from model.utils import *
 from copy import deepcopy
 import json
 

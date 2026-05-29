@@ -1,7 +1,7 @@
 # pyright: strict
-from game_config import GameConfig
-from entities.shooter import Shooter
-from entities.bullet import Bullet
+from model.game_config import GameConfig
+from model.entities.shooter import Shooter
+from model.entities.bullet import Bullet
 
 class Player:
     def __init__(self, config: GameConfig):

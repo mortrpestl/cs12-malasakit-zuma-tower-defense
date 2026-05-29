@@ -1,8 +1,8 @@
 # pyright: strict
 
-from entity import Entity
-from path import Path
-from utils import *
+from model.entities.entity import Entity
+from model.path import Path
+from model.utils import *
 
 class Enemy(Entity):
     def __init__(self, color: Color, path: Path):

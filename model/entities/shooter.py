@@ -1,9 +1,9 @@
 # pyright: strict
 
-from entity import Entity
-from game_config import GameConfig
+from model.entities.entity import Entity
+from model.game_config import GameConfig
 from math import atan2
-from entities.bullet import Bullet
+from model.entities.bullet import Bullet
 
 # restrict v to [lo, hi]
 def clamp(v: int, lo: int, hi: int):
@@ -13,6 +13,7 @@ class Shooter(Entity):
     def __init__(self, config: GameConfig):
         # position in center
         super().__init__()
+        self.__config = config
         self._y = config.rows >> 1
         self._x = config.cols >> 1
         self._y_abs = 0

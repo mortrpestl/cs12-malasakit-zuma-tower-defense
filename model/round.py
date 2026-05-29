@@ -1,9 +1,10 @@
 # pyright: strict
 
-from utils import *
+from model.utils import *
 from model.entities.enemy import Enemy
 from model.entities.chameleon import Chameleon
 from model.entities.regenerator import Regenerator
+from model.path import Path
 
 def make_enemy(enemy_type: EnemyType, color: Color, path: Path) -> Enemy:
     # add new enemies here
@@ -15,10 +16,10 @@ def make_enemy(enemy_type: EnemyType, color: Color, path: Path) -> Enemy:
     return enemy_dict[enemy_type]
 
 class Round:
-    def __init__(self, config: WaveConfig):
+    def __init__(self, config: WaveConfig, paths: list[Path]):
         self.__config = config
         self.__enemies = [
-            make_enemy(enemy_type, color, path) for enemy_type, color, path in zip(config.special_types, config.colors, config.paths)
+            make_enemy(enemy_type, color, path) for enemy_type, color, path in zip(config.special_types, config.colors, [paths[idx] for idx in config.paths])
         ]
 
     @property 
