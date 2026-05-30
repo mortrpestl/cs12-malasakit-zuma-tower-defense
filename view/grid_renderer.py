@@ -1,21 +1,17 @@
 # pyright: strict
 
-import pyxel 
-
-from model.model import Model 
-from model.cell import Cell
-from model.entities.bullet import Bullet
-from model.entities.tower import Tower
-from model.entities.shooter import Shooter
-from model.player import Player
-from model.path import Path
-from model.cell import Cell
-
+import pyxel
 
 from renderer import Renderer
+from model.model import Model
+from model.grid import Grid
+from model.cell import Cell
+from model.entities.entity import Entity
+from model.entities.enemy import Enemy
+from model.entities.tower import Tower
+from model.entities.shooter import Shooter
 
 """
-
 NEWNEWNEWNEW Grid size: 820px x 600px (19 x 15 tiles) 
 OLD Grid size: 860px x 600px (20 x 15 tiles) 
 
@@ -33,49 +29,35 @@ CELL_HEIGHT = 40
 CELL_WIDTH = 40
 TOP_BOTTOM_PADDING = 30
 
+
 class GridRenderer(Renderer):
-        
-    def normalize_coord(self, r : int, c : int):
-        half_side : int = CELL_HEIGHT // 2
-        
-        return (40*r + half_side + TOP_BOTTOM_PADDING, 40*c + half_side)
-        
-    def draw_bullets(self, bullets : list[Bullet]):
-        
-        for bullet in bullets:
-            x,y = bullet.pos
-            pyxel.blt(x,y, ...)
 
-    def draw_towers(self, towers : list[Tower]):
-        
-        for tower in towers:
-            x,y = tower.pos
-            pyxel.blt(x,y, ...)
+    def __init__(self, model: Model):
+        super().__init__(model)
 
-    def draw_shooters(self, shooter : Shooter):
-        pyxel.blt(x,y, ...)
+    def normalize_coord(self, r: int, c: int) -> tuple[int, int]:
+        half_side = CELL_HEIGHT // 2
+        return (40 * c + half_side, 40 * r + half_side + TOP_BOTTOM_PADDING)
 
-    def draw_players(self, player : Player):
-        pyxel.blt(x,y, ...)
+    def draw_entity(self, entity: Entity, x: int, y: int) -> None:
+        if isinstance(entity, Tower):
+            pyxel.blt(x, y, ...)
+        elif isinstance(entity, Shooter):
+            pyxel.blt(x, y, ...)
+        elif isinstance(entity, Enemy):
+            pyxel.blt(x, y, ...)
 
-    def draw_paths(self, paths : list[Path]):
-        for path in paths:
-            self.draw_cells(path)
+    def draw_cell(self, cell: Cell) -> None:
+        x, y = self.normalize_coord(cell.y, cell.x)
+        if cell.is_tunnel:
+            pyxel.rect(x, y, CELL_WIDTH, CELL_HEIGHT, ...)  # TODO: tunnel tile color
+        if cell.entity is not None:
+            self.draw_entity(cell.entity, x, y)
 
-    def draw_cells(self, cell: Path):
-        # ! edit this perhaps
-        for cell in cells:
-            x,y = cell.pos 
-            
-            pyxel.blt(cell.x, cell.y, ...)
-            
+    def update(self) -> None:
+        pass
 
-    def draw(self, grid: Grid):
-        self.draw_bullets(model.bullets)
-        self.draw_towers(model.towers)
-        self.draw_shooters(model.shooters)
-        self.draw_players(model.players)
-        self.draw_paths(model.paths)
-        
-        ...
-        # renders the game
+    def draw(self) -> None:
+        for row in self._model.stage.grid.grid:
+            for cell in row:
+                self.draw_cell(cell)
