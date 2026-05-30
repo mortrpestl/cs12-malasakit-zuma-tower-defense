@@ -1,29 +1,28 @@
 # pyright: strict
 
 from abc import abstractmethod
-from model.utils import *
 from model.entities.bullet import Bullet
 from model.entities.entity import Entity
+from random import Random
 
 # for making more tower classes
 class Tower(Entity):
-    def __init__(self, direction: Direction, level: int, cost: int):
-        self._direction = direction
-        self._level = level
-        self._cost = cost
-    
-    @property
-    def direction(self) -> Direction:
-        return self._direction
+    def __init__(self):
+        self._level = 1 # 1 if unupgraded; make an enum?
+        self._cost = 5
+        self._rng = Random(12)
     
     @property
     def level(self) -> int:
         return self._level
-    
+
     @property
     def cost(self) -> int:
         return self._cost
     
+    def upgrade(self):
+        self._level = 2
+
     @abstractmethod
-    def shoot(self, bullets: list[Bullet]):
+    def shoot(self) -> list[Bullet]:
         ...

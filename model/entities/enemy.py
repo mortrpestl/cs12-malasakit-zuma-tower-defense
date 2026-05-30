@@ -13,6 +13,7 @@ class Enemy(Entity):
         self._color = color
         self._path = path
         self.y, self.x = path.start.y, path.start.x # start at beginning of path
+        self._idx = 0
     
     @property
     def lives(self) -> int:
@@ -30,7 +31,18 @@ class Enemy(Entity):
     def path(self) -> Path:
         return self._path
     
+    @property
+    def is_alive(self) -> bool:
+        return self._lives > 0 and self._idx < len(self._path.cells) - 1
+
     def take_hit(self, color: Color) -> bool:
         res = self.color == color
         self._lives -= res
         return res
+    
+    def go_next_tile(self):
+        if self.is_alive:
+            return
+        self._idx += 1
+        next_cell = self._path.cells[self._idx]
+        self.y, self.x = next_cell.y, next_cell.x

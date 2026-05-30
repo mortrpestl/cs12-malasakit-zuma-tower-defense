@@ -4,6 +4,7 @@ from model.entities.entity import Entity
 from model.game_config import GameConfig
 from math import atan2
 from model.entities.bullet import Bullet
+from model.utils import get_next_color
 
 # restrict v to [lo, hi]
 def clamp(v: int, lo: int, hi: int):
@@ -41,4 +42,4 @@ class Shooter(Entity):
 
     def shoot(self, x: float, y: float) -> Bullet:
         angle = atan2(y - self._y_abs, x - self._x_abs)
-        return Bullet(x, y, angle)
+        return Bullet(x, y, angle, get_next_color())

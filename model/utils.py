@@ -2,6 +2,9 @@
 
 from enum import Enum, auto
 from dataclasses import dataclass
+from random import Random
+
+RNG = Random(12)
 
 class Color(Enum):
     RED = auto()
@@ -32,8 +35,8 @@ class BGColor(IntEnum):
     PEACH       = 15
     
 class Direction(Enum):
-    UP = (0, -1)
-    DOWN = (0, 1)
+    UP = (0, 1)
+    DOWN = (0, -1)
     LEFT = (-1, 0)
     RIGHT = (1, 0)
 
@@ -62,3 +65,6 @@ class WaveConfig:
     colors: list[Color]
     paths: list[int]
     special_types: list[EnemyType]
+
+def get_next_color() -> Color:
+    return RNG.choice(list(Color))
