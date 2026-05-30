@@ -70,7 +70,7 @@ class GridRenderer(Renderer):
             pyxel.blt(cell.x, cell.y, ...)
             
 
-    def draw(self, model: Model):
+    def draw(self, grid: Grid):
         self.draw_bullets(model.bullets)
         self.draw_towers(model.towers)
         self.draw_shooters(model.shooters)

@@ -25,6 +25,8 @@ class Model:
         self.__rng = Random(12) # fixed seed
         self.__rounds: list[Round] = [self.create_round() for _ in range(12)] # at least 12 rounds
         self.__pending_action : PendingAction = PendingAction.NONE
+        
+        self.__config = config # TODO! please check if the config here actually reflects on the Players, Stage, and Enemies
 
 
     @property
@@ -34,6 +36,14 @@ class Model:
     @property
     def exp(self) -> int:
         return self.__exp
+    
+    @property
+    def player(self) -> GameConfig:
+        return self.__config
+    
+    @property
+    def config(self) -> GameConfig:
+        return self.__config
     
     @property
     def current_round(self) -> int:

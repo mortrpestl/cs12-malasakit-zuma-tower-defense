@@ -29,6 +29,20 @@ class ButtonComponent:
         self._text = text
         self._assoc_func = assoc_func # function triggered when clicked
         
+    @property
+    def x(self):
+        return self._x
+    @property
+    def y(self):
+        return self._y
+    @property
+    def w(self):
+        return self._w
+    @property
+    def h(self):
+        return self._h
+        
+    
     def update(self):
         if pyxel.btnp(pyxel.MOUSE_BUTTON_LEFT) \
         and self._x <= pyxel.mouse_x <= self._x + self._w \
