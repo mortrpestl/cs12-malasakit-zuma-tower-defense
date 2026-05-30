@@ -15,3 +15,7 @@ class Stage:
     @property
     def paths(self) -> list[Path]:
         return self.__paths
+    
+    @property
+    def grid(self) -> Grid:
+        return self.__grid

@@ -45,6 +45,10 @@ class Model:
     @property
     def rounds(self) -> list[Round]:
         return self.__rounds
+    
+    @property
+    def stage(self) -> Stage:
+        return self.__stage
 
     def create_round(self) -> Round:
         config = WaveConfig(
