@@ -3,7 +3,6 @@
 from model.entities.entity import Entity
 from model.game_config import GameConfig
 from math import atan2
-from random import Random
 from model.entities.bullet import Bullet
 from model.utils import get_next_color
 
@@ -22,7 +21,6 @@ class Shooter(Entity):
         self._x_abs = 0
         self.update_position()
         self.__config = config
-        self.__rng = Random(12)
 
     def update_position(self):
         cell_width = self.__config.width / self.__config.cols
