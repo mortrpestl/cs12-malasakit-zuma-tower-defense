@@ -3,18 +3,17 @@
 from enum import Enum, auto
 from dataclasses import dataclass
 from random import Random
+from enum import IntEnum
 
 RNG = Random(12)
 
-class Color(Enum):
+class Color(IntEnum):
     RED = auto()
     ORANGE = auto()
     YELLOW = auto()
     GREEN = auto()
     BLUE = auto()
     PURPLE = auto()
-
-from enum import IntEnum
 
 class BGColor(IntEnum):
     BLACK       = 0
@@ -49,6 +48,13 @@ class EnemyType(Enum):
     CHAMELEON = auto()
     REGENERATOR = auto()
 
+class Screen:
+    MENU = auto()
+    GAME = auto()
+    PAUSE = auto()
+    GAME_OVER = auto()
+    LEADERBOARD = auto()
+    
 @dataclass
 class LeaderboardEntry:
     name: str

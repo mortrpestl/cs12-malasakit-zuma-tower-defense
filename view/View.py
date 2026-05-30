@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from model.utils import (
-    BGColor, Direction, GameMode, 
+    BGColor, Direction, GameMode, Screen,
     EnemyType, LeaderboardEntry,
     Settings, WaveConfig, get_next_color
 )
@@ -55,6 +55,8 @@ class View:
         self._frames_s : int = frames
         self._sound_fx : Sound = Sound()
         
+        self._current_screen: Screen = Screen.GAME 
+
         # SUGGESTION FOR DIOGN: put this in grid_renderer.py
         self._zuma_rot : float = 0
         self._zuma_ball_col : int = get_next_color()
@@ -77,9 +79,16 @@ class View:
     def screen_w(self) -> int:
         return self._screen_w
     
+    @property 
+    def get_current_screen(self) -> Screen:
+        return self._current_screen
+    
+    def set_current_screen(self, s: Screen):
+        self._current_screen = s
+        
     def reset_screen(self) -> None:
         pyxel.cls(BGColor.PEACH)
-        
+
     def draw_game_map(self) -> None:
         for i in range(15):
             for j in range(19):
