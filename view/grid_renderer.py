@@ -2,7 +2,7 @@
 
 import pyxel 
 
-from model.Model import Model 
+from model.model import Model 
 from model.cell import Cell
 from model.entities.bullet import Bullet
 from model.entities.tower import Tower
@@ -15,7 +15,10 @@ from model.cell import Cell
 from renderer import Renderer
 
 """
-Grid size: 860px x 600px (20 x 15 tiles)
+
+NEWNEWNEWNEW Grid size: 820px x 600px (19 x 15 tiles) 
+OLD Grid size: 860px x 600px (20 x 15 tiles) 
+
 Adjustment from top: 30px
 Each block side length: 40px x 40px
  
@@ -24,13 +27,18 @@ Centering adjustment from top and left:
 +20px
 """
 
+# ! TODO JUSTIN: edit the params in the pyxel.blt below to properly show the towers
+
+CELL_HEIGHT = 40
+CELL_WIDTH = 40
+TOP_BOTTOM_PADDING = 30
+
 class GridRenderer(Renderer):
         
     def normalize_coord(self, r : int, c : int):
-        adj : int = 30 
-        half_side : int = 20
+        half_side : int = CELL_HEIGHT // 2
         
-        return (40*r + half_side + adj, 40*c + half_side)
+        return (40*r + half_side + TOP_BOTTOM_PADDING, 40*c + half_side)
         
     def draw_bullets(self, bullets : list[Bullet]):
         
@@ -63,12 +71,11 @@ class GridRenderer(Renderer):
             
 
     def draw(self, model: Model):
-        draw_bullets(model.bullets)
-        draw_towers(model.towers)
-        draw_shooters(model.shooters)
-        draw_players(model.players)
-        draw_paths(model.paths)
-        draw_cells(model.cells)
+        self.draw_bullets(model.bullets)
+        self.draw_towers(model.towers)
+        self.draw_shooters(model.shooters)
+        self.draw_players(model.players)
+        self.draw_paths(model.paths)
         
         ...
         # renders the game
