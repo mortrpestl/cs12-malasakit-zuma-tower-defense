@@ -1,19 +1,25 @@
 # pyright: strict
 
 from model.entities.entity import Entity
+from model.utils import Color
 from math import sin, cos
 
 class Bullet(Entity):
-    def __init__(self, x: float, y: float, angle: float):
+    def __init__(self, x: float, y: float, angle: float, color: Color):
         self._x_abs = x
         self._y_abs = y
         self._velocity = 3 # 3 px/s
         self._alive = True
         self._angle = angle # radians
+        self._color = color
 
     @property
     def alive(self) -> bool:
         return self._alive
+    
+    @property
+    def color(self) -> Color:
+        return self._color
 
     def kill(self):
         self._alive = False
