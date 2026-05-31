@@ -17,6 +17,10 @@ class Player:
     def score(self) -> int:
         return self.__score
     
+    @property
+    def shooter(self) -> Shooter:
+        return self.__shooter
+    
     # x and y coordinates of cursor
     def shoot(self, x: float, y: float) -> Bullet:
         return self.__shooter.shoot(x, y)

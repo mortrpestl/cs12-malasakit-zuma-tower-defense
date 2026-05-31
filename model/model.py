@@ -91,3 +91,8 @@ class Model:
     def advance_next_round(self):
         self.__current_round += 1
         self.__bullets.clear()
+        
+    def get_position(self, i: int, j: int) -> tuple[float, float]:
+        cell_width = self.config.width / self.config.cols
+        cell_height = self.config.height / self.config.rows
+        return (i + 0.5) * cell_height, (j + 0.5) * cell_width

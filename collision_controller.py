@@ -5,12 +5,7 @@ from model.model import Model
 EPS = 10**-3
 
 def equal(a: float, b: float) -> bool:
-    return abs(a - b) < EPS    
-
-def get_position(model: Model, i: int, j: int) -> tuple[float, float]:
-    cell_width = model.config.width / model.config.cols
-    cell_height = model.config.height / model.config.rows
-    return (i + 0.5) * cell_height, (j + 0.5) * cell_width
+    return abs(a - b) < EPS
 
 def in_bounds(y: float, x: float, height: float, width: float):
     return 0 <= y <= height and 0 <= x <= width
@@ -20,7 +15,9 @@ class CollisionController:
         self.__model = m
     
     def update(self):
-        ...
+        self.move_bullets()
+        self.check_hits()
+        self.remove_out_of_bounds()
     
     def move_bullets(self):
         for bullet in self.__model.bullets:
@@ -30,7 +27,7 @@ class CollisionController:
         round = self.__model.rounds[self.__model.current_round]
         for bullet in self.__model.bullets:
             for enemy in round.enemies:
-                enemy_y, enemy_x = get_position(self.__model, enemy.y, enemy.x)
+                enemy_y, enemy_x = self.__model.get_position(enemy.y, enemy.x)
                 if equal(bullet.x, enemy_x) and equal(bullet.y, enemy_y):
                     enemy.take_hit(bullet.color)
                     self.__model.bullets.remove(bullet)

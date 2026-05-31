@@ -24,10 +24,7 @@ class Controller:
                 if not self.__model.is_game_over:
                     self.__view.convert_mouse_click_color()
                     self.__view.convert_mouse_pos_rotation()
-                    # self.draw_game()
-                    if pyxel.btnp(pyxel.MOUSE_BUTTON_LEFT):
-                        self.__model.bullets.append(self.__model.player.shoot(pyxel.mouse_x, pyxel.mouse_y))
-                        print(self.__model.bullets)
+                    self.draw_game()
                 else:
                     ...
             case Screen.MENU:

@@ -5,7 +5,6 @@ from model.utils import (
     EnemyType, LeaderboardEntry,
     Settings, WaveConfig, get_next_color
 )
-
 import pyxel
 
 # from view.configure_renderer import ConfigureRenderer
