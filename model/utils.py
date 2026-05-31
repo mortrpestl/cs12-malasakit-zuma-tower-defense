@@ -1,18 +1,18 @@
 # pyright: strict
 
-from enum import Enum, auto
+from enum import Enum, IntEnum, auto
 from dataclasses import dataclass
 from random import Random
 
 RNG = Random(12)
 
-class Color(Enum):
-    RED = auto()
-    ORANGE = auto()
-    YELLOW = auto()
-    GREEN = auto()
-    BLUE = auto()
-    PURPLE = auto()
+class Color(IntEnum):
+    PURPLE = 2
+    BLUE = 5
+    RED = 8
+    ORANGE = 9
+    GREEN = 11
+    STEEL_BLUE = 13
 
 from enum import IntEnum
 

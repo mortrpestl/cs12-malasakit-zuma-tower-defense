@@ -4,6 +4,8 @@ from model.stage import Stage
 from model.round import Round
 from model.utils import *
 from model.game_config import GameConfig
+from model.entities.tower import Tower
+from model.entities.bullet import Bullet
 from random import Random
 
 class Model:
@@ -17,6 +19,8 @@ class Model:
         self.__rng = Random(12) # fixed seed
         self.__rounds: list[Round] = [self.create_round() for _ in range(12)] # at least 12 rounds
         self.__config = config
+        self.__towers: list[Tower] = []
+        self.__bullets: list[Bullet] = []
 
     @property
     def mode(self) -> GameMode:
@@ -50,6 +54,18 @@ class Model:
     def stage(self) -> Stage:
         return self.__stage
 
+    @property
+    def enemy_count(self) -> int:
+        return self.__enemies
+    
+    @property
+    def towers(self) -> list[Tower]:
+        return self.__towers
+    
+    @property
+    def bullets(self) -> list[Bullet]:
+        return self.__bullets
+
     def create_round(self) -> Round:
         config = WaveConfig(
             self.rng.choices(list(Color), k=self.__enemies),
@@ -60,12 +76,7 @@ class Model:
     
     @property
     def is_game_over(self) -> bool:
-        return self.__current_round >= len(self.__rounds)
-
-    @property
-    def is_round_over(self) -> bool:
-        current = self.rounds[self.current_round]
-        return all(enemy.is_alive for enemy in current.enemies)
+        return self.__current_round >= len(self.__rounds) if self.mode == GameMode.CAMPAIGN else self.player.lives <= 0
     
     def add_exp(self, amount: int):
         self.__exp += amount
@@ -75,3 +86,4 @@ class Model:
     
     def advance_next_round(self):
         self.__current_round += 1
+        self.__bullets.clear()
