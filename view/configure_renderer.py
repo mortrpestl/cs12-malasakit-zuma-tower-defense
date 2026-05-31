@@ -2,7 +2,7 @@
 
 import pyxel
 
-from renderer import Renderer
+from Renderer import Renderer
 from model.game_config import GameConfig
 from model.utils import BGColor
 

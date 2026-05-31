@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
 from model.utils import Screen
 from model.model import Model
 from view.View import View
