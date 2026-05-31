@@ -2,7 +2,7 @@
 
 import pyxel
 
-from renderer import Renderer
+from Renderer import Renderer
 from model.model import Model
 from model.grid import Grid
 from model.cell import Cell
