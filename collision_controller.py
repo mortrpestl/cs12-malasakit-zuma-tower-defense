@@ -12,6 +12,9 @@ def get_position(model: Model, i: int, j: int) -> tuple[float, float]:
     cell_height = model.config.height / model.config.rows
     return (i + 0.5) * cell_height, (j + 0.5) * cell_width
 
+def in_bounds(y: float, x: float, height: float, width: float):
+    return 0 <= y <= height and 0 <= x <= width
+
 class CollisionController:
     def __init__(self, m: Model):
         self.__model = m
@@ -37,4 +40,6 @@ class CollisionController:
                     break
 
     def remove_out_of_bounds(self):
-        ...
+        self.__model.bullets = [
+            b for b in self.__model.bullets if in_bounds(b.y_abs, b.x_abs, self.__model.config.height, self.__model.config.width)
+        ]

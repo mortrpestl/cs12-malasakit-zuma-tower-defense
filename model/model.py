@@ -31,8 +31,8 @@ class Model:
         return self.__exp
     
     @property
-    def player(self) -> GameConfig:
-        return self.__config
+    def player(self) -> Player:
+        return self.__player
     
     @property
     def config(self) -> GameConfig:
@@ -65,6 +65,10 @@ class Model:
     @property
     def bullets(self) -> list[Bullet]:
         return self.__bullets
+    
+    @bullets.setter
+    def bullets(self, lst: list[Bullet]):
+        self.__bullets = lst
 
     def create_round(self) -> Round:
         config = WaveConfig(
