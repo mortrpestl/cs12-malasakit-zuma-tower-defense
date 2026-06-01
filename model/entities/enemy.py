@@ -12,8 +12,9 @@ class Enemy(Entity):
         self._exp = 10
         self._color = color
         self._path = path
-        self.y, self.x = path.start.y, path.start.x # start at beginning of path
+        self._y, self._x = path.start.y, path.start.x # start at beginning of path
         self._idx = 0
+        print(f"enemy list of tiles: {[(cell.y, cell.x) for cell in self._path.cells]}")
     
     @property
     def lives(self) -> int:
@@ -41,8 +42,10 @@ class Enemy(Entity):
         return res
     
     def go_next_tile(self):
-        if self.is_alive:
+        if not self.is_alive:
             return
         self._idx += 1
+        if self._idx >= len(self._path.cells):
+            return
         next_cell = self._path.cells[self._idx]
-        self.y, self.x = next_cell.y, next_cell.x
+        self._y, self._x = next_cell.y, next_cell.x

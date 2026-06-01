@@ -21,6 +21,11 @@ class Tower(Entity):
     def cost(self) -> int:
         return self._cost
     
+    @property
+    @abstractmethod
+    def shoot_interval(self) -> int:
+        ...
+
     def upgrade(self):
         self._level = 2
 

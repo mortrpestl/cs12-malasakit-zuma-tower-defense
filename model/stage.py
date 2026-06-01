@@ -4,6 +4,7 @@ from model.grid import Grid
 from model.path import Path
 from model.cell import Cell
 import json
+from pathlib import Path as FilePath
 
 class Stage:
     def __init__(self, config: GameConfig, file: str = "campaign_map_1.json"):
@@ -22,9 +23,10 @@ class Stage:
     def grid(self) -> Grid:
         return self.__grid
     
-<<<<<<< HEAD
     def load_path_from_json(self, file: str) -> list[list[Cell]]:
-        with open("map/" + file, "r") as f:
+        map_path = FilePath(__file__).parent / "map" / file
+
+        with open(map_path, "r") as f:
             data = json.load(f)
             data_paths: list[list[list[int]]] = data["paths"]
 
@@ -38,7 +40,5 @@ class Stage:
 
                 paths.append(p)
 
-        return paths        
+        return paths   
     
-=======
->>>>>>> c487161f9556503782235c3a41068d10c7db38f6

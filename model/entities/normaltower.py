@@ -18,7 +18,12 @@ class NormalTower(Tower):
     def direction(self, d: Direction):
         self._direction = d
     
+    @property
+    def shoot_interval(self) -> int:
+        return 120
+
     def shoot(self) -> list[Bullet]:
+        print("TOWER SHOOT")
         dy, dx = self.__direction.value
         angle = atan2(dy, dx)
         return [Bullet(self.x, self.y, angle, get_next_color()) for _ in range(self.level)]

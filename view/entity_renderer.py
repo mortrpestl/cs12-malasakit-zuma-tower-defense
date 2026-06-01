@@ -9,7 +9,7 @@ import pyxel
 class EntityRenderer:
     def draw(self, model: Model):
         for bullet in model.bullets:
-            pyxel.circ(bullet.y_abs, bullet.x_abs, 2, bullet.color.value) # circle for now
+            pyxel.circ(bullet.x_abs, bullet.y_abs, 2, bullet.color.value) # circle for now
         current_round = model.rounds[model.current_round]
         for enemy in current_round.enemies:
             self.draw_enemy(model, enemy)
@@ -23,7 +23,7 @@ class EntityRenderer:
     
     def draw_tower(self, model: Model, tower: Tower):
         y, x = model.get_position(tower.y, tower.x)
-        pyxel.rect(x, y, model.config.width / model.config.cols, model.config.height / model.config.rows, 1) # replace with sprites
+        pyxel.rect(x, y, model.config.width / model.config.cols, model.config.height / model.config.rows, 10) # replace with sprites
     
     def draw_shooter(self, model: Model):
         y, x = model.get_position(model.player.shooter.y, model.player.shooter.x)

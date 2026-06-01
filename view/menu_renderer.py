@@ -3,7 +3,7 @@
 import pyxel
 
 from renderer import Renderer
-from model.model import Model, PendingAction
+from model.model import Model
 from model.utils import BGColor
 from view.components.button import ButtonComponent
 

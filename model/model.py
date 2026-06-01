@@ -21,8 +21,10 @@ class Model:
         self.__rng = Random(12) # fixed seed
         self.__rounds: list[Round] = [self.create_round() for _ in range(12)] # at least 12 rounds
         self.__config = config
-        self.__towers: list[Tower] = [NormalTower(), NormalTower()]
+        self.__towers: list[Tower] = [NormalTower()]
+        self.__towers[0].x, self.__towers[0].y = 0, 0
         self.__bullets: list[Bullet] = []
+        self.__stage.grid.grid[config.rows >> 1][config.cols >> 1].entity = self.__player.shooter
 
     @property
     def mode(self) -> GameMode:

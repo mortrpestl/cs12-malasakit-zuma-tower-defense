@@ -16,92 +16,20 @@ from model.utils import (
     get_next_color
 )
 
-"""
-NEWNEWNEWNEW Grid size: 820px x 600px (19 x 15 tiles) 
-OLD Grid size: 860px x 600px (20 x 15 tiles) 
-
-Adjustment from top: 30px
-Each block side length: 40px x 40px
- 
-Centering adjustment from top and left: 
-+20px 
-+20px
-"""
-
-# ! TODO JUSTIN: edit the params in the pyxel.blt below to properly show the towers
-
-CELL_HEIGHT = 40
-CELL_WIDTH = 40
-TOP_BOTTOM_PADDING = 30
-
+TUNNEL_COLOR = 2
+PATH_COLOR = 4
 
 class GridRenderer(Renderer):
-
-    def __init__(self, model: Model):
-        super().__init__(model)
-        
-        # SUGGESTION FOR DIOGN: put this in grid_renderer.py # diogn's comment: is this right?
-        self._zuma_rot : float = 0
-        self._zuma_ball_col : int = get_next_color()
-
-    def normalize_coord(self, r: int, c: int) -> tuple[int, int]:
-        half_side = CELL_HEIGHT // 2
-        return (40 * c + half_side, 40 * r + half_side + TOP_BOTTOM_PADDING)
-
-    def draw_entity(self, entity: Entity, x: int, y: int) -> None:
-        if isinstance(entity, Tower):
-            # pyxel.blt(x, y, ...)
-            pyxel.rect(x, y, CELL_WIDTH, CELL_HEIGHT, 2)
-        elif isinstance(entity, Shooter):
-            # pyxel.blt(x, y, ...)
-            pyxel.rect(x, y, CELL_WIDTH, CELL_HEIGHT, 3)
-        elif isinstance(entity, Enemy):
-            # pyxel.blt(x, y, ...)
-            pyxel.rect(x, y, CELL_WIDTH, CELL_HEIGHT, 4)
-
-    def draw_cell(self, cell: Cell) -> None:
-        x, y = self.normalize_coord(cell.y, cell.x)
-        if cell.is_tunnel:
-            pyxel.rect(x, y, CELL_WIDTH, CELL_HEIGHT, 1)  # TODO: tunnel tile color
-        if cell.entity is not None:
-            self.draw_entity(cell.entity, x, y)
-
-    # map (Justin's additions)
+    def __init__(self, m: Model):
+        self.__model = m
+        self.__cell_width = m.config.width / m.config.cols
+        self.__cell_height = m.config.height / m.config.rows
     
-    def draw_game_map(self) -> None:
-        for row in self._model.stage.grid.grid:
-            for cell in row:
-                col, row_idx = cell.x, cell.y
-                x = col * CELL_WIDTH
-                y = row_idx * CELL_HEIGHT + TOP_BOTTOM_PADDING
-                pyxel.rect(x, y, CELL_WIDTH, CELL_HEIGHT, 3)
-                if cell.entity is not None:
-                    self.draw_entity(cell.entity, x, y)
-        
-    def draw_zuma_tower(self) -> None:
-        theta : float = self._zuma_rot
-        
-        pyxel.blt(268, 378, 0, 0, 0, 64, 64, 8, rotate=theta, scale=0.625)
-        
-    def draw_ball_to_shoot(self) -> None:
-        theta2 : float = (self._zuma_rot + 90) * (pi / 180)
-        color : int = self._zuma_ball_col
-        
-        pyxel.circ(300 + 25 * cos(theta2), 410 + 25 * sin(theta2), 5, color)
-        
-    def convert_mouse_pos_rotation(self):
-        x : int = pyxel.mouse_x
-        y : int = pyxel.mouse_y
-        
-        self._zuma_rot = atan2(y - 390, x - 280) * (180 / pi) - 90 if 30 < y < 800 else self._zuma_rot
-        
-    def convert_mouse_click_color(self):
-        if pyxel.btnr(pyxel.MOUSE_BUTTON_LEFT):
-            self._zuma_ball_col = get_next_color()
-   
-    # update + draw
-    def update(self) -> None:
+    def draw(self):
+        for path in self.__model.stage.paths:
+            for cell in path.cells:
+                color = TUNNEL_COLOR if cell.is_tunnel else PATH_COLOR
+                pyxel.rect(cell.x * self.__cell_width, cell.y * self.__cell_height, self.__cell_width, self.__cell_height, color)
+    
+    def update(self):
         pass
-
-    def draw(self) -> None:
-        self.draw_game_map()

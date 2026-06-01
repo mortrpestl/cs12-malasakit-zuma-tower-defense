@@ -2,7 +2,7 @@
 
 from model.entities.entity import Entity
 from model.game_config import GameConfig
-from math import atan2
+from math import atan2, pi
 from model.entities.bullet import Bullet
 from model.utils import get_next_color
 
@@ -21,6 +21,14 @@ class Shooter(Entity):
         self._x_abs = 0
         self.update_position()
         self.__config = config
+    
+    @property
+    def y_abs(self) -> float:
+        return self._y_abs
+    
+    @property
+    def x_abs(self) -> float:
+        return self._x_abs
 
     def update_position(self):
         cell_width = self.__config.width / self.__config.cols

@@ -6,10 +6,15 @@ class RoundController:
     def __init__(self, model: Model):
         self.__model = model
         self.__tick = 0
-    
+        self.__spawn_index = 0
+
     @property
     def spawn_timer(self) -> int:
-        return 60 # every 60 ticks, 1 enemy spawns
+        return 480
+
+    @property
+    def move_timer(self) -> int:
+        return 240
 
     @property
     def tick(self) -> int:
@@ -17,26 +22,40 @@ class RoundController:
 
     def update(self):
         self.__tick += 1
-        if self.tick % self.spawn_timer == 0:
+        if self.__tick % self.spawn_timer == 0:
             self.spawn_enemy()
+        
+        for tower in self.__model.towers:
+            if self.__tick % tower.shoot_interval == 0:
+                self.__model.bullets.extend(tower.shoot())
+
         current_round = self.__model.rounds[self.__model.current_round]
-        for enemy in current_round.current_enemies:
-            enemy.go_next_tile()
+        for enemy in current_round.current_enemies[:]:
+            if self.__tick % self.move_timer == 0:
+                old_y, old_x = enemy.y, enemy.x
+                enemy.go_next_tile()
+                print("for updating:", old_y, old_x, enemy.y, enemy.x)
+                self.__model.stage.grid.grid[old_y][old_x].entity = None
+                self.__model.stage.grid.grid[enemy.y][enemy.x].entity = enemy
             last_cell = enemy.path.cells[-1]
             if enemy.y == last_cell.y and enemy.x == last_cell.x:
+                self.__model.stage.grid.grid[enemy.y][enemy.x].entity = None
                 current_round.current_enemies.remove(enemy)
-        for tower in self.__model.towers:
-            bullets = tower.shoot()
-            self.__model.bullets.append(*bullets)
+                self.__model.player.lose_life()
+
         if self.is_round_over:
             self.__model.advance_next_round()
+            self.__spawn_index = 0
 
     def spawn_enemy(self):
         current = self.__model.rounds[self.__model.current_round]
-        if len(current.current_enemies) < self.__model.enemy_count:
-            idx = len(current.current_enemies)
-            current.current_enemies.append(current.enemies[idx])
+        if self.__spawn_index < len(current.enemies):
+            enemy = current.enemies[self.__spawn_index]
+            current.current_enemies.append(enemy)
+            self.__model.stage.grid.grid[enemy.y][enemy.x].entity = enemy
+            self.__spawn_index += 1
+
     @property
     def is_round_over(self) -> bool:
         current = self.__model.rounds[self.__model.current_round]
-        return len(current.current_enemies) >= self.__model.enemy_count and all(not enemy.is_alive for enemy in current.enemies)
+        return (self.__spawn_index >= len(current.enemies) and len(current.current_enemies) == 0)
