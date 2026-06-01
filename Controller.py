@@ -12,7 +12,7 @@ class Controller:
         self.__view: View = v
     
     def start_game(self):
-        pyxel.init(self.__view.screen_w, self.__view.screen_h)
+        pyxel.init(self.__view.screen_w, self.__view.screen_h, fps=240)
         self.__view.init()
         pyxel.run(self.update, self.draw_game)
         
@@ -33,6 +33,8 @@ class Controller:
                 self.draw_leaderboard()
             case Screen.GAME_OVER:
                 self.draw_menu()
+            case _:
+                pass
 
     def draw_game(self):
         self.__view.draw_game_map()

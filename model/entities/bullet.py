@@ -21,6 +21,14 @@ class Bullet(Entity):
     def color(self) -> Color:
         return self._color
 
+    @property
+    def x_abs(self) -> float:
+        return self._x_abs
+    
+    @property
+    def y_abs(self) -> float:
+        return self._y_abs
+
     def kill(self):
         self._alive = False
 
