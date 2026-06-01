@@ -2,8 +2,10 @@
 
 import pyxel
 
-from view.Renderer import Renderer
+from view.renderer import Renderer
 from model.model import Model
+from model.cell import Cell
+from model.entities.tower import Tower
 from model.utils import BGColor
 from view.components.button import ButtonComponent
 
@@ -18,23 +20,95 @@ HUD_Y = 0
 HUD_H = 30
 HUD_W = 600
 
+CELL_HEIGHT = 40
+CELL_WIDTH = 40
+TOP_BOTTOM_PADDING = 30
+
+#tower placement:
+    # click button for tower
+    # click cell for tower
+        # if not a valid cell placement 
+            # if element at a certain Cell is not part of the Grid bounds -> "break tower placement mode"
+            # if Cell in that certain coordinate is ( Path / not of Same tower type ) -> "break tower placement mode"
+        # if valid cell placement  
+            # if same Tower type   
+                # if enough XP for tower upgrade, upgrade. otherwise, do nothing and "break tower placement mode"
+            # if not same Tower type
+                # "break tower placement mode"
 
 class HUDRenderer(Renderer):
 
     def __init__(self, model: Model):
-    # TODO: Integrate XP cost of towers in the text 
-        
-        self._model = model 
+        self._model = model
+        self._selected_tower: Tower | None = None
+        self._path_cells: set[Cell] = {
+            cell
+            for path in model.stage.paths
+            for cell in path.cells
+        }
         self._tower_buttons: list[ButtonComponent] = [
-            ButtonComponent(assoc_func=lambda: model.select_tower(0), x=400, y=HUD_Y, w=40, h=30, text=f"{model.select_tower(0).cost}"),
-            # CHANGED CODE
-            ## ButtonComponent(assoc_func=lambda: model.select_tower(1), x=450, y=HUD_Y+5, w=40, h=40, text=f"{model.select_tower(1).cost}"),
-            ## ButtonComponent(assoc_func=lambda: model.select_tower(2), x=500, y=HUD_Y+5, w=40, h=40, text=f"{model.select_tower(2).cost}"),
+            ButtonComponent(assoc_func=lambda i=i: self._select_tower(i), x=400 + i * 45, y=HUD_Y, w=40, h=30, text=f"{model.towers[i].cost}") for i in range(len(self.model.towers))
         ]
 
     @property
     def model(self):
-        return self._model    
+        return self._model
+
+    def _select_tower(self, i: int) -> None:
+        self._selected_tower = self.model.towers[i]
+
+    def _deselect_tower(self) -> None:
+        self._selected_tower = None
+
+    def _get_cell_from_click(self) -> Cell | None:
+        mx, my = pyxel.mouse_x, pyxel.mouse_y
+        col = mx // CELL_WIDTH
+        row = (my - TOP_BOTTOM_PADDING) // CELL_HEIGHT
+        rows = self.model.config.rows
+        cols = self.model.config.cols
+        if 0 <= row < rows and 0 <= col < cols:
+            return self.model.stage.grid.grid[row][col]
+        return None
+
+    def _handle_cell_click(self) -> None:
+        if self._selected_tower is None:
+            return
+        if not pyxel.btnp(pyxel.MOUSE_BUTTON_LEFT):
+            return
+
+        cell = self._get_cell_from_click()
+
+        # out of bounds
+        if cell is None:
+            self._deselect_tower()
+            return
+
+        # path cell (invalid)
+        if cell in self._path_cells:
+            self._deselect_tower()
+            return
+
+        # valid cell
+        if cell.entity is None:
+            # empty cell: place tower if enough XP
+            if self.model.exp >= self._selected_tower.cost:
+                cell.entity = self._selected_tower
+            self._deselect_tower()
+
+        elif isinstance(cell.entity, Tower):
+            existing: Tower = cell.entity
+            if type(existing) is type(self._selected_tower):
+                # same tower type (upgrade if >XP)
+                if self.model.exp >= existing.cost:
+                    existing.upgrade()
+                self._deselect_tower()
+            else:
+                # different tower type
+                self._deselect_tower()
+
+        else:
+            # cell occupied by non-tower entity
+            self._deselect_tower()
 
     def draw_background(self) -> None:
         pyxel.rect(0, HUD_Y, HUD_W, HUD_H, BGColor.DARK_GRAY)
@@ -43,7 +117,6 @@ class HUDRenderer(Renderer):
         lives = self.model.player.lives
         max_lives = self.model.config.lives
 
-        # progress bar
         bar_x, bar_y, bar_w, bar_h = 60, HUD_Y + 8, 100, 10
         pyxel.rect(bar_x, bar_y, bar_w, bar_h, BGColor.DARK_GRAY)
         filled = int(bar_w * lives / max_lives)
@@ -54,13 +127,10 @@ class HUDRenderer(Renderer):
 
     def draw_towers(self) -> None:
         for i, btn in enumerate(self._tower_buttons):
-            count : int = self.model.tower_counts[i]
-            disabled : bool = (count == 0)
+            tower = self.model.towers[i]
+            disabled: bool = self.model.exp < tower.cost
             btn._button_col = BGColor.DARK_GRAY if disabled else BGColor.LIGHT_GRAY
             btn.draw()
-            # count below button
-            ## pyxel.text(btn.x + 15, btn.y, f"{count}", BGColor.WHITE)
-            # CHANGED CODE
 
     def draw_title(self) -> None:
         pyxel.text(550, HUD_Y + 5,  "ZUMA:", BGColor.WHITE)
@@ -69,13 +139,12 @@ class HUDRenderer(Renderer):
 
     def update(self) -> None:
         for i, btn in enumerate(self._tower_buttons):
-            if self.model.tower_counts[i] > 0:
+            if self.model.exp >= self.model.towers[i].cost:
                 btn.update()
+        self._handle_cell_click()
 
     def draw(self) -> None:
         self.draw_background()
         self.draw_lives()
         self.draw_towers()
         self.draw_title()
-        
-        

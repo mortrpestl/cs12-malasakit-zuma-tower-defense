@@ -8,18 +8,20 @@ from model.entities.tower import Tower
 from model.entities.bullet import Bullet
 from random import Random
 
+from model.entities.normaltower import NormalTower
+
 class Model:
     def __init__(self, config: GameConfig, mode: GameMode):
         self.__player = Player(config)
         self.__stage = Stage(config)
         self.__enemies = config.enemies
         self.__current_round = 0
-        self.__exp = 0
+        self.__exp = 100 # ! TODO: return to 0 after; 100 for testing purposes
         self.__mode = mode
         self.__rng = Random(12) # fixed seed
         self.__rounds: list[Round] = [self.create_round() for _ in range(12)] # at least 12 rounds
         self.__config = config
-        self.__towers: list[Tower] = []
+        self.__towers: list[Tower] = [NormalTower(), NormalTower()]
         self.__bullets: list[Bullet] = []
 
     @property

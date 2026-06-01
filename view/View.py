@@ -6,11 +6,12 @@ from model.utils import (
     Settings, WaveConfig, get_next_color
 )
 from view.entity_renderer import EntityRenderer
+from view.grid_renderer import GridRenderer
+from view.hud_renderer import HUDRenderer
 import pyxel
 
 # from view.configure_renderer import ConfigureRenderer
 # from view.confirm_renderer import ConfirmRenderer
-# from view.grid_renderer import GridRenderer
 # from view.hud_renderer import HUDRenderer
 # # from view.leaderboard_renderer import LeaderboardRenderer
 # from view.menu_renderer import MenuRenderer
@@ -102,23 +103,4 @@ class View:
             for j in range(19):
                 pyxel.rect(40 * i, 30 + 40 * j, 40, 40, 7 * (i % 2) + 7 * (j % 2))
         
-    def draw_zuma_tower(self) -> None:
-        theta : float = self._zuma_rot
-        
-        pyxel.blt(self._screen_w / 2, self._screen_h / 2, 0, 0, 0, 64, 64, 8, rotate=theta, scale=0.625)
-        
-    def draw_ball_to_shoot(self) -> None:
-        theta2 : float = (self._zuma_rot + 90) * (pi / 180)
-        color : int = self._zuma_ball_col
-        
-        pyxel.circ(300 + 25 * cos(theta2), 410 + 25 * sin(theta2), 5, color)
-        
-    def convert_mouse_pos_rotation(self) -> float:
-        x : int = pyxel.mouse_x
-        y : int = pyxel.mouse_y
-        
-        self._zuma_rot = atan2(y - 390, x - 280) * (180 / pi) - 90 if 30 < y < 800 else self._zuma_rot
-        
-    def convert_mouse_click_color(self) -> int:
-        if pyxel.btnr(pyxel.MOUSE_BUTTON_LEFT):
-            self._zuma_ball_col = get_next_color()
+   

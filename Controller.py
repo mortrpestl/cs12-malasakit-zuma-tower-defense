@@ -6,6 +6,9 @@ from view.View import View
 from round_controller import RoundController
 from collision_controller import CollisionController
 
+from view.grid_renderer import GridRenderer
+from view.hud_renderer import HUDRenderer
+
 import pyxel
 
 class Controller:
@@ -14,6 +17,8 @@ class Controller:
         self.__view: View = v
         self.__collision_controller = CollisionController(m)
         self.__round_controller = RoundController(m)
+        self.__grid_renderer = GridRenderer(m)
+        self.__hud_renderer = HUDRenderer(m)
     
     def start_game(self):
         pyxel.init(self.__view.screen_w, self.__view.screen_h, fps=240)
@@ -24,11 +29,12 @@ class Controller:
         self.__view.reset_screen()
         self.__round_controller.update()
         self.__collision_controller.update()
+        self.__hud_renderer.update()
         match self.__view.get_current_screen:
             case Screen.GAME:
                 if not self.__model.is_game_over:
-                    self.__view.convert_mouse_click_color()
-                    self.__view.convert_mouse_pos_rotation()
+                    self.__grid_renderer.convert_mouse_click_color()
+                    self.__grid_renderer.convert_mouse_pos_rotation()
                     self.draw_game()
                     if pyxel.btnp(pyxel.MOUSE_BUTTON_LEFT):
                         self.__model.bullets.append(self.__model.player.shoot(pyxel.mouse_x, pyxel.mouse_y))
@@ -47,9 +53,11 @@ class Controller:
 
     def draw_game(self):
         self.__view.draw_game_map()
-        self.__view.draw_zuma_tower()
-        self.__view.draw_ball_to_shoot()
+        self.__grid_renderer.draw_zuma_tower()
+        self.__grid_renderer.draw_ball_to_shoot()
         self.__view.entity_renderer.draw(self.__model)
+        self.__hud_renderer.draw()
+        
         # self._view.draw hud()
 
     def ask_confirmation(self):

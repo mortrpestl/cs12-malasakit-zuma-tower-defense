@@ -1,6 +1,6 @@
 # pyright: strict
 
-from tower import Tower
+from model.entities.tower import Tower
 from model.utils import Direction, get_next_color
 from model.entities.bullet import Bullet
 from math import atan2

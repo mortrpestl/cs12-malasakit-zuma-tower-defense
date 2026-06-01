@@ -2,7 +2,7 @@
 
 import pyxel
 
-from renderer import Renderer
+from view.renderer import Renderer
 from model.model import Model
 from model.grid import Grid
 from model.cell import Cell
@@ -94,7 +94,7 @@ class GridRenderer(Renderer):
     def convert_mouse_click_color(self):
         if pyxel.btnr(pyxel.MOUSE_BUTTON_LEFT):
             self._zuma_ball_col = get_next_color()
-            
+   
     # update + draw
     def update(self) -> None:
         pass
