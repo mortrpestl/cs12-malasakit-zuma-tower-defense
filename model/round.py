@@ -21,7 +21,12 @@ class Round:
         self.__enemies = [
             make_enemy(enemy_type, color, path) for enemy_type, color, path in zip(config.special_types, config.colors, [paths[idx] for idx in config.paths])
         ]
+        self.__current_enemies: list[Enemy] = []
 
     @property 
     def enemies(self) -> list[Enemy]:
         return self.__enemies
+    
+    @property
+    def current_enemies(self) -> list[Enemy]:
+        return self.__current_enemies

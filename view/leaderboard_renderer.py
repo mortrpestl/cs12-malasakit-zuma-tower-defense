@@ -2,8 +2,9 @@
 
 import pyxel
 
-from renderer import Renderer
+from Renderer import Renderer
 from model.leaderboard import Leaderboard
+from model.model import Model
 from model.utils import BGColor, LeaderboardEntry
 
 BOARD_X = 200

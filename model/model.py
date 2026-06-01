@@ -4,7 +4,11 @@ from model.stage import Stage
 from model.round import Round
 from model.utils import *
 from model.game_config import GameConfig
+from model.entities.tower import Tower
+from model.entities.bullet import Bullet
 from random import Random
+
+from model.entities.normaltower import NormalTower
 
 class Model:
     def __init__(self, config: GameConfig, mode: GameMode):
@@ -12,11 +16,13 @@ class Model:
         self.__stage = Stage(config)
         self.__enemies = config.enemies
         self.__current_round = 0
-        self.__exp = 0
+        self.__exp = 100 # ! TODO: return to 0 after; 100 for testing purposes
         self.__mode = mode
         self.__rng = Random(12) # fixed seed
         self.__rounds: list[Round] = [self.create_round() for _ in range(12)] # at least 12 rounds
         self.__config = config
+        self.__towers: list[Tower] = [NormalTower(), NormalTower()]
+        self.__bullets: list[Bullet] = []
 
     @property
     def mode(self) -> GameMode:
@@ -27,8 +33,8 @@ class Model:
         return self.__exp
     
     @property
-    def player(self) -> GameConfig:
-        return self.__config
+    def player(self) -> Player:
+        return self.__player
     
     @property
     def config(self) -> GameConfig:
@@ -50,6 +56,22 @@ class Model:
     def stage(self) -> Stage:
         return self.__stage
 
+    @property
+    def enemy_count(self) -> int:
+        return self.__enemies
+    
+    @property
+    def towers(self) -> list[Tower]:
+        return self.__towers
+    
+    @property
+    def bullets(self) -> list[Bullet]:
+        return self.__bullets
+    
+    @bullets.setter
+    def bullets(self, lst: list[Bullet]):
+        self.__bullets = lst
+
     def create_round(self) -> Round:
         config = WaveConfig(
             self.rng.choices(list(Color), k=self.__enemies),
@@ -60,12 +82,7 @@ class Model:
     
     @property
     def is_game_over(self) -> bool:
-        return self.__current_round >= len(self.__rounds)
-
-    @property
-    def is_round_over(self) -> bool:
-        current = self.rounds[self.current_round]
-        return all(enemy.is_alive for enemy in current.enemies)
+        return self.__current_round >= len(self.__rounds) if self.mode == GameMode.CAMPAIGN else self.player.lives <= 0
     
     def add_exp(self, amount: int):
         self.__exp += amount
@@ -75,3 +92,9 @@ class Model:
     
     def advance_next_round(self):
         self.__current_round += 1
+        self.__bullets.clear()
+        
+    def get_position(self, i: int, j: int) -> tuple[float, float]:
+        cell_width = self.config.width / self.config.cols
+        cell_height = self.config.height / self.config.rows
+        return (i + 0.5) * cell_height, (j + 0.5) * cell_width

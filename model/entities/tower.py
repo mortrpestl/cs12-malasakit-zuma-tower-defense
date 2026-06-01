@@ -8,6 +8,7 @@ from random import Random
 # for making more tower classes
 class Tower(Entity):
     def __init__(self):
+        super().__init__()
         self._level = 1 # 1 if unupgraded; make an enum?
         self._cost = 5
         self._rng = Random(12)

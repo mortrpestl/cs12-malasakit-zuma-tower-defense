@@ -42,4 +42,7 @@ class Shooter(Entity):
 
     def shoot(self, x: float, y: float) -> Bullet:
         angle = atan2(y - self._y_abs, x - self._x_abs)
-        return Bullet(x, y, angle, get_next_color())
+        print(f"my position: {self._x_abs}, {self._y_abs}")
+        print(f"shot at {x}, {y}")
+        print(f"angle: {angle}")
+        return Bullet(self._x_abs, self._y_abs, angle, get_next_color())

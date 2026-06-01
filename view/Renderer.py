@@ -1,7 +1,7 @@
 # pyright: strict
 
 from abc import ABC, abstractmethod
-from ..model.model import Model
+from model.model import Model
 
 class Renderer(ABC):
     def __init__(self, model : Model):

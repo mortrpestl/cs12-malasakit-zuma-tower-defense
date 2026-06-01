@@ -6,9 +6,10 @@ from math import sin, cos
 
 class Bullet(Entity):
     def __init__(self, x: float, y: float, angle: float, color: Color):
+        super().__init__()
         self._x_abs = x
         self._y_abs = y
-        self._velocity = 3 # 3 px/s
+        self._velocity = 1 # 3 px/s
         self._alive = True
         self._angle = angle # radians
         self._color = color
@@ -20,6 +21,14 @@ class Bullet(Entity):
     @property
     def color(self) -> Color:
         return self._color
+
+    @property
+    def x_abs(self) -> float:
+        return self._x_abs
+    
+    @property
+    def y_abs(self) -> float:
+        return self._y_abs
 
     def kill(self):
         self._alive = False

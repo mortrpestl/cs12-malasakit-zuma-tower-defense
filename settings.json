@@ -1,0 +1,9 @@
+{
+    "enemies": 5,
+    "lives": 3,
+    "rows": 15,
+    "cols": 19,
+    "width": 1280,
+    "height": 720,
+    "paths_count": 2
+}

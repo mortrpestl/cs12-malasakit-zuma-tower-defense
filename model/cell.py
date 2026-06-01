@@ -23,3 +23,7 @@ class Cell:
     @property
     def entity(self) -> None | Entity:
         return self.__entity
+    
+    @entity.setter
+    def entity(self, e: Entity | None) -> None:
+        self.__entity = e

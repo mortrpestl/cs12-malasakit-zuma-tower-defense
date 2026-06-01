@@ -22,6 +22,7 @@ class Stage:
     def grid(self) -> Grid:
         return self.__grid
     
+<<<<<<< HEAD
     def load_path_from_json(self, file: str) -> list[list[Cell]]:
         with open("map/" + file, "r") as f:
             data = json.load(f)
@@ -39,3 +40,5 @@ class Stage:
 
         return paths        
     
+=======
+>>>>>>> c487161f9556503782235c3a41068d10c7db38f6
