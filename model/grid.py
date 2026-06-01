@@ -2,13 +2,15 @@
 from model.game_config import GameConfig
 from model.cell import Cell
 from random import Random
+import json
 
 class Grid:
-    def __init__(self, config: GameConfig):
+    def __init__(self, config: GameConfig, file: str = "campaign_map_1.json"):
         self.__config = config
         self.__r = config.rows
         self.__c = config.cols
-        self.__grid: list[list[Cell]] = [[Cell(j, i, is_tunnel=False) for j in range(self.__config.cols)] for i in range(self.__config.rows)] # no tunnels for now
+        # self.__grid: list[list[Cell]] = [[Cell(j, i, is_tunnel=False) for j in range(self.__config.cols)] for i in range(self.__config.rows)] # no tunnels for now
+        self.__grid = self.load_from_json(file)
         self.__rng = Random(12) # fixed seed
 
     @property 
@@ -22,3 +24,23 @@ class Grid:
     @property
     def grid(self) -> list[list[Cell]]:
         return self.__grid
+    
+    def load_from_json(self, file: str) -> list[list[Cell]]:
+        with open("map/" + file, "r") as f:
+            data = json.load(f)
+            data_grid = data["matrix"]
+
+            grid: list[list[Cell]] = []
+
+            for i in range(self.__r):
+                row: list[Cell] = []
+
+                for j in range(self.__c):
+                    if data_grid[i][j] == 2:
+                        row.append(Cell(j, i, is_tunnel=True))
+                    else:
+                        row.append(Cell(j, i, is_tunnel=False))
+
+                grid.append(row)
+
+        return grid

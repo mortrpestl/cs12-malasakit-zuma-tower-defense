@@ -20,3 +20,4 @@ class Path:
     @property
     def end(self) -> Cell:
         return self.__end
+    
