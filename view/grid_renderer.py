@@ -51,13 +51,13 @@ class GridRenderer(Renderer):
     def draw_entity(self, entity: Entity, x: int, y: int) -> None:
         if isinstance(entity, Tower):
             # pyxel.blt(x, y, ...)
-            pyxel.rect(x, y, self._model.config.width / self._model.config.cols, self._model.config.height / self._model.config.rows, 2)
+            pyxel.rect(x, y, CELL_WIDTH, CELL_HEIGHT, 2)
         elif isinstance(entity, Shooter):
             # pyxel.blt(x, y, ...)
-            pyxel.rect(x, y, self._model.config.width / self._model.config.cols, self._model.config.height / self._model.config.rows, 3)
+            pyxel.rect(x, y, CELL_WIDTH, CELL_HEIGHT, 3)
         elif isinstance(entity, Enemy):
             # pyxel.blt(x, y, ...)
-            pyxel.rect(x, y, self._model.config.width / self._model.config.cols, self._model.config.height / self._model.config.rows, 4)
+            pyxel.rect(x, y, CELL_WIDTH, CELL_HEIGHT, 4)
 
     def draw_cell(self, cell: Cell) -> None:
         x, y = self.normalize_coord(cell.y, cell.x)
@@ -66,13 +66,17 @@ class GridRenderer(Renderer):
         if cell.entity is not None:
             self.draw_entity(cell.entity, x, y)
 
-
     # map (Justin's additions)
     
     def draw_game_map(self) -> None:
-        for i in range(15):
-            for j in range(19):
-                pyxel.rect(40 * i, 30 + 40 * j, 40, 40, 7 * (i % 2) + 7 * (j % 2))
+        for row in self._model.stage.grid.grid:
+            for cell in row:
+                col, row_idx = cell.x, cell.y
+                x = col * CELL_WIDTH
+                y = row_idx * CELL_HEIGHT + TOP_BOTTOM_PADDING
+                pyxel.rect(x, y, CELL_WIDTH, CELL_HEIGHT, 3)
+                if cell.entity is not None:
+                    self.draw_entity(cell.entity, x, y)
         
     def draw_zuma_tower(self) -> None:
         theta : float = self._zuma_rot
@@ -100,8 +104,4 @@ class GridRenderer(Renderer):
         pass
 
     def draw(self) -> None:
-        for row in self._model.stage.grid.grid:
-            for cell in row:
-                self.draw_cell(cell)
-                
-    
+        self.draw_game_map()

@@ -19,3 +19,4 @@ class Stage:
     @property
     def grid(self) -> Grid:
         return self.__grid
+    

@@ -35,30 +35,27 @@ class Controller:
                 if not self.__model.is_game_over:
                     self.__grid_renderer.convert_mouse_click_color()
                     self.__grid_renderer.convert_mouse_pos_rotation()
-                    self.draw_game()
                     if pyxel.btnp(pyxel.MOUSE_BUTTON_LEFT):
                         self.__model.bullets.append(self.__model.player.shoot(pyxel.mouse_x, pyxel.mouse_y))
                         print([(bullet.x_abs, bullet.y_abs) for bullet in self.__model.bullets])
-                    self.__view.entity_renderer.draw(self.__model)
                 else:
                     ...
             case Screen.MENU:
                 ...
             case Screen.LEADERBOARD:
-                self.draw_leaderboard()
+                ...
             case Screen.GAME_OVER:
-                self.draw_menu()
+                ...
             case _:
                 pass
 
     def draw_game(self):
-        self.__view.draw_game_map()
+        self.__view.reset_screen()
+        self.__grid_renderer.draw_game_map()
         self.__grid_renderer.draw_zuma_tower()
         self.__grid_renderer.draw_ball_to_shoot()
         self.__view.entity_renderer.draw(self.__model)
         self.__hud_renderer.draw()
-        
-        # self._view.draw hud()
 
     def ask_confirmation(self):
         # essentially draw confirmation but we need a bool as response
