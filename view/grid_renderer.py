@@ -41,16 +41,19 @@ class GridRenderer(Renderer):
 
     def draw_entity(self, entity: Entity, x: int, y: int) -> None:
         if isinstance(entity, Tower):
-            pyxel.blt(x, y, ...)
+            # pyxel.blt(x, y, ...)
+            pyxel.rect(x, y, self._model.config.width / self._model.config.cols, self._model.config.height / self._model.config.rows, 2)
         elif isinstance(entity, Shooter):
-            pyxel.blt(x, y, ...)
+            # pyxel.blt(x, y, ...)
+            pyxel.rect(x, y, self._model.config.width / self._model.config.cols, self._model.config.height / self._model.config.rows, 3)
         elif isinstance(entity, Enemy):
-            pyxel.blt(x, y, ...)
+            # pyxel.blt(x, y, ...)
+            pyxel.rect(x, y, self._model.config.width / self._model.config.cols, self._model.config.height / self._model.config.rows, 4)
 
     def draw_cell(self, cell: Cell) -> None:
         x, y = self.normalize_coord(cell.y, cell.x)
         if cell.is_tunnel:
-            pyxel.rect(x, y, CELL_WIDTH, CELL_HEIGHT, ...)  # TODO: tunnel tile color
+            pyxel.rect(x, y, CELL_WIDTH, CELL_HEIGHT, 1)  # TODO: tunnel tile color
         if cell.entity is not None:
             self.draw_entity(cell.entity, x, y)
 

@@ -5,6 +5,7 @@ from model.utils import (
     EnemyType, LeaderboardEntry,
     Settings, WaveConfig, get_next_color
 )
+from view.entity_renderer import EntityRenderer
 import pyxel
 
 # from view.configure_renderer import ConfigureRenderer
@@ -54,7 +55,8 @@ class View:
         self._frames_s : int = frames
         self._sound_fx : Sound = Sound()
         
-        self._current_screen: Screen = Screen.GAME 
+        self._current_screen: Screen = Screen.GAME
+        self.entity_renderer = EntityRenderer()
 
         # SUGGESTION FOR DIOGN: put this in grid_renderer.py
         self._zuma_rot : float = 0
@@ -96,7 +98,7 @@ class View:
     def draw_zuma_tower(self) -> None:
         theta : float = self._zuma_rot
         
-        pyxel.blt(268, 378, 0, 0, 0, 64, 64, 8, rotate=theta, scale=0.625)
+        pyxel.blt(self._screen_w / 2, self._screen_h / 2, 0, 0, 0, 64, 64, 8, rotate=theta, scale=0.625)
         
     def draw_ball_to_shoot(self) -> None:
         theta2 : float = (self._zuma_rot + 90) * (pi / 180)

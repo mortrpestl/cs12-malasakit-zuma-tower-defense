@@ -7,6 +7,7 @@ from view.View import View
 from Controller import Controller
 
 config = GameConfig()
+config.fetch_config("settings.json")
 g = Model(config, GameMode.CAMPAIGN)
 v = View(600, 820, 30)
 c = Controller(g, v)
