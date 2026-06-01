@@ -2,7 +2,7 @@
 
 from model.entities.entity import Entity
 from model.game_config import GameConfig
-from math import atan2, pi
+from math import atan2
 from model.entities.bullet import Bullet
 from model.utils import get_next_color
 

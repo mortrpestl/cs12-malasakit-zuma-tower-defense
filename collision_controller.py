@@ -2,13 +2,13 @@
 
 from model.model import Model
 
-EPS = 10**-3
+HIT_RADIUS = 20
 
-def equal(a: float, b: float) -> bool:
-    return abs(a - b) < EPS
-
-def in_bounds(y: float, x: float, height: float, width: float):
+def in_bounds(y: float, x: float, height: float, width: float) -> bool:
     return 0 <= y <= height and 0 <= x <= width
+
+def within_radius(by: float, bx: float, ey: float, ex: float, radius: float) -> bool:
+    return (bx - ex)**2 + (by - ey)**2 <= radius**2
 
 class CollisionController:
     def __init__(self, m: Model):
@@ -24,19 +24,21 @@ class CollisionController:
             bullet.update_position()
 
     def check_hits(self):
-        round = self.__model.rounds[self.__model.current_round]
-        for bullet in self.__model.bullets:
-            for enemy in round.enemies:
+        current_round = self.__model.rounds[self.__model.current_round]
+        for bullet in self.__model.bullets[:]:
+            for enemy in current_round.current_enemies[:]:
                 enemy_y, enemy_x = self.__model.get_position(enemy.y, enemy.x)
-                if equal(bullet.x, enemy_x) and equal(bullet.y, enemy_y):
+                if within_radius(bullet.y_abs, bullet.x_abs, enemy_y, enemy_x, HIT_RADIUS):
                     enemy.take_hit(bullet.color)
+                    print(f"{enemy} took a hit!")
                     self.__model.bullets.remove(bullet)
                     if enemy.lives <= 0:
-                        round.enemies.remove(enemy)
+                        current_round.current_enemies.remove(enemy)
                         self.__model.add_exp(enemy.exp)
                     break
 
     def remove_out_of_bounds(self):
         self.__model.bullets = [
-            b for b in self.__model.bullets if in_bounds(b.y_abs, b.x_abs, self.__model.config.height, self.__model.config.width)
+            b for b in self.__model.bullets
+            if in_bounds(b.y_abs, b.x_abs, self.__model.config.height, self.__model.config.width)
         ]

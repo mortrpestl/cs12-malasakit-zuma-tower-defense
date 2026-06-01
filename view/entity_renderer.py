@@ -12,7 +12,8 @@ class EntityRenderer:
             pyxel.circ(bullet.x_abs, bullet.y_abs, 2, bullet.color.value) # circle for now
         current_round = model.rounds[model.current_round]
         for enemy in current_round.enemies:
-            self.draw_enemy(model, enemy)
+            if enemy.is_alive:
+                self.draw_enemy(model, enemy)
         for tower in model.towers:
             self.draw_tower(model, tower)
         self.draw_shooter(model)
