@@ -5,7 +5,7 @@ import json
 class GameConfig:
     def __init__(self):
         # default settings; width and height is for the grid itself (not the entire game screen)
-        self.__enemies = 5
+        self.__enemies = 60
         self.__lives = 2
         self.__rows = 2
         self.__cols = 10

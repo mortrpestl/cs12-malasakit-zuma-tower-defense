@@ -43,10 +43,10 @@ class GameMode(Enum):
     CAMPAIGN = "campaign"
     ENDLESS = "endless"
 
-class EnemyType(Enum):
-    NORMAL = auto()
-    CHAMELEON = auto()
-    REGENERATOR = auto()
+class EnemyType(IntEnum):
+    NORMAL = 1
+    CHAMELEON = 2
+    REGENERATOR = 3
 
 class Screen:
     MENU = auto()

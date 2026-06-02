@@ -7,8 +7,9 @@ from model.game_config import GameConfig
 from model.entities.tower import Tower
 from model.entities.bullet import Bullet
 from random import Random
-
 from model.entities.normaltower import NormalTower
+from pathlib import Path as FilePath
+import json
 
 class Model:
     def __init__(self, config: GameConfig, mode: GameMode):
@@ -19,7 +20,7 @@ class Model:
         self.__exp = 100 # ! TODO: return to 0 after; 100 for testing purposes
         self.__mode = mode
         self.__rng = Random(12) # fixed seed
-        self.__rounds: list[Round] = [self.create_round() for _ in range(12)] # at least 12 rounds
+        self.__rounds: list[Round] = [self.create_round(i) for i in range(12)] # at least 12 rounds
         self.__config = config
         self.__towers: list[Tower] = [NormalTower(config)]
         self.__bought_towers: list[Tower] = []
@@ -82,12 +83,23 @@ class Model:
     def bullets(self, lst: list[Bullet]):
         self.__bullets = lst
 
-    def create_round(self) -> Round:
-        config = WaveConfig(
-            self.rng.choices(list(Color), k=self.__enemies),
-            [self.rng.randint(0, len(self.__stage.paths) - 1) for _ in range(self.__enemies)],
-            self.rng.choices(list(EnemyType), k=self.__enemies)
-        )
+    def create_round(self, round: int) -> Round:
+        round_path = FilePath(__file__).parent / "rounds" / "campaign_round_1.json"
+        with open(round_path, "r") as d:
+            data = json.load(d)
+            path_list: list[int] = []
+            enemy_list: list[EnemyType]= []
+            
+            for n, path in enumerate(data["waves"][round]):
+                for enemy in path:
+                    path_list.append(n)
+                    enemy_list.append(EnemyType(enemy))
+                    
+            config = WaveConfig(
+                self.rng.choices(list(Color), k=len(enemy_list)),
+                path_list,
+                enemy_list
+            )
         return Round(config, self.__stage.paths)
     
     @property

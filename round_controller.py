@@ -71,6 +71,7 @@ class RoundController:
 
     def spawn_enemy(self):
         current = self.__model.rounds[self.__model.current_round]
+        print(current)
         if self.__spawn_index < len(current.enemies):
             enemy = current.enemies[self.__spawn_index]
             current.current_enemies.append(enemy)
