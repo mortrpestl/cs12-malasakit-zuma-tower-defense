@@ -4,14 +4,6 @@ import pyxel
 
 from view.renderer import Renderer
 from model.model import Model
-from model.grid import Grid
-from model.cell import Cell
-from model.entities.entity import Entity
-from model.entities.enemy import Enemy
-from model.entities.tower import Tower
-from model.entities.shooter import Shooter
-
-from math import atan2, cos, pi, sin
 from model.utils import (
     BGColor
 )
