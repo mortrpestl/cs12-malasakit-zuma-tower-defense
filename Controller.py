@@ -33,16 +33,8 @@ class Controller:
         match self.__view.get_current_screen:
             case Screen.GAME:
                 if not self.__model.is_game_over:
-                    # self.__grid_renderer.convert_mouse_click_color()
-                    # self.__grid_renderer.convert_mouse_pos_rotation()
-                    if pyxel.btnp(pyxel.MOUSE_BUTTON_LEFT):
+                    if pyxel.btnr(pyxel.MOUSE_BUTTON_LEFT):
                         self.__model.bullets.append(self.__model.player.shoot(pyxel.mouse_x, pyxel.mouse_y))
-                        print(f"x: {pyxel.mouse_x}, y: {pyxel.mouse_y}")
-                        print([(bullet.x_abs, bullet.y_abs) for bullet in self.__model.bullets])
-                    print("enemies now:", [(enemy.y, enemy.x) for enemy in self.__model.rounds[self.__model.current_round].current_enemies])
-                    print("grid now")
-                    print(*[[cell.entity for cell in row] for row in self.__model.stage.grid.grid], sep='\n')
-                    print("bullets now", self.__model.bullets)
                 else:
                     ...
             case Screen.MENU:

@@ -1,5 +1,4 @@
 # pyright: strict
-
 from model.entities.entity import Entity
 from model.game_config import GameConfig
 from math import atan2
@@ -20,7 +19,6 @@ class Shooter(Entity):
         self._y_abs = 0
         self._x_abs = 0
         self.update_position()
-        self.__config = config
     
     @property
     def y_abs(self) -> float:
@@ -33,8 +31,8 @@ class Shooter(Entity):
     def update_position(self):
         cell_width = self.__config.width / self.__config.cols
         cell_height = self.__config.height / self.__config.rows
-        self._y_abs = (self._y + 0.5) * cell_height
-        self._x_abs = (self._x + 0.5) * cell_width
+        self._y_abs = (self._y + 0.25) * cell_height
+        self._x_abs = (self._x + 0.25) * cell_width
 
     def move_left(self):
         self._x = clamp(self._x - 1, 0, self.__config.cols)
@@ -50,7 +48,4 @@ class Shooter(Entity):
 
     def shoot(self, x: float, y: float) -> Bullet:
         angle = atan2(y - self._y_abs, x - self._x_abs)
-        print(f"my position: {self._x_abs}, {self._y_abs}")
-        print(f"shot at {x}, {y}")
-        print(f"angle: {angle}")
         return Bullet(self._x_abs, self._y_abs, angle, get_next_color())

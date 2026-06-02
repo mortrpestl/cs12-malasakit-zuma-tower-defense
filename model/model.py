@@ -21,8 +21,8 @@ class Model:
         self.__rng = Random(12) # fixed seed
         self.__rounds: list[Round] = [self.create_round() for _ in range(12)] # at least 12 rounds
         self.__config = config
-        self.__towers: list[Tower] = [NormalTower()]
-        self.__towers[0].x, self.__towers[0].y = 0, 0
+        self.__towers: list[Tower] = [NormalTower(config)]
+        self.__bought_towers: list[Tower] = []
         self.__bullets: list[Bullet] = []
         self.__stage.grid.grid[config.rows >> 1][config.cols >> 1].entity = self.__player.shooter
 
@@ -33,6 +33,10 @@ class Model:
     @property
     def exp(self) -> int:
         return self.__exp
+    
+    @exp.setter
+    def exp(self, new_exp: int):
+        self.__exp = max(0, new_exp)
     
     @property
     def player(self) -> Player:
@@ -65,6 +69,10 @@ class Model:
     @property
     def towers(self) -> list[Tower]:
         return self.__towers
+    
+    @property
+    def bought_towers(self) -> list[Tower]:
+        return self.__bought_towers
     
     @property
     def bullets(self) -> list[Bullet]:

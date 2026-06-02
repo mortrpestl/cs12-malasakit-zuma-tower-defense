@@ -1,6 +1,11 @@
 # pyright: strict
 
 from model.model import Model
+from model.entities.normaltower import NormalTower
+from model.entities.tower import Tower
+from model.utils import Direction
+
+import pyxel
 
 class RoundController:
     def __init__(self, model: Model):
@@ -25,16 +30,33 @@ class RoundController:
         if self.__tick % self.spawn_timer == 0:
             self.spawn_enemy()
         
-        for tower in self.__model.towers:
+        if pyxel.btnr(pyxel.KEY_W):
+            for tower in self.__model.bought_towers:
+                if isinstance(tower, NormalTower):
+                    tower.direction = Direction.UP
+        if pyxel.btnr(pyxel.KEY_A):
+            for tower in self.__model.bought_towers:
+                if isinstance(tower, NormalTower):
+                    tower.direction = Direction.LEFT
+        if pyxel.btnr(pyxel.KEY_S):
+            for tower in self.__model.bought_towers:
+                if isinstance(tower, NormalTower):
+                    tower.direction = Direction.DOWN
+        if pyxel.btnr(pyxel.KEY_D):
+            for tower in self.__model.bought_towers:
+                if isinstance(tower, NormalTower):
+                    tower.direction = Direction.RIGHT
+        
+        for tower in self.__model.bought_towers:
             if self.__tick % tower.shoot_interval == 0:
                 self.__model.bullets.extend(tower.shoot())
+
 
         current_round = self.__model.rounds[self.__model.current_round]
         for enemy in current_round.current_enemies[:]:
             if self.__tick % self.move_timer == 0:
                 old_y, old_x = enemy.y, enemy.x
                 enemy.go_next_tile()
-                print("for updating:", old_y, old_x, enemy.y, enemy.x)
                 self.__model.stage.grid.grid[old_y][old_x].entity = None
                 self.__model.stage.grid.grid[enemy.y][enemy.x].entity = enemy
             last_cell = enemy.path.cells[-1]

@@ -13,11 +13,11 @@ from model.entities.shooter import Shooter
 
 from math import atan2, cos, pi, sin
 from model.utils import (
-    get_next_color
+    BGColor
 )
 
-TUNNEL_COLOR = 2
-PATH_COLOR = 4
+TUNNEL_COLOR = BGColor.PINK
+PATH_COLOR = BGColor.BROWN
 
 class GridRenderer(Renderer):
     def __init__(self, m: Model):
@@ -29,7 +29,7 @@ class GridRenderer(Renderer):
         for path in self.__model.stage.paths:
             for cell in path.cells:
                 color = TUNNEL_COLOR if cell.is_tunnel else PATH_COLOR
-                pyxel.rect(cell.x * self.__cell_width, cell.y * self.__cell_height, self.__cell_width, self.__cell_height, color)
+                pyxel.rect(cell.x * self.__cell_width, cell.y * self.__cell_height + 30, self.__cell_width, self.__cell_height, color)
     
     def update(self):
         pass
