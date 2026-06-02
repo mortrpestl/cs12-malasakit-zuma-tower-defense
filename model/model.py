@@ -16,10 +16,10 @@ class Model:
         self.__stage = Stage(config)
         self.__enemies = config.enemies
         self.__current_round = 0
-        self.__exp = 100 # ! TODO: return to 0 after; 100 for testing purposes
+        self.__exp = 0
         self.__mode = mode
         self.__rng = Random(12) # fixed seed
-        self.__rounds: list[Round] = [self.create_round() for _ in range(12)] # at least 12 rounds
+        self.__rounds: list[Round] = [self.create_round() for _ in range(1)] # at least 12 rounds
         self.__config = config
         self.__towers: list[Tower] = [NormalTower()]
         self.__towers[0].x, self.__towers[0].y = 0, 0
@@ -96,6 +96,7 @@ class Model:
         self.__current_round += 1
         self.__bullets.clear()
         
+    # gives (y, x) of top left corner of (i, j)
     def get_position(self, i: int, j: int) -> tuple[float, float]:
         cell_width = self.config.width / self.config.cols
         cell_height = self.config.height / self.config.rows
