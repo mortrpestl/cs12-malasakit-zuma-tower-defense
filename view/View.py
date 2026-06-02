@@ -72,7 +72,6 @@ class View:
 
     def init(self):
         self._sound_fx.init()
-        pyxel.load("view/pyxres_files/zuma_basic_enemies.pyxres", exclude_sounds=True, exclude_musics=True)
         pyxel.load("view/pyxres_files/zuma_basic_towers.pyxres", exclude_sounds=True, exclude_musics=True)
         pyxel.mouse(True)
 
@@ -97,10 +96,5 @@ class View:
 
     def reset_screen(self) -> None:
         pyxel.cls(BGColor.PEACH)
-
-    def draw_game_map(self) -> None:
-        for i in range(15):
-            for j in range(19):
-                pyxel.rect(40 * i, 30 + 40 * j, 40, 40, 7 * (i % 2) + 7 * (j % 2))
         
    

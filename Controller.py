@@ -33,8 +33,6 @@ class Controller:
                     self.__round_controller.update()
                     self.__view.reset_screen()
                     self.__hud_renderer.update()
-                    # self.__grid_renderer.convert_mouse_click_color()
-                    # self.__grid_renderer.convert_mouse_pos_rotation()
                     if pyxel.btnp(pyxel.MOUSE_BUTTON_LEFT):
                         self.__model.bullets.append(self.__model.player.shoot(pyxel.mouse_x, pyxel.mouse_y))
                 else:

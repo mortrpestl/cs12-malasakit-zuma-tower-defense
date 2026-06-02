@@ -2,6 +2,8 @@
 
 import pyxel
 
+from copy import deepcopy
+
 from view.renderer import Renderer
 from model.model import Model
 from model.cell import Cell
@@ -55,7 +57,12 @@ class HUDRenderer(Renderer):
         return self._model
 
     def _select_tower(self, i: int) -> None:
-        self._selected_tower = self.model.towers[i]
+        self._selected_tower = deepcopy(self.model.towers[i])
+        
+        print("success")
+        print(f"Selected: {self._selected_tower}")
+        
+        # TROUBLESHOOTING CODE
 
     def _deselect_tower(self) -> None:
         self._selected_tower = None
@@ -66,14 +73,18 @@ class HUDRenderer(Renderer):
         row = (my - TOP_BOTTOM_PADDING) // CELL_HEIGHT
         rows = self.model.config.rows
         cols = self.model.config.cols
+        
+        print(f"col: {col} row: {row}")
+        
         if 0 <= row < rows and 0 <= col < cols:
             return self.model.stage.grid.grid[row][col]
+        
         return None
 
     def _handle_cell_click(self) -> None:
         if self._selected_tower is None:
             return
-        if not pyxel.btnp(pyxel.MOUSE_BUTTON_LEFT):
+        if not pyxel.btnr(pyxel.MOUSE_BUTTON_LEFT):
             return
 
         cell = self._get_cell_from_click()
@@ -92,14 +103,18 @@ class HUDRenderer(Renderer):
         if cell.entity is None:
             # empty cell: place tower if enough XP
             if self.model.exp >= self._selected_tower.cost:
+                self._selected_tower.x, self._selected_tower.y = cell.x, cell.y
+                self._model.exp -= self._selected_tower.cost
                 cell.entity = self._selected_tower
+                self._model.bought_towers.append(self._selected_tower)
             self._deselect_tower()
 
         elif isinstance(cell.entity, Tower):
             existing: Tower = cell.entity
-            if type(existing) is type(self._selected_tower):
+            if isinstance(existing, type(self._selected_tower)) and existing.level < 2:
                 # same tower type (upgrade if >XP)
                 if self.model.exp >= existing.cost:
+                    self._model.exp -= self._selected_tower.cost
                     existing.upgrade()
                 self._deselect_tower()
             else:
@@ -113,6 +128,9 @@ class HUDRenderer(Renderer):
     def draw_background(self) -> None:
         pyxel.rect(0, HUD_Y, HUD_W, HUD_H, BGColor.DARK_GRAY)
 
+    def draw_exp(self) -> None:
+        pyxel.text(200, HUD_Y + 8, f"EXP: {self._model.exp}", BGColor.WHITE)
+        
     def draw_lives(self) -> None:
         lives = self.model.player.lives
         max_lives = self.model.config.lives
@@ -129,7 +147,7 @@ class HUDRenderer(Renderer):
         for i, btn in enumerate(self._tower_buttons):
             tower = self.model.towers[i]
             disabled: bool = self.model.exp < tower.cost
-            btn._button_col = BGColor.DARK_GRAY if disabled else BGColor.LIGHT_GRAY
+            btn._button_col = BGColor.NAVY if disabled else BGColor.LIGHT_GRAY
             btn.draw()
 
     def draw_title(self) -> None:
@@ -142,9 +160,15 @@ class HUDRenderer(Renderer):
             if self.model.exp >= self.model.towers[i].cost:
                 btn.update()
         self._handle_cell_click()
+        
+    def temporary_function(self) -> None:
+        pyxel.rect(0, HUD_Y + 790, HUD_W, HUD_H, BGColor.DARK_GRAY)
 
     def draw(self) -> None:
         self.draw_background()
+        self.draw_exp()
         self.draw_lives()
         self.draw_towers()
         self.draw_title()
+        self.temporary_function()
+        

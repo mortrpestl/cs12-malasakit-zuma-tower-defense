@@ -9,7 +9,7 @@ from Controller import Controller
 config = GameConfig()
 config.fetch_config("settings.json")
 g = Model(config, GameMode.CAMPAIGN)
-v = View(600, 820, 30)
+v = View(600, 820, 240)
 c = Controller(g, v)
 
 if __name__ == "__main__":
