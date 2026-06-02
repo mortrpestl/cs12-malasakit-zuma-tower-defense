@@ -2,7 +2,7 @@
 
 from model.model import Model
 
-HIT_RADIUS = 20
+HIT_RADIUS = 40
 
 def in_bounds(y: float, x: float, height: float, width: float) -> bool:
     return 0 <= y <= height and 0 <= x <= width
@@ -31,7 +31,6 @@ class CollisionController:
                 cell = self.__model.stage.grid.grid[enemy.y][enemy.x]
                 if within_radius(bullet.y_abs, bullet.x_abs, enemy_y, enemy_x, HIT_RADIUS) and not cell.is_tunnel:
                     enemy.take_hit(bullet.color)
-                    print(f"{enemy} took a hit!")
                     self.__model.bullets.remove(bullet)
                     if enemy.lives <= 0:
                         current_round.current_enemies.remove(enemy)

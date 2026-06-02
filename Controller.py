@@ -26,17 +26,17 @@ class Controller:
         pyxel.run(self.update, self.draw_game)
         
     def update(self):   
-        self.__view.reset_screen()
-        self.__round_controller.update()
-        self.__collision_controller.update()
-        self.__hud_renderer.update()
         match self.__view.get_current_screen:
             case Screen.GAME:
                 if not self.__model.is_game_over:
-                    if pyxel.btnr(pyxel.MOUSE_BUTTON_LEFT):
+                    self.__collision_controller.update()
+                    self.__round_controller.update()
+                    self.__view.reset_screen()
+                    self.__hud_renderer.update()
+                    if pyxel.btnp(pyxel.MOUSE_BUTTON_LEFT):
                         self.__model.bullets.append(self.__model.player.shoot(pyxel.mouse_x, pyxel.mouse_y))
                 else:
-                    ...
+                    print("GAME DONE")
             case Screen.MENU:
                 ...
             case Screen.LEADERBOARD:
@@ -52,7 +52,8 @@ class Controller:
         # self.__grid_renderer.draw_game_map()
         # self.__grid_renderer.draw_zuma_tower()
         # self.__grid_renderer.draw_ball_to_shoot()
-        self.__view.entity_renderer.draw(self.__model)
+        if not self.__model.is_game_over:
+            self.__view.entity_renderer.draw(self.__model)
         self.__hud_renderer.draw()
 
     def ask_confirmation(self):

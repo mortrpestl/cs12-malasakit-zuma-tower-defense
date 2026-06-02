@@ -17,7 +17,7 @@ class Model:
         self.__stage = Stage(config)
         self.__enemies = config.enemies
         self.__current_round = 0
-        self.__exp = 100 # ! TODO: return to 0 after; 100 for testing purposes
+        self.__exp = 0
         self.__mode = mode
         self.__rng = Random(12) # fixed seed
         self.__rounds: list[Round] = [self.create_round(i) for i in range(12)] # at least 12 rounds
@@ -94,7 +94,7 @@ class Model:
                 for enemy in path:
                     path_list.append(n)
                     enemy_list.append(EnemyType(enemy))
-                    
+
             config = WaveConfig(
                 self.rng.choices(list(Color), k=len(enemy_list)),
                 path_list,
@@ -116,6 +116,7 @@ class Model:
         self.__current_round += 1
         self.__bullets.clear()
         
+    # gives (y, x) of top left corner of (i, j)
     def get_position(self, i: int, j: int) -> tuple[float, float]:
         cell_width = self.config.width / self.config.cols
         cell_height = self.config.height / self.config.rows

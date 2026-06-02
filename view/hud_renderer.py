@@ -108,12 +108,6 @@ class HUDRenderer(Renderer):
                 cell.entity = self._selected_tower
                 self._model.bought_towers.append(self._selected_tower)
             self._deselect_tower()
-            
-            print(f"exp: {self._model.exp}")
-            print("towers:")
-            
-            for i, tower in enumerate(self._model.bought_towers):
-                print(f"tower {i} - x: {tower.x} y: {tower.y}")
 
         elif isinstance(cell.entity, Tower):
             existing: Tower = cell.entity

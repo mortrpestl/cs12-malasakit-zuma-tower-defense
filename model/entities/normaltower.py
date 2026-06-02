@@ -3,7 +3,7 @@
 from model.entities.bullet import Bullet
 from model.entities.tower import Tower
 from model.game_config import GameConfig
-from model.utils import Direction, get_next_color
+from model.utils import BGColor, Direction, get_next_color
 from math import atan2
 
 class NormalTower(Tower):
@@ -13,6 +13,19 @@ class NormalTower(Tower):
         self._width = self.__config.width / self.__config.cols
         self._height = self.__config.height / self.__config.rows
         self.__direction = Direction.RIGHT
+        
+    @property
+    def pyxel_set(self):
+        return (1, 0, 0, 64, 64, BGColor.RED) if self._level == 1 else \
+            (2, 0, 0, 64, 64, BGColor.RED)
+    
+    @property
+    def pyxel_scale(self) -> float:
+        return 0.625 # hardcoded: change later
+    
+    @property
+    def halfway(self) -> tuple[int, int]:
+        return (12, 12) # hardcoded: change later
     
     @property
     def direction(self) -> Direction:

@@ -2,7 +2,6 @@
 
 from model.model import Model
 from model.entities.normaltower import NormalTower
-from model.entities.tower import Tower
 from model.utils import Direction
 
 import pyxel
@@ -71,9 +70,9 @@ class RoundController:
 
     def spawn_enemy(self):
         current = self.__model.rounds[self.__model.current_round]
-        print(current)
         if self.__spawn_index < len(current.enemies):
             enemy = current.enemies[self.__spawn_index]
+            enemy.activate()
             current.current_enemies.append(enemy)
             self.__model.stage.grid.grid[enemy.y][enemy.x].entity = enemy
             self.__spawn_index += 1

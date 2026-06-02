@@ -51,7 +51,6 @@ class GameConfig:
     @property
     def chameleon_freq(self) -> int:
         return self.__chameleon_freq
-    
 
     def fetch_config(self, file: str) -> None:
         try:
