@@ -5,9 +5,9 @@ from model.path import Path
 from model.utils import *
 
 class Regenerator(Enemy):
-    def __init__(self, color: Color, path: Path, regen_intergval: int = 2):
+    def __init__(self, color: Color, path: Path, regen_interval: int = 2):
         super().__init__(color, path)
-        self.__regen_interval = regen_intergval
+        self.__regen_interval = regen_interval
         self.__tiles_moved = 0
     
     @property

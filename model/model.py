@@ -84,12 +84,11 @@ class Model:
         self.__bullets = lst
 
     def create_round(self, round: int) -> Round:
-        round_path = FilePath(__file__).parent / "rounds" / "campaign_round_1.json"
+        round_path = FilePath(__file__).parent / "rounds" / "campaign_round_1.json" # should we be able to change this?
         with open(round_path, "r") as d:
             data = json.load(d)
             path_list: list[int] = []
             enemy_list: list[EnemyType]= []
-            
             for n, path in enumerate(data["waves"][round]):
                 for enemy in path:
                     path_list.append(n)

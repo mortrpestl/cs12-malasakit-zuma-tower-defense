@@ -21,4 +21,3 @@ class Chameleon(Enemy):
         self.__tiles_moved += self._idx < len(self._path.cells)
         if self.__tiles_moved % self.color_change_freq == 0:
             self._color = self.__rng.choice([x for x in list(Color) if x != self.color])
-            print(f"chameleon at {self.y}, {self.x} changed color!")
