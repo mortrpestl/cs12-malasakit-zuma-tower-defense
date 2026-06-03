@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from model.utils import Screen
 from model.model import Model
-from view.View import View
+from view.View import View, Sound
 from round_controller import RoundController
 from collision_controller import CollisionController
 
@@ -15,7 +15,8 @@ class Controller:
     def __init__(self, m: Model, v: View):
         self.__model: Model = m
         self.__view: View = v
-        self.__collision_controller = CollisionController(m)
+        self.__sound: Sound = Sound()
+        self.__collision_controller = CollisionController(m, self.__sound)
         self.__round_controller = RoundController(m)
         self.__grid_renderer = GridRenderer(m)
         self.__hud_renderer = HUDRenderer(m)
@@ -28,6 +29,9 @@ class Controller:
     def update(self):   
         match self.__view.get_current_screen:
             case Screen.GAME:
+                if not self.__sound.is_music_playing:
+                    self.__sound.ost_0()
+                    
                 if not self.__model.is_game_over:
                     self.__collision_controller.update()
                     self.__round_controller.update()

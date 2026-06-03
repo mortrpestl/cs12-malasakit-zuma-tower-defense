@@ -1,7 +1,7 @@
 # pyright: strict
 
 from model.model import Model
-
+from view.View import Sound
 HIT_RADIUS = 40
 
 def in_bounds(y: float, x: float, height: float, width: float) -> bool:
@@ -11,8 +11,9 @@ def within_radius(by: float, bx: float, ey: float, ex: float, radius: float) -> 
     return (bx - ex)**2 + (by - ey)**2 <= radius**2
 
 class CollisionController:
-    def __init__(self, m: Model):
+    def __init__(self, m: Model, s: Sound):
         self.__model = m
+        self.__sound = s
     
     def update(self):
         self.move_bullets()
@@ -35,7 +36,10 @@ class CollisionController:
                     if enemy.lives <= 0:
                         current_round.current_enemies.remove(enemy)
                         self.__model.add_exp(enemy.exp)
-                    break
+                        self.__sound.kill_sound()
+                    else:
+                        self.__sound.hit_sound()
+
 
     def remove_out_of_bounds(self):
         self.__model.bullets = [
