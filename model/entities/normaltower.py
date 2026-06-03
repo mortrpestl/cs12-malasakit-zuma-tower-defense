@@ -39,12 +39,12 @@ class NormalTower(Tower):
     def shoot_interval(self) -> int:
         return 120
 
-    def shoot(self) -> list[Bullet]:
+    def shoot(self, v: float) -> list[Bullet]:
         dx, dy = self.__direction.value
         angle = atan2(-dy, dx)
         x_abs, y_abs = (self.x + 0.5) * self._width, (self.y + 0.5) * self._height + 30
         delimiter = self._level == 2
         if self.__direction in (Direction.UP, Direction.DOWN):
-            return [Bullet(x_abs - self._width / 4 * delimiter + self._width / 2 * i, y_abs, angle, get_next_color()) for i in range(self.level)]
+            return [Bullet(x_abs - self._width / 4 * delimiter + self._width / 2 * i, y_abs, angle, get_next_color(), v) for i in range(self.level)]
         else:
-            return [Bullet(x_abs, y_abs - self._height / 4 * delimiter + self._height / 2 * i, angle, get_next_color()) for i in range(self.level)]
+            return [Bullet(x_abs, y_abs - self._height / 4 * delimiter + self._height / 2 * i, angle, get_next_color(), v) for i in range(self.level)]

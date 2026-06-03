@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from model.utils import Screen
+from model.utils import Screen, get_diagonal
 from model.model import Model
 from view.View import View, Sound
 from round_controller import RoundController
@@ -8,7 +8,6 @@ from collision_controller import CollisionController
 
 from view.grid_renderer import GridRenderer
 from view.hud_renderer import HUDRenderer
-
 import pyxel
 
 class Controller:
@@ -16,13 +15,17 @@ class Controller:
         self.__model: Model = m
         self.__view: View = v
         self.__sound: Sound = Sound()
+        self.__fps = 240
+        self.__bullet_speed: float = get_diagonal(self.__view.screen_h, self.__view.screen_w) / (5 * self.__fps)
+        print(self.__bullet_speed)
+
         self.__collision_controller = CollisionController(m, self.__sound)
-        self.__round_controller = RoundController(m)
+        self.__round_controller = RoundController(m, self.__bullet_speed)
         self.__grid_renderer = GridRenderer(m)
         self.__hud_renderer = HUDRenderer(m)
     
     def start_game(self):
-        pyxel.init(self.__view.screen_w, self.__view.screen_h, fps=240)
+        pyxel.init(self.__view.screen_w, self.__view.screen_h, fps=self.__fps)
         self.__view.init()
         pyxel.run(self.update, self.draw_game)
         
@@ -31,14 +34,12 @@ class Controller:
             case Screen.GAME:
                 if not self.__sound.is_music_playing:
                     self.__sound.ost_0()
-                    
+
                 if not self.__model.is_game_over:
                     self.__collision_controller.update()
                     self.__round_controller.update()
                     self.__view.reset_screen()
                     self.__hud_renderer.update()
-                    if pyxel.btnp(pyxel.MOUSE_BUTTON_LEFT):
-                        self.__model.bullets.append(self.__model.player.shoot(pyxel.mouse_x, pyxel.mouse_y))
                 else:
                     print("GAME DONE")
             case Screen.MENU:
@@ -61,7 +62,6 @@ class Controller:
         self.__hud_renderer.draw()
 
     def ask_confirmation(self):
-        # essentially draw confirmation but we need a bool as response
         ...
 
     def draw_leaderboard(self):
@@ -72,3 +72,4 @@ class Controller:
 
     def draw_game_over(self):
         ...
+

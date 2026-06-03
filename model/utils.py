@@ -4,6 +4,7 @@ from enum import Enum, IntEnum, auto
 from dataclasses import dataclass
 from random import Random
 from enum import IntEnum
+from math import sqrt
 
 RNG = Random(12)
 
@@ -74,3 +75,6 @@ class WaveConfig:
 
 def get_next_color() -> Color:
     return RNG.choice(list(Color))
+
+def get_diagonal(x: int, y: int) -> float:
+    return sqrt(x ** 2 + y ** 2)
