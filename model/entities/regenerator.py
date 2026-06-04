@@ -9,11 +9,11 @@ class Regenerator(Enemy):
         super().__init__(color, path)
         
         self._pyxel_set = \
-            (1, 16, 0, 32, 48, BGColor.PEACH) if color is Color.RED else \
-            (1, 16, 48, 32, 48, BGColor.PEACH) if color is Color.BLUE else \
-            (1, 16, 96, 32, 48, BGColor.PEACH) if color is Color.PURPLE else \
-            (1, 16, 144, 32, 48, BGColor.PEACH) if color is Color.ORANGE else \
-            (1, 16, 192, 32, 48, BGColor.PEACH) if color is Color.GREEN else \
-            (1, 80, 0, 32, 48, BGColor.PEACH)
-        self._pyxel_scale = 0.833
+            (0, 80, 49, 32, 48, BGColor.PEACH) if color is Color.RED else \
+            (0, 80, 97, 32, 48, BGColor.PEACH) if color is Color.BLUE else \
+            (0, 80, 145, 32, 48, BGColor.PEACH) if color is Color.PURPLE else \
+            (0, 80, 193, 32, 48, BGColor.PEACH) if color is Color.ORANGE else \
+            (0, 144, 1, 32, 48, BGColor.PEACH) if color is Color.GREEN else \
+            (0, 144, 49, 32, 48, BGColor.PEACH)
+            
     # TODO implement regenerator specific logic

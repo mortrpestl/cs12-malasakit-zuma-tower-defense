@@ -9,11 +9,11 @@ class Chameleon(Enemy):
         super().__init__(color, path)
         
         self._pyxel_set = \
-            (2, 8, 8, 48, 32, BGColor.PEACH) if color is Color.RED else \
-            (2, 8, 56, 48, 32, BGColor.PEACH) if color is Color.BLUE else \
-            (2, 8, 104, 48, 32, BGColor.PEACH) if color is Color.PURPLE else \
-            (2, 8, 152, 48, 32, BGColor.PEACH) if color is Color.ORANGE else \
-            (2, 8, 200, 48, 32, BGColor.PEACH) if color is Color.GREEN else \
-            (2, 72, 8, 48, 32, BGColor.PEACH)
-        self._pyxel_scale = 0.833
+            (0, 136, 105, 48, 32, BGColor.PEACH) if color is Color.RED else \
+            (0, 136, 153, 48, 32, BGColor.PEACH) if color is Color.BLUE else \
+            (0, 136, 201, 48, 32, BGColor.PEACH) if color is Color.PURPLE else \
+            (0, 200, 9, 48, 32, BGColor.PEACH) if color is Color.ORANGE else \
+            (0, 200, 57, 48, 32, BGColor.PEACH) if color is Color.GREEN else \
+            (0, 200, 105, 48, 32, BGColor.PEACH)
+    
     # TODO implement chameleon specific logic

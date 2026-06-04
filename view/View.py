@@ -72,7 +72,7 @@ class View:
 
     def init(self):
         self._sound_fx.init()
-        pyxel.load("view/pyxres_files/zuma_basic_towers.pyxres", exclude_sounds=True, exclude_musics=True)
+        pyxel.load("view/pyxres_files/pyxel_basic_resources.pyxres", exclude_sounds=True, exclude_musics=True)
         pyxel.mouse(True)
 
     @property

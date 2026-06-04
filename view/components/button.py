@@ -11,6 +11,8 @@ class ButtonComponent:
     def __init__(
                 self,
                 assoc_func : Callable[[], U],
+                pyxel_set,
+                pyxel_scale : float,
                 x : int,
                 y : int,
                 w : int = 150,
@@ -20,6 +22,9 @@ class ButtonComponent:
                 text : str = "Button Text", 
                 ):
         
+        self.__pyxel_set = pyxel_set
+        self.__pyxel_scale = pyxel_scale
+        
         self._x = x
         self._y = y
         self._w = w
@@ -28,7 +33,7 @@ class ButtonComponent:
         self._text_col = text_col
         self._text = text
         self._assoc_func = assoc_func # function triggered when clicked
-        
+    
     @property
     def x(self):
         return self._x
@@ -41,7 +46,15 @@ class ButtonComponent:
     @property
     def h(self):
         return self._h
-        
+    @property
+    def button_col(self) -> int:
+        return self._button_col
+    @button_col.setter
+    def button_col(self, col : int) -> None:
+        if not (0 <= col <= 15):
+            raise ValueError("Invalid input")
+        else:
+            self._button_col = col        
     
     def update(self):
         if pyxel.btnp(pyxel.MOUSE_BUTTON_LEFT) \
@@ -50,6 +63,7 @@ class ButtonComponent:
             self._assoc_func()
         
     def draw(self):
-        pyxel.rect(self._x, self._y, self._w, self._h, self._button_col)
+        pyxel.blt(self._x - 12, self._y - 12, *self.__pyxel_set, scale=self.__pyxel_scale)
+        pyxel.rectb(self._x, self._y, self._w, self._h, self._button_col)
         pyxel.text(self._x + 20, self._y + 20, self._text, self._text_col)
         

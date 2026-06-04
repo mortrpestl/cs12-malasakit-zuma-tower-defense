@@ -16,16 +16,16 @@ class NormalTower(Tower):
         
     @property
     def pyxel_set(self):
-        return (1, 0, 0, 64, 64, BGColor.RED) if self._level == 1 else \
-            (2, 0, 0, 64, 64, BGColor.RED)
+        return (1, 0, 64, 64, 64, BGColor.RED) if self._level == 1 else \
+            (1, 0, 128, 64, 64, BGColor.RED)
     
     @property
     def pyxel_scale(self) -> float:
-        return 0.625 # hardcoded: change later
+        return self._width / 64
     
     @property
-    def halfway(self) -> tuple[int, int]:
-        return (12, 12) # hardcoded: change later
+    def midpoint(self) -> float:
+        return 0.5 * (64 - self._width)
     
     @property
     def direction(self) -> Direction:

@@ -21,28 +21,19 @@ class EntityRenderer:
 
     def draw_enemy(self, model: Model, enemy: Enemy):
         y, x = model.get_position(enemy.y, enemy.x)
+        dz = 0.5 * (48 - model.config.width / model.config.cols)
         
-        pyxel.load("view/pyxres_files/zuma_basic_enemies.pyxres", exclude_sounds=True, exclude_musics=True)
-        
-        pyxel.blt(x, y + 30, *enemy.pyxel_set, scale=enemy.pyxel_scale)
-        
-        # pyxel.rect(x, y + 30, model.config.width / model.config.cols, model.config.height / model.config.rows, enemy.color.value) # replace with sprites
+        pyxel.blt(x - dz, y + 40 - dz, *enemy.pyxel_set, scale=enemy.pyxel_scale)
     
     def draw_tower(self, model: Model, tower: Tower):
         y, x = model.get_position(tower.y, tower.x)
         
-        pyxel.load("view/pyxres_files/zuma_basic_towers.pyxres", exclude_sounds=True, exclude_musics=True)
-        
         if isinstance(tower, NormalTower):
-            dy, dx = tower.halfway[1], tower.halfway[0]
-            pyxel.blt(x - dx, y + 30 - dy, *tower.pyxel_set, scale=tower.pyxel_scale)
-        
-        # pyxel.rect(x, y + 30, model.config.width / model.config.cols, model.config.height / model.config.rows, 10) # replace with sprites
+            dy, dx = tower.midpoint, tower.midpoint
+            pyxel.blt(x - dx, y + 40 - dy, *tower.pyxel_set, scale=tower.pyxel_scale)
     
     def draw_shooter(self, model: Model):
         y, x = model.get_position(model.player.shooter.y, model.player.shooter.x)
         theta = atan2(pyxel.mouse_y - y, pyxel.mouse_x - x) * 180 / pi - 90
         
-        pyxel.load("view/pyxres_files/zuma_basic_towers.pyxres", exclude_sounds=True, exclude_musics=True)
-        
-        pyxel.blt(x - 0.5 * model.config.width / model.config.cols, y - 0.5 * model.config.height / model.config.rows, 0, 0, 0, 64, 64, 8, rotate=theta, scale=0.625)
+        pyxel.blt(x - 12, y + 28, 1, 0, 0, 64, 64, 8, rotate=theta, scale=0.625)

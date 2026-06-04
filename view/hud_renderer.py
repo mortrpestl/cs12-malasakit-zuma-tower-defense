@@ -8,7 +8,7 @@ from view.renderer import Renderer
 from model.model import Model
 from model.cell import Cell
 from model.entities.tower import Tower
-from model.utils import BGColor
+from model.utils import BGColor, GameMode
 from view.components.button import ButtonComponent
 
 """
@@ -19,12 +19,12 @@ HUD should have:
 """
 
 HUD_Y = 0
-HUD_H = 30
+HUD_H = 40
 HUD_W = 600
 
 CELL_HEIGHT = 40
 CELL_WIDTH = 40
-TOP_BOTTOM_PADDING = 30
+TOP_BOTTOM_PADDING = 40
 
 #tower placement:
     # click button for tower
@@ -49,7 +49,14 @@ class HUDRenderer(Renderer):
             for cell in path.cells
         }
         self._tower_buttons: list[ButtonComponent] = [
-            ButtonComponent(assoc_func=lambda i=i: self._select_tower(i), x=400 + i * 45, y=HUD_Y, w=40, h=30, text=f"{model.towers[i].cost}") for i in range(len(self.model.towers))
+            ButtonComponent( \
+                assoc_func=lambda i=i: self._select_tower(i), 
+                pyxel_set=model.towers[i].pyxel_set,
+                pyxel_scale=model.towers[i].pyxel_scale,
+                x=400 + i * 45, 
+                y=HUD_Y, 
+                w=40, h=40, 
+                text=f"{model.towers[i].cost}") for i in range(len(self.model.towers))
         ]
 
     @property
@@ -58,9 +65,6 @@ class HUDRenderer(Renderer):
 
     def _select_tower(self, i: int) -> None:
         self._selected_tower = deepcopy(self.model.towers[i])
-        
-        print("success")
-        print(f"Selected: {self._selected_tower}")
         
         # TROUBLESHOOTING CODE
 
@@ -74,10 +78,9 @@ class HUDRenderer(Renderer):
         rows = self.model.config.rows
         cols = self.model.config.cols
         
-        print(f"col: {col} row: {row}")
-        
         if 0 <= row < rows and 0 <= col < cols:
             return self.model.stage.grid.grid[row][col]
+        
         
         return None
 
@@ -107,6 +110,7 @@ class HUDRenderer(Renderer):
                 self._model.exp -= self._selected_tower.cost
                 cell.entity = self._selected_tower
                 self._model.bought_towers.append(self._selected_tower)
+            
             self._deselect_tower()
 
         elif isinstance(cell.entity, Tower):
@@ -129,31 +133,37 @@ class HUDRenderer(Renderer):
         pyxel.rect(0, HUD_Y, HUD_W, HUD_H, BGColor.DARK_GRAY)
 
     def draw_exp(self) -> None:
-        pyxel.text(200, HUD_Y + 8, f"EXP: {self._model.exp}", BGColor.WHITE)
+        pyxel.text(200, HUD_Y + 18, f"EXP: {self._model.exp}", BGColor.WHITE)
+        
+    def draw_rounds(self) -> None:
+        pyxel.text(250, HUD_Y + 18, \
+                   f"ROUND {self._model.current_round + 1} / {len(self._model.rounds)}" \
+                   if self._model.mode is GameMode.CAMPAIGN else f" ROUND {self._model.current_round} / ∞",
+                   BGColor.WHITE)    
         
     def draw_lives(self) -> None:
         lives = self.model.player.lives
         max_lives = self.model.config.lives
 
-        bar_x, bar_y, bar_w, bar_h = 60, HUD_Y + 8, 100, 10
+        bar_x, bar_y, bar_w, bar_h = 60, HUD_Y + 18, 100, 10
         pyxel.rect(bar_x, bar_y, bar_w, bar_h, BGColor.DARK_GRAY)
         filled = int(bar_w * lives / max_lives)
         pyxel.rect(bar_x, bar_y, filled, bar_h, BGColor.GREEN)
 
-        pyxel.text(10, HUD_Y + 8, "Lives left", BGColor.WHITE)
+        pyxel.text(10, HUD_Y + 18, "Lives left", BGColor.WHITE)
         pyxel.text(bar_x, bar_y + 12, f"{lives}/{max_lives}", BGColor.WHITE)
 
     def draw_towers(self) -> None:
         for i, btn in enumerate(self._tower_buttons):
             tower = self.model.towers[i]
             disabled: bool = self.model.exp < tower.cost
-            btn._button_col = BGColor.NAVY if disabled else BGColor.LIGHT_GRAY
+            btn.button_col = BGColor.NAVY if disabled else BGColor.LIGHT_GRAY
             btn.draw()
 
     def draw_title(self) -> None:
-        pyxel.text(550, HUD_Y + 5,  "ZUMA:", BGColor.WHITE)
-        pyxel.text(550, HUD_Y + 13, "TOWER", BGColor.WHITE)
-        pyxel.text(550, HUD_Y + 21, "DEFENSE", BGColor.WHITE)
+        pyxel.text(550, HUD_Y + 10,  "ZUMA:", BGColor.WHITE)
+        pyxel.text(550, HUD_Y + 18, "TOWER", BGColor.WHITE)
+        pyxel.text(550, HUD_Y + 26, "DEFENSE", BGColor.WHITE)
 
     def update(self) -> None:
         for i, btn in enumerate(self._tower_buttons):
@@ -161,14 +171,16 @@ class HUDRenderer(Renderer):
                 btn.update()
         self._handle_cell_click()
         
-    def temporary_function(self) -> None:
-        pyxel.rect(0, HUD_Y + 790, HUD_W, HUD_H, BGColor.DARK_GRAY)
+    def draw_bottom(self) -> None:
+        pyxel.rect(0, HUD_Y + 800, HUD_W, HUD_H, BGColor.DARK_GRAY)
 
     def draw(self) -> None:
         self.draw_background()
-        self.draw_exp()
         self.draw_lives()
+        self.draw_exp()
+        self.draw_rounds()
         self.draw_towers()
         self.draw_title()
-        self.temporary_function()
+        
+        self.draw_bottom()
         
