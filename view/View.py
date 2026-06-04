@@ -25,26 +25,26 @@ class Sound:
     def init(self):
         pyxel.load("view/pyxres_files/sounds.pyxres", exclude_tilemaps=True, exclude_images=True)
 
-    # TODO rename all functions below to more useful names
-
+    # TODO rename all functions below to mor    e useful names
+    # OST plays on CH 0, Sound effects on CH 3
+    @property
+    def is_music_playing(self) -> bool:
+        return bool(pyxel.play_pos(0))
+    
     def sfx_0(self):
-        pyxel.play(0, self.SOUNDSET[0])
+        pyxel.play(3, self.SOUNDSET[0])
 
-    def sfx_1(self):
-        pyxel.play(1, self.SOUNDSET[1])
+    def hit_sound(self):
+        pyxel.play(3, self.SOUNDSET[4])
 
-    def sfx_2(self):
-        pyxel.play(2, self.SOUNDSET[2])
+    def kill_sound(self):
+        pyxel.play(3, self.SOUNDSET[5])
 
-    def sfx_3(self):
-        pyxel.play(3, self.SOUNDSET[3])
+    def ost_0(self):
+        pyxel.playm(0, loop=True)
 
-    def sfx_4(self):
-        pyxel.play(4, self.SOUNDSET[4])
-
-    def sfx_5(self):
-        pyxel.play(5, self.SOUNDSET[5])
-
+    def stop_music(self):
+        pyxel.stop
 
 class View:
 

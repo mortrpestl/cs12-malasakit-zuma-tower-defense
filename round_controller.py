@@ -2,16 +2,16 @@
 
 from model.model import Model
 from model.entities.normaltower import NormalTower
-from model.entities.tower import Tower
 from model.utils import Direction
 
 import pyxel
 
 class RoundController:
-    def __init__(self, model: Model):
+    def __init__(self, model: Model, bp: float):
         self.__model = model
         self.__tick = 0
         self.__spawn_index = 0
+        self.__bullet_speed: float = bp
 
     @property
     def spawn_timer(self) -> int:
@@ -30,6 +30,9 @@ class RoundController:
         if self.__tick % self.spawn_timer == 0:
             self.spawn_enemy()
         
+        if pyxel.btnp(pyxel.MOUSE_BUTTON_LEFT):
+            self.__model.bullets.append(self.__model.player.shoot(pyxel.mouse_x, pyxel.mouse_y, self.__bullet_speed))
+
         if pyxel.btnr(pyxel.KEY_W):
             for tower in self.__model.bought_towers:
                 if isinstance(tower, NormalTower):
@@ -49,7 +52,7 @@ class RoundController:
         
         for tower in self.__model.bought_towers:
             if self.__tick % tower.shoot_interval == 0:
-                self.__model.bullets.extend(tower.shoot())
+                self.__model.bullets.extend(tower.shoot(self.__bullet_speed))
 
 
         current_round = self.__model.rounds[self.__model.current_round]
@@ -73,6 +76,7 @@ class RoundController:
         current = self.__model.rounds[self.__model.current_round]
         if self.__spawn_index < len(current.enemies):
             enemy = current.enemies[self.__spawn_index]
+            enemy.activate()
             current.current_enemies.append(enemy)
             self.__model.stage.grid.grid[enemy.y][enemy.x].entity = enemy
             self.__spawn_index += 1

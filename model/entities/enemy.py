@@ -14,15 +14,7 @@ class Enemy(Entity):
         self._path = path
         self._y, self._x = path.start.y, path.start.x # start at beginning of path
         self._idx = 0
-        
-        self._pyxel_set = \
-            (0, 8, 0, 48, 48, BGColor.PEACH) if color is Color.RED else \
-            (0, 8, 48, 48, 48, BGColor.PEACH) if color is Color.BLUE else \
-            (0, 8, 96, 48, 48, BGColor.PEACH) if color is Color.PURPLE else \
-            (0, 8, 144, 48, 48, BGColor.PEACH) if color is Color.ORANGE else \
-            (0, 8, 192, 48, 48, BGColor.PEACH) if color is Color.GREEN else \
-            (0, 72, 0, 48, 48, BGColor.PEACH)
-        self._pyxel_scale = 0.833
+        self._active = False
     
     @property
     def lives(self) -> int:
@@ -43,19 +35,19 @@ class Enemy(Entity):
     @property
     def is_alive(self) -> bool:
         return self._lives > 0 and self._idx < len(self._path.cells) - 1
-
-    @property
-    def pyxel_set(self):
-        return self._pyxel_set
     
     @property
-    def pyxel_scale(self) -> float:
-        return self._pyxel_scale
+    def is_active(self) -> bool:
+        return self._active
     
     def take_hit(self, color: Color) -> bool:
         res = self.color == color
         self._lives -= res
+        self._active &= self._lives > 0
         return res
+    
+    def activate(self):
+        self._active = True
     
     def go_next_tile(self):
         if not self.is_alive:

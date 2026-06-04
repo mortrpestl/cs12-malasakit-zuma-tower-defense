@@ -5,11 +5,11 @@ from model.utils import Color
 from math import sin, cos
 
 class Bullet(Entity):
-    def __init__(self, x: float, y: float, angle: float, color: Color):
+    def __init__(self, x: float, y: float, angle: float, color: Color, v: float):
         super().__init__()
         self._x_abs = x
         self._y_abs = y
-        self._velocity = 1 # 3 px/s
+        self._velocity = v # 3 px/s
         self._alive = True
         self._angle = angle # radians
         self._color = color

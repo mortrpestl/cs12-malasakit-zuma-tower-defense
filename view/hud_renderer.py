@@ -26,18 +26,6 @@ CELL_HEIGHT = 40
 CELL_WIDTH = 40
 TOP_BOTTOM_PADDING = 40
 
-#tower placement:
-    # click button for tower
-    # click cell for tower
-        # if not a valid cell placement 
-            # if element at a certain Cell is not part of the Grid bounds -> "break tower placement mode"
-            # if Cell in that certain coordinate is ( Path / not of Same tower type ) -> "break tower placement mode"
-        # if valid cell placement  
-            # if same Tower type   
-                # if enough XP for tower upgrade, upgrade. otherwise, do nothing and "break tower placement mode"
-            # if not same Tower type
-                # "break tower placement mode"
-
 class HUDRenderer(Renderer):
 
     def __init__(self, model: Model):
@@ -157,7 +145,7 @@ class HUDRenderer(Renderer):
         for i, btn in enumerate(self._tower_buttons):
             tower = self.model.towers[i]
             disabled: bool = self.model.exp < tower.cost
-            btn.button_col = BGColor.NAVY if disabled else BGColor.LIGHT_GRAY
+            btn.button_col = BGColor.RED if disabled else BGColor.GREEN
             btn.draw()
 
     def draw_title(self) -> None:

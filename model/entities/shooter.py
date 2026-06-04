@@ -46,6 +46,6 @@ class Shooter(Entity):
     def move_down(self):
         self._y = clamp(self._y + 1, 0, self.__config.rows)
 
-    def shoot(self, x: float, y: float) -> Bullet:
+    def shoot(self, x: float, y: float, v: float) -> Bullet:
         angle = atan2(y - self._y_abs, x - self._x_abs)
-        return Bullet(self._x_abs, self._y_abs, angle, get_next_color())
+        return Bullet(self._x_abs, self._y_abs, angle, get_next_color(), v)

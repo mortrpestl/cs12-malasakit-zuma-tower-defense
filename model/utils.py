@@ -4,6 +4,7 @@ from enum import Enum, IntEnum, auto
 from dataclasses import dataclass
 from random import Random
 from enum import IntEnum
+from math import sqrt
 
 RNG = Random(12)
 
@@ -43,10 +44,10 @@ class GameMode(Enum):
     CAMPAIGN = "campaign"
     ENDLESS = "endless"
 
-class EnemyType(Enum):
-    NORMAL = auto()
-    CHAMELEON = auto()
-    REGENERATOR = auto()
+class EnemyType(IntEnum):
+    NORMAL = 1
+    CHAMELEON = 2
+    REGENERATOR = 3
 
 class Screen:
     MENU = auto()
@@ -74,3 +75,6 @@ class WaveConfig:
 
 def get_next_color() -> Color:
     return RNG.choice(list(Color))
+
+def get_diagonal(x: int, y: int) -> float:
+    return sqrt(x ** 2 + y ** 2)

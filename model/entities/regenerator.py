@@ -5,15 +5,17 @@ from model.path import Path
 from model.utils import *
 
 class Regenerator(Enemy):
-    def __init__(self, color: Color, path: Path):
+    def __init__(self, color: Color, path: Path, regen_interval: int = 2):
         super().__init__(color, path)
-        
-        self._pyxel_set = \
-            (0, 80, 49, 32, 48, BGColor.PEACH) if color is Color.RED else \
-            (0, 80, 97, 32, 48, BGColor.PEACH) if color is Color.BLUE else \
-            (0, 80, 145, 32, 48, BGColor.PEACH) if color is Color.PURPLE else \
-            (0, 80, 193, 32, 48, BGColor.PEACH) if color is Color.ORANGE else \
-            (0, 144, 1, 32, 48, BGColor.PEACH) if color is Color.GREEN else \
-            (0, 144, 49, 32, 48, BGColor.PEACH)
-            
-    # TODO implement regenerator specific logic
+        self.__regen_interval = regen_interval
+        self.__tiles_moved = 0
+    
+    @property
+    def regen_interval(self) -> int:
+        return self.__regen_interval
+    
+    def go_next_tile(self):
+        super().go_next_tile()
+        self.__tiles_moved += self._idx < len(self._path.cells)
+        if self.__tiles_moved % self.regen_interval == 0:
+            self._lives += 1

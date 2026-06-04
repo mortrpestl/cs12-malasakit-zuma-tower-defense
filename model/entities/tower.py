@@ -30,5 +30,5 @@ class Tower(Entity):
         self._level = 2
 
     @abstractmethod
-    def shoot(self) -> list[Bullet]:
+    def shoot(self, v: float) -> list[Bullet]:
         ...

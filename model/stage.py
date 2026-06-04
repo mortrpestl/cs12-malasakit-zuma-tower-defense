@@ -10,9 +10,6 @@ class Stage:
     def __init__(self, config: GameConfig, file: str = "campaign_map_1.json"):
         self.__config = config
         self.__grid = Grid(config, file)
-        # basic paths for now
-        # right = [self.__grid.grid[0][i] for i in range(config.cols)] + [self.__grid.grid[i][-1] for i in range(1, config.rows)]
-        # down = [self.__grid.grid[i][0] for i in range(config.rows)] + [self.__grid.grid[-1][i] for i in range(1, config.cols)]
         self.__paths = [Path(i) for i in self.load_path_from_json(file)]
     
     @property

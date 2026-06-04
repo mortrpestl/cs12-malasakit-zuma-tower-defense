@@ -4,7 +4,6 @@ import pyxel
 
 from view.renderer import Renderer
 from model.model import Model
-
 from model.utils import (
     BGColor
 )

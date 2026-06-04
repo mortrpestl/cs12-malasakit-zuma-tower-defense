@@ -22,8 +22,8 @@ class Player:
         return self.__shooter
     
     # x and y coordinates of cursor
-    def shoot(self, x: float, y: float) -> Bullet:
-        return self.__shooter.shoot(x, y)
+    def shoot(self, x: float, y: float, v: float) -> Bullet:
+        return self.__shooter.shoot(x, y, v)
 
     def lose_life(self):
         self.__lives -= 1
