@@ -22,10 +22,7 @@ from typing import ClassVar
 class Sound:
     SOUNDSET : ClassVar[list[int]] = list(range(6))
 
-    def init(self):
-        pyxel.load("view/pyxres_files/sounds.pyxres", exclude_tilemaps=True, exclude_images=True)
-
-    # TODO rename all functions below to mor    e useful names
+    # TODO rename all functions below to more useful names
     # OST plays on CH 0, Sound effects on CH 3
     @property
     def is_music_playing(self) -> bool:
@@ -71,7 +68,6 @@ class View:
         self._current_screen: Screen = Screen.GAME
 
     def init(self):
-        self._sound_fx.init()
         pyxel.load("view/pyxres_files/pyxel_basic_resources.pyxres", exclude_sounds=True, exclude_musics=True)
         pyxel.mouse(True)
 
