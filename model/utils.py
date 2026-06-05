@@ -54,6 +54,9 @@ class Screen(Enum):
     PAUSE = auto()
     GAME_OVER = auto()
     LEADERBOARD = auto()
+    CONFIGURE = auto()
+    START = auto()
+    CREDITS = auto()
     
 @dataclass
 class LeaderboardEntry:

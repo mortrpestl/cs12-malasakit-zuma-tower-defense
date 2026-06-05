@@ -35,5 +35,6 @@ tower_sprites: dict[tuple[type, int | None], SpriteSet] = {
 
 menu_sprites: dict[str, SpriteSet] = {
     "misc": SpriteSet(2, 0, 0, 150, 30, BGColor.PEACH, 1),
-    "pause": SpriteSet(2, 0, 32, 40, 40, BGColor.BLACK, 1)
+    "pause": SpriteSet(2, 0, 32, 40, 40, BGColor.BLACK, 1),
+    "blank": SpriteSet(2, 0, 72, 40, 40, BGColor.PEACH, 1)
 }

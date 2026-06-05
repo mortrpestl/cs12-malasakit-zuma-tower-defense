@@ -6,10 +6,12 @@ from view.View import View, Sound
 from round_controller import RoundController
 from collision_controller import CollisionController
 
+from view.configure_renderer import ConfigureRenderer
 from view.entity_renderer import EntityRenderer
 from view.grid_renderer import GridRenderer
 from view.hud_renderer import HUDRenderer
 from view.menu_renderer import MenuRenderer
+from view.start_renderer import StartRenderer
 
 from view.screen_manager import ScreenManager
 
@@ -25,12 +27,14 @@ class Controller:
         self.__collision_controller = CollisionController(m, self.__sound)
         self.__round_controller = RoundController(m)
         
-        self.__screen_manager = ScreenManager(Screen.GAME)
+        self.__screen_manager = ScreenManager(Screen.START)
         
+        self.__configure_renderer = ConfigureRenderer(m, self.__screen_manager)
         self.__entity_renderer = EntityRenderer()
         self.__grid_renderer = GridRenderer(m, self.__screen_manager)
         self.__hud_renderer = HUDRenderer(m, self.__screen_manager)
         self.__menu_renderer = MenuRenderer(m, self.__screen_manager, self.handle_restart)
+        self.__start_renderer = StartRenderer(m, self.__screen_manager)
     
     def start_game(self):
         pyxel.init(self.__view.screen_w, self.__view.screen_h, fps=self.__fps)
@@ -55,6 +59,12 @@ class Controller:
                 ...
             case Screen.GAME_OVER:
                 ...
+            case Screen.CONFIGURE:
+                self.__configure_renderer.update()
+            case Screen.START:
+                self.__start_renderer.update()
+            case Screen.CREDITS:
+                ...
             case _:
                 pass
 
@@ -72,6 +82,12 @@ class Controller:
             case Screen.LEADERBOARD:
                 ...
             case Screen.GAME_OVER:
+                ...
+            case Screen.CONFIGURE:
+                self.__configure_renderer.draw()
+            case Screen.START:
+                self.__start_renderer.draw()
+            case Screen.CREDITS:
                 ...
             case _:
                 pass

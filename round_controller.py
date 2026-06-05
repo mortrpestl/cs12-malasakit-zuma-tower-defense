@@ -29,6 +29,9 @@ class RoundController:
     def update(self):
         self.__tick += 1
 
+        while self.__model.player.lives > self.__model.config.lives:
+            self.__model.player.lose_life()
+        
         if self.__tick % self.spawn_timer == 0:
             self.spawn_enemy()
         
