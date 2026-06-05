@@ -20,9 +20,13 @@ class Model:
         self.__enemies = config.enemies
         self.__leaderboards = {mode: Leaderboard(mode) for mode in list(GameMode)}
         self.__leaderboard = self.__leaderboards[mode]
-        self.__leaderboard.read_file("")
+        for mode in list(GameMode):
+            leaderboard = self.__leaderboards[mode]
+            leaderboard.read_file("")
 
         self.__campaign_stages = [Stage(self.__config, f"campaign_map_{i}.json") for i in range(1, 13)]
+
+        print(len(self.__campaign_stages))
         self.__endless_stage = Stage(self.__config, f"campaign_map_10.json")
         
         self.restart_game()
@@ -109,7 +113,14 @@ class Model:
     @bullets.setter
     def bullets(self, lst: list[Bullet]):
         self.__bullets = lst
+
+    @property
+    def is_winner(self) -> bool:
+        return self.mode == GameMode.CAMPAIGN and self.current_round >= len(self.rounds) and self.player.lives > 0
     
+    def update_round(self) -> None: # for when current round, moves forward
+        self.__stage = self.__campaign_stages[self.__current_round]
+
     def switch_mode(self, enemy_file: str = "campaign_round_1.json"):
         self.__rounds = []
         self.__current_round = 0
@@ -193,11 +204,6 @@ class Model:
     def advance_next_round(self):
         self.__current_round += 1
         self.__bullets.clear()
-
-        if self.mode is GameMode.CAMPAIGN:
-            self.__stage = self.__campaign_stages[self.current_round]
-        else:
-            self.create_endless_round()
         
     # gives (y, x) of top left corner of (i, j)
     def get_position(self, i: int, j: int) -> tuple[float, float]:

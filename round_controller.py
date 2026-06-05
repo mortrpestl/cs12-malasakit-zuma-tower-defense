@@ -2,7 +2,7 @@
 
 from model.model import Model
 from model.entities.normaltower import NormalTower
-from model.utils import Direction
+from model.utils import Direction, GameMode
 
 import pyxel
 
@@ -75,6 +75,12 @@ class RoundController:
 
         if self.is_round_over:
             self.__model.advance_next_round()
+
+            if self.__model.mode is GameMode.CAMPAIGN:
+                print(self.__model.current_round)
+                self.__model.update_round()
+            else:
+                self.__model.create_endless_round()
 
     def spawn_enemy(self):
         current = self.__model.rounds[self.__model.current_round]

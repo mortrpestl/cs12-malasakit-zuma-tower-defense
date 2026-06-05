@@ -72,10 +72,6 @@ class MenuRenderer(Renderer):
             ),
         ]
         
-    def restart_game(self) -> None:
-        self._model.restart_game()
-        self.__on_restart()
-        
     def view_leaderboard(self) -> None:
         self.screen_manager.screen = Screen.LEADERBOARD
         

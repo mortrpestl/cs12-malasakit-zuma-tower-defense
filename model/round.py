@@ -20,8 +20,8 @@ class Round:
     def __init__(self, config: WaveConfig, paths: list[Path], game_config: GameConfig):
         self.__config = config
         self.__enemies = [
-            make_enemy(enemy_type, color, path, game_config) for enemy_type, color, path in zip(config.special_types, config.colors, [paths[i] for i in config.paths])
-        ]
+            make_enemy(enemy_type, color, path, game_config) for enemy_type, color, path in zip(config.special_types, config.colors, [paths[idx] for idx in config.paths])
+        ][:game_config.enemies]
         self.__current_enemies: list[Enemy] = []
 
     @property 

@@ -8,6 +8,7 @@ from collision_controller import CollisionController
 
 from view.configure_renderer import ConfigureRenderer
 from view.entity_renderer import EntityRenderer
+from view.game_over_renderer import GameOverRenderer
 from view.grid_renderer import GridRenderer
 from view.hud_renderer import HUDRenderer
 from view.menu_renderer import MenuRenderer
@@ -32,6 +33,7 @@ class Controller:
         
         self.__configure_renderer = ConfigureRenderer(m, self.__screen_manager)
         self.__entity_renderer = EntityRenderer()
+        self.__game_over_renderer = GameOverRenderer(m, self.__screen_manager, self.handle_restart)
         self.__grid_renderer = GridRenderer(m, self.__screen_manager)
         self.__hud_renderer = HUDRenderer(m, self.__screen_manager)
         self.__menu_renderer = MenuRenderer(m, self.__screen_manager, self.handle_restart)
@@ -54,13 +56,13 @@ class Controller:
                     self.__round_controller.update()
                     self.__hud_renderer.update()
                 else:
-                    ...
+                    self.__screen_manager.screen = Screen.GAME_OVER
             case Screen.MENU:
                 self.__menu_renderer.update()
             case Screen.LEADERBOARD:
                 self.__leaderboard_renderer.update()
             case Screen.GAME_OVER:
-                ...
+                self.__game_over_renderer.update()
             case Screen.CONFIGURE:
                 self.__configure_renderer.update()
             case Screen.START:
@@ -84,7 +86,7 @@ class Controller:
             case Screen.LEADERBOARD:
                 self.__leaderboard_renderer.draw()
             case Screen.GAME_OVER:
-                ...
+                self.__game_over_renderer.draw()
             case Screen.CONFIGURE:
                 self.__configure_renderer.draw()
             case Screen.START:
