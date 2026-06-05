@@ -110,6 +110,10 @@ class Model:
     def bullets(self, lst: list[Bullet]):
         self.__bullets = lst
 
+    @property
+    def is_winner(self) -> bool:
+        return self.mode == GameMode.CAMPAIGN and self.current_round >= len(self.rounds) and self.player.lives > 0
+
     def create_round(self, round: int, enemy_file: str = "campaign_round_1.json") -> Round:
         round_path = FilePath(__file__).parent / "rounds" / enemy_file
         with open(round_path, "r") as d:
@@ -149,7 +153,7 @@ class Model:
         with open(path, "r") as d:
             data = json.load(d)
             
-            for round in range(12):
+            for round in range(1):
                 path_list: list[int] = []
                 enemy_list: list[EnemyType]= []
 
