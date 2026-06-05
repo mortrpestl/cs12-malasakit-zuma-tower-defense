@@ -81,6 +81,8 @@ class RoundController:
                 self.__model.update_round()
             else:
                 self.__model.create_endless_round()
+            
+            self.reset()
 
     def spawn_enemy(self):
         current = self.__model.rounds[self.__model.current_round]
