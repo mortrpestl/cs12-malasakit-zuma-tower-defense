@@ -56,6 +56,20 @@ class GameConfig:
         return self.__chameleon_freq
     
     @property
+    def fps(self) -> int:
+        return 240
+    
+    @property
+    def bullet_speed(self) -> float:
+        return (self.width**2 + self.height**2)**.5 / (5 * self.fps) # 5 seconds to travel diagonal
+    
+    @property
+    def min_shooter_interval(self) -> float:
+        return 10 / 9
+    
+    @property
+    def min_tower_interval(self) -> float:
+        return 2
     def endless_regen_ratio(self) -> float:
         return self.__max_regen_ratio
     
@@ -74,6 +88,8 @@ class GameConfig:
                 self.__width = data["width"]
                 self.__height = data["height"]
                 self.__paths_count = data["paths_count"]
+                self.__regen_hp = data["regen_hp"]
+                self.__chameleon_freq = data["chameleon_freq"]
         except FileNotFoundError:
             print(f"Config file {file} not found!")
 

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from model.utils import Screen, get_diagonal
+from model.utils import Screen
 from model.model import Model
 from view.View import View, Sound
 from round_controller import RoundController
@@ -20,8 +20,7 @@ class Controller:
         self.__model: Model = m
         self.__view: View = v
         self.__sound: Sound = Sound()
-        self.__fps = 240
-        self.__bullet_speed: float = get_diagonal(self.__view.screen_h, self.__view.screen_w) / (5 * self.__fps)
+        self.__fps = m.config.fps
 
         self.__collision_controller = CollisionController(m, self.__sound)
         self.__round_controller = RoundController(m, self.__bullet_speed)

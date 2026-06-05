@@ -2,7 +2,7 @@
 
 from model.model import Model
 from view.View import Sound
-HIT_RADIUS = 40
+HIT_RADIUS = 30
 
 def in_bounds(y: float, x: float, height: float, width: float) -> bool:
     return 0 <= y <= height and 0 <= x <= width

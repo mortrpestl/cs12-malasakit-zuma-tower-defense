@@ -15,13 +15,16 @@ class Model:
     def __init__(self, config: GameConfig, mode: GameMode):
         self.__player = Player(config)
         self.__stage = Stage(config)
+        self.__config = config
         self.__enemies = config.enemies
         self.__current_round = 0
         self.__exp = 0
         self.__mode = mode
         self.__rng = Random(12) # fixed seed
         self.__config = config
-        self.__towers: list[Tower] = [NormalTower()]
+        tower = NormalTower(config)
+        tower.x, tower.y = 2, 2
+        self.__towers: list[Tower] = [tower]
         self.__bought_towers: list[Tower] = []
         self.__bullets: list[Bullet] = []
         self.__stage.grid.grid[config.rows >> 1][config.cols >> 1].entity = self.__player.shooter
@@ -86,6 +89,24 @@ class Model:
     @bullets.setter
     def bullets(self, lst: list[Bullet]):
         self.__bullets = lst
+
+    def create_round(self, round: int) -> Round:
+        round_path = FilePath(__file__).parent / "rounds" / "campaign_round_1.json" # should we be able to change this?
+        with open(round_path, "r") as d:
+            data = json.load(d)
+            path_list: list[int] = []
+            enemy_list: list[EnemyType]= []
+            for n, path in enumerate(data["waves"][round]):
+                for enemy in path:
+                    path_list.append(n)
+                    enemy_list.append(EnemyType(enemy))
+
+            config = WaveConfig(
+                self.rng.choices(list(Color), k=len(enemy_list)),
+                path_list,
+                enemy_list
+            )
+        return Round(config, self.__stage.paths, self.__config)
     
     def switch_mode(self):
         self.__rounds = []
@@ -122,7 +143,7 @@ class Model:
                     enemy_list
                 )
 
-                self.__rounds.append(Round(config, self.__stage.paths))
+                self.__rounds.append(Round(config, self.__stage.paths, self.__config))
     
     def create_endless_round(self):
 
@@ -149,13 +170,19 @@ class Model:
             enemy_list
         ) 
 
-        self.__rounds.append(Round(config, self.__stage.paths))
+        self.__rounds.append(Round(config, self.__stage.paths, self.__config))
 
     @property
     def is_game_over(self) -> bool:
+<<<<<<< HEAD
         return self.__current_round >= len(self.__rounds) \
             or self.player.lives <= 0 if self.mode == GameMode.CAMPAIGN \
           else self.player.lives <= 0
+=======
+        if self.__player.lives <= 0:
+            return True
+        return self.__current_round >= len(self.__rounds) if self.mode == GameMode.CAMPAIGN else self.player.lives <= 0
+>>>>>>> c8cbf616787ec569426c031f72dd729925d27496
     
     def add_exp(self, amount: int):
         self.__exp += amount
