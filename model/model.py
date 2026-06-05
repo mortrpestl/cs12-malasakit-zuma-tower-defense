@@ -174,15 +174,9 @@ class Model:
 
     @property
     def is_game_over(self) -> bool:
-<<<<<<< HEAD
         return self.__current_round >= len(self.__rounds) \
             or self.player.lives <= 0 if self.mode == GameMode.CAMPAIGN \
           else self.player.lives <= 0
-=======
-        if self.__player.lives <= 0:
-            return True
-        return self.__current_round >= len(self.__rounds) if self.mode == GameMode.CAMPAIGN else self.player.lives <= 0
->>>>>>> c8cbf616787ec569426c031f72dd729925d27496
     
     def add_exp(self, amount: int):
         self.__exp += amount
