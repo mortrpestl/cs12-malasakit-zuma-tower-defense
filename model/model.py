@@ -25,7 +25,9 @@ class Model:
         self.__enemies = config.enemies
         self.__leaderboards = {mode: Leaderboard(mode) for mode in list(GameMode)}
         self.__leaderboard = self.__leaderboards[mode]
-        self.__leaderboard.read_file("")
+        for mode in list(GameMode):
+            leaderboard = self.__leaderboards[mode]
+            leaderboard.read_file("")
         self.restart_game()
 
     def restart_game(self):
