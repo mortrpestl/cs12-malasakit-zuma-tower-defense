@@ -8,13 +8,16 @@ from model.entities.tower import Tower
 from model.entities.bullet import Bullet
 from random import Random
 from model.entities.normaltower import NormalTower
+from model.leaderboard import Leaderboard
 from pathlib import Path as FilePath
 import json
 
 class Model:
-    def __init__(self, config: GameConfig, mode: GameMode):
+    def __init__(self, config: GameConfig, mode: GameMode, stage_file: str = ""):
+        if stage_file == "":
+            stage_file = "campaign_map_10.json" if mode == GameMode.ENDLESS else "campaign_map_1.json"
         self.__player = Player(config)
-        self.__stage = Stage(config)
+        self.__stage = Stage(config, stage_file)
         self.__config = config
         self.__enemies = config.enemies
         self.__current_round = 0
@@ -23,17 +26,19 @@ class Model:
         self.__rng = Random(12) # fixed seed
         self.__config = config
         tower = NormalTower(config)
-        tower.x, tower.y = 2, 2
         self.__towers: list[Tower] = [tower]
         self.__bought_towers: list[Tower] = []
         self.__bullets: list[Bullet] = []
         self.__stage.grid.grid[config.rows >> 1][config.cols >> 1].entity = self.__player.shooter
+        self.__leaderboard = Leaderboard(mode)
+        self.__leaderboard.read_file("")
+        print(self.__leaderboard.winners)
 
         self.__rounds: list[Round] = [] 
 
         if self.__mode is GameMode.ENDLESS:
             self.create_endless_round()
-
+    
     @property
     def mode(self) -> GameMode:
         return self.__mode
@@ -90,8 +95,8 @@ class Model:
     def bullets(self, lst: list[Bullet]):
         self.__bullets = lst
 
-    def create_round(self, round: int) -> Round:
-        round_path = FilePath(__file__).parent / "rounds" / "campaign_round_1.json" # should we be able to change this?
+    def create_round(self, round: int, enemy_file: str = "campaign_round_1.json") -> Round:
+        round_path = FilePath(__file__).parent / "rounds" / enemy_file
         with open(round_path, "r") as d:
             data = json.load(d)
             path_list: list[int] = []
@@ -108,13 +113,13 @@ class Model:
             )
         return Round(config, self.__stage.paths, self.__config)
     
-    def switch_mode(self):
+    def switch_mode(self, enemy_file: str = "campaign_round_1.json"):
         self.__rounds = []
         self.__current_round = 0
 
         if self.__mode is GameMode.ENDLESS:
             self.__mode = GameMode.CAMPAIGN # Must load_campaign still
-            self.load_campaign("campaign_round_1.json")
+            self.load_campaign(enemy_file)
         else:
             self.__mode = GameMode.ENDLESS 
             self.create_endless_round()
@@ -128,7 +133,7 @@ class Model:
         with open(path, "r") as d:
             data = json.load(d)
             
-            for round in range(12):
+            for round in range(1):
                 path_list: list[int] = []
                 enemy_list: list[EnemyType]= []
 

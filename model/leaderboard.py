@@ -2,11 +2,20 @@
 from model.utils import *
 from copy import deepcopy
 import json
+from pathlib import Path as FilePath
 
 class Leaderboard:
     def __init__(self, mode: GameMode):
         self._mode = mode
         self._winners: list[LeaderboardEntry] = []
+
+    @property
+    def mode(self) -> GameMode:
+        return self._mode
+    
+    @property
+    def winners(self) -> list[LeaderboardEntry]:
+        return self._winners
     
     def get_winners(self) -> list[LeaderboardEntry]:
         return [deepcopy(entry) for entry in self._winners]
@@ -30,8 +39,9 @@ class Leaderboard:
     def read_file(self, filename: str):
         if not filename:
             filename = self._mode.value + ".json"
+        file = FilePath(__file__).parent.parent / "leaderboard" / filename
         try:
-            with open(filename, 'r') as f:
+            with open(file, 'r') as f:
                 json_string = f.readline()
                 json_dict = json.loads(json_string)
                 entries: dict[str, int] = {k: int(json_dict[k]) for k in json_dict}
