@@ -42,7 +42,6 @@ class Model:
             self.create_endless_round()
         else:
             self.load_campaign(self.__original_campaign)
-        print("Resetted, rounds are ", self.__rounds)
 
     @property
     def mode(self) -> GameMode:
@@ -134,12 +133,11 @@ class Model:
             return None
         
         path = FilePath(__file__).parent / "rounds" / file
-        print(path)
 
         with open(path, "r") as d:
             data = json.load(d)
             
-            for round in range(1):
+            for round in range(12):
                 path_list: list[int] = []
                 enemy_list: list[EnemyType]= []
 
