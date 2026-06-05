@@ -32,3 +32,8 @@ tower_sprites: dict[tuple[type, int | None], SpriteSet] = {
     (NormalTower, 2): SpriteSet(1, 0, 128, 64, 64, BGColor.RED, 0.625),
     (Shooter, None): SpriteSet(1, 0, 0, 64, 64, BGColor.RED, 0.625)
 }
+
+menu_sprites: dict[str, SpriteSet] = {
+    "misc": SpriteSet(2, 0, 0, 150, 30, BGColor.PEACH, 1),
+    "pause": SpriteSet(2, 0, 32, 40, 40, BGColor.BLACK, 1)
+}

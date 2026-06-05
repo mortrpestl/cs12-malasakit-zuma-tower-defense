@@ -2,7 +2,7 @@
 from model.player import Player
 from model.stage import Stage
 from model.round import Round
-from model.utils import *
+from model.utils import Color, EnemyType, GameMode, WaveConfig
 from model.game_config import GameConfig
 from model.entities.tower import Tower
 from model.entities.bullet import Bullet
@@ -30,6 +30,10 @@ class Model:
     @property
     def mode(self) -> GameMode:
         return self.__mode
+    
+    @mode.setter
+    def mode(self, new_mode: GameMode) -> None:
+        self.__mode = new_mode
     
     @property
     def exp(self) -> int:
@@ -103,7 +107,9 @@ class Model:
     
     @property
     def is_game_over(self) -> bool:
-        return self.__current_round >= len(self.__rounds) if self.mode == GameMode.CAMPAIGN else self.player.lives <= 0
+        return self.__current_round >= len(self.__rounds) \
+            or self.player.lives <= 0 if self.mode == GameMode.CAMPAIGN \
+          else self.player.lives <= 0
     
     def add_exp(self, amount: int):
         self.__exp += amount

@@ -2,15 +2,18 @@
 
 import pyxel
 
-from renderer import Renderer
+from view.renderer import Renderer
 from model.model import Model
-from model.utils import BGColor
-from view.components.button import ButtonComponent
+from model.sprites import menu_sprites
+from model.utils import BGColor, Screen
 
-MENU_X = 200
-MENU_Y = 50
-MENU_W = 660
-MENU_H = 500
+from view.components.button import ButtonComponent
+from view.screen_manager import ScreenManager
+
+MENU_X = 0
+MENU_Y = 0
+MENU_W = 600
+MENU_H = 840
 
 BTN_X  = MENU_X + MENU_W // 2 - 75
 BTN_W  = 150
@@ -20,44 +23,63 @@ BTN_GAP = 40
 
 class MenuRenderer(Renderer):
 
-    def __init__(self, model: Model):
-        self._model = model
+    def __init__(self, model: Model, screen_manager: ScreenManager):
+        super().__init__(model, screen_manager)
         
         self._buttons: list[ButtonComponent] = [
             ButtonComponent(
-                assoc_func=model.restart_game,
+                assoc_func= self.restart_game,
+                pyxel_set = menu_sprites["misc"],
                 x=BTN_X, y=MENU_Y + 80,
                 w=BTN_W, h=BTN_H,
                 text="Restart Game"
             ),
             ButtonComponent(
-                assoc_func=lambda: model.set_pending_action(PendingAction.VIEW_LEADERBOARD),
+                assoc_func= self.view_leaderboard,
+                pyxel_set = menu_sprites["misc"],
                 x=BTN_X, y=MENU_Y + 80 + BTN_GAP,
                 w=BTN_W, h=BTN_H,
                 text="View Leaderboard"
             ),
             ButtonComponent(
-                assoc_func=model.switch_game_mode,
+                assoc_func= self.switch_game_mode,
+                pyxel_set = menu_sprites["misc"],
                 x=BTN_X, y=MENU_Y + 80 + BTN_GAP * 2,
                 w=BTN_W, h=BTN_H,
                 text="Switch Game Mode"
             ),
             ButtonComponent(
-                assoc_func=model.open_configure,
+                assoc_func= self.open_configure,
+                pyxel_set = menu_sprites["misc"],
                 x=BTN_X, y=MENU_Y + 80 + BTN_GAP * 3,
                 w=BTN_W, h=BTN_H,
                 text="Configure Game Settings"
             ),
             ButtonComponent(
-                assoc_func=model.close_menu,
+                assoc_func= self.close_menu,
+                pyxel_set = menu_sprites["misc"],
                 x=BTN_X, y=MENU_Y + 80 + BTN_GAP * 4,
                 w=BTN_W, h=BTN_H,
                 text="Back"
             ),
         ]
+        
+    def restart_game(self) -> None:
+        print("work?")
+        
+    def view_leaderboard(self) -> None:
+        self.screen_manager.screen = Screen.LEADERBOARD
+        
+    def switch_game_mode(self) -> None:
+        print("work?")
+        
+    def open_configure(self) -> None:
+        print("work?")
+        
+    def close_menu(self) -> None:
+        self.screen_manager.screen = Screen.GAME
     
     def draw_background(self) -> None:
-        pyxel.rect(MENU_X, MENU_Y, MENU_W, MENU_H, BGColor.BLACK)
         pyxel.rectb(MENU_X, MENU_Y, MENU_W, MENU_H, BGColor.WHITE)
 
     def draw_title(self) -> None:

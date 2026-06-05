@@ -1,5 +1,5 @@
 from model.model import Model
-from model.utils import *
+from model.utils import GameMode
 from model.game_config import GameConfig
 
 from view.View import View

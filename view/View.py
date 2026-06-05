@@ -1,20 +1,19 @@
 from __future__ import annotations
 
 from model.utils import (
-    BGColor, Direction, GameMode, Screen,
-    EnemyType, LeaderboardEntry,
-    Settings, WaveConfig, get_next_color
+    BGColor, Screen
 )
+from model.sprites import menu_sprites
 from view.entity_renderer import EntityRenderer
-from view.grid_renderer import GridRenderer
-from view.hud_renderer import HUDRenderer
+from view.components.button import ButtonComponent
+
 import pyxel
 
 # from view.configure_renderer import ConfigureRenderer
 # from view.confirm_renderer import ConfirmRenderer
 # from view.hud_renderer import HUDRenderer
 # # from view.leaderboard_renderer import LeaderboardRenderer
-# from view.menu_renderer import MenuRenderer
+
 # from view.Renderer import Renderer
 
 from typing import ClassVar
@@ -43,6 +42,16 @@ class Sound:
     def stop_music(self):
         pyxel.stop
 
+MENU_X = 0
+MENU_Y = 0
+MENU_W = 600
+MENU_H = 840
+
+BTN_X  = MENU_X + MENU_W // 2 - 75
+BTN_W  = 150
+BTN_H  = 30
+BTN_GAP = 40
+
 class View:
 
     def __init__(self, width : int, height : int, frames : int):
@@ -51,21 +60,6 @@ class View:
         self._screen_h : int = height
         self._frames_s : int = frames
         self._sound_fx : Sound = Sound()
-        self._current_screen: Screen = Screen.GAME
-        self.entity_renderer = EntityRenderer()
-
-        # self._hud_renderer = 
-        # self._grid_renderer = 
-        # self._leaderboard_renderer = 
-        # self._menu_renderer = 
-        # self._start_renderer = 
-        # self._configure_renderer = 
-        # self._confirm_renderer = 
-
-
-
-
-        self._current_screen: Screen = Screen.GAME
 
     def init(self):
         pyxel.load("view/pyxres_files/pyxel_basic_resources.pyxres", exclude_sounds=True, exclude_musics=True)
@@ -83,14 +77,8 @@ class View:
     def screen_w(self) -> int:
         return self._screen_w
 
-    @property
-    def get_current_screen(self) -> Screen:
-        return self._current_screen
-
-    def set_current_screen(self, s: Screen):
-        self._current_screen = s
-
-    def reset_screen(self) -> None:
-        pyxel.cls(BGColor.PEACH)
+    def reset_screen(self, screen: Screen) -> None:
+        col : BGColor = BGColor.PEACH if screen is Screen.GAME \
+                   else BGColor.BLACK
         
-   
+        pyxel.cls(col)

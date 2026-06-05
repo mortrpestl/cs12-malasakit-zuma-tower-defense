@@ -6,8 +6,13 @@ from view.View import View, Sound
 from round_controller import RoundController
 from collision_controller import CollisionController
 
+from view.entity_renderer import EntityRenderer
 from view.grid_renderer import GridRenderer
 from view.hud_renderer import HUDRenderer
+from view.menu_renderer import MenuRenderer
+
+from view.screen_manager import ScreenManager
+
 import pyxel
 
 class Controller:
@@ -20,16 +25,21 @@ class Controller:
 
         self.__collision_controller = CollisionController(m, self.__sound)
         self.__round_controller = RoundController(m, self.__bullet_speed)
-        self.__grid_renderer = GridRenderer(m)
-        self.__hud_renderer = HUDRenderer(m)
+        
+        self.__screen_manager = ScreenManager(Screen.MENU)
+        
+        self.__entity_renderer = EntityRenderer()
+        self.__grid_renderer = GridRenderer(m, self.__screen_manager)
+        self.__hud_renderer = HUDRenderer(m, self.__screen_manager)
+        self.__menu_renderer = MenuRenderer(m, self.__screen_manager)
     
     def start_game(self):
         pyxel.init(self.__view.screen_w, self.__view.screen_h, fps=self.__fps)
         self.__view.init()
-        pyxel.run(self.update, self.draw_game)
+        pyxel.run(self.update, self.draw)
         
     def update(self):   
-        match self.__view.get_current_screen:
+        match self.__screen_manager.screen:
             case Screen.GAME:
                 if not self.__sound.is_music_playing:
                     self.__sound.ost_0()
@@ -37,12 +47,11 @@ class Controller:
                 if not self.__model.is_game_over:
                     self.__collision_controller.update()
                     self.__round_controller.update()
-                    self.__view.reset_screen()
                     self.__hud_renderer.update()
                 else:
                     print("GAME DONE")
             case Screen.MENU:
-                ...
+                self.__menu_renderer.update()
             case Screen.LEADERBOARD:
                 ...
             case Screen.GAME_OVER:
@@ -50,22 +59,33 @@ class Controller:
             case _:
                 pass
 
-    def draw_game(self):
-        self.__view.reset_screen()
-        self.__grid_renderer.draw()
-        if not self.__model.is_game_over:
-            self.__view.entity_renderer.draw(self.__model)
-        self.__hud_renderer.draw()
+    def draw(self):
+        self.__view.reset_screen(self.__screen_manager.screen)
+        
+        match self.__screen_manager.screen:
+            case Screen.GAME:
+                self.__grid_renderer.draw()
+                if not self.__model.is_game_over:
+                    self.__entity_renderer.draw(self.__model)
+                self.__hud_renderer.draw()
+            case Screen.MENU:
+                self.__menu_renderer.draw()
+            case Screen.LEADERBOARD:
+                ...
+            case Screen.GAME_OVER:
+                ...
+            case _:
+                pass
 
     def ask_confirmation(self):
         ...
 
-    def draw_leaderboard(self):
-        ... 
+    # def draw_leaderboard(self):
+    #     ... 
 
-    def draw_menu(self):
-        ...
+    # def draw_menu(self):
+    #     self.__menu_renderer.draw()
 
-    def draw_game_over(self):
-        ...
+    # def draw_game_over(self):
+    #     ...
 

@@ -8,9 +8,12 @@ from view.renderer import Renderer
 from model.model import Model
 from model.cell import Cell
 from model.entities.tower import Tower
-from model.sprites import tower_sprites
-from model.utils import BGColor, GameMode
+from model.sprites import menu_sprites, tower_sprites
+from model.utils import BGColor, GameMode, Screen
+
 from view.components.button import ButtonComponent
+from view.screen_manager import ScreenManager
+
 
 """
 HUD should have:
@@ -29,14 +32,22 @@ TOP_BOTTOM_PADDING = 40
 
 class HUDRenderer(Renderer):
 
-    def __init__(self, model: Model):
-        self._model = model
+    def __init__(self, model: Model, screen_manager: ScreenManager):
+        super().__init__(model, screen_manager)
+        
         self._selected_tower: Tower | None = None
         self._path_cells: set[Cell] = {
             cell
             for path in model.stage.paths
             for cell in path.cells
         }
+        self._pause_button : ButtonComponent = ButtonComponent( \
+            assoc_func=self.switch_to_menu,
+            pyxel_set=menu_sprites["pause"],
+            x=0, y=HUD_Y,
+            w=40, h=40,
+            text=""
+        )
         self._tower_buttons: list[ButtonComponent] = [
             ButtonComponent( \
                 assoc_func=lambda i=i: self._select_tower(i), 
@@ -53,8 +64,6 @@ class HUDRenderer(Renderer):
 
     def _select_tower(self, i: int) -> None:
         self._selected_tower = deepcopy(self.model.towers[i])
-        
-        # TROUBLESHOOTING CODE
 
     def _deselect_tower(self) -> None:
         self._selected_tower = None
@@ -120,11 +129,17 @@ class HUDRenderer(Renderer):
     def draw_background(self) -> None:
         pyxel.rect(0, HUD_Y, HUD_W, HUD_H, BGColor.DARK_GRAY)
 
+    def switch_to_menu(self) -> None:
+        self.screen_manager.screen = Screen.MENU
+        
+    def draw_pause(self) -> None:
+        self._pause_button.draw()
+
     def draw_exp(self) -> None:
-        pyxel.text(200, HUD_Y + 18, f"EXP: {self._model.exp}", BGColor.WHITE)
+        pyxel.text(240, HUD_Y + 18, f"EXP: {self._model.exp}", BGColor.WHITE)
         
     def draw_rounds(self) -> None:
-        pyxel.text(250, HUD_Y + 18, \
+        pyxel.text(290, HUD_Y + 18, \
                    f"ROUND {self._model.current_round + 1} / {len(self._model.rounds)}" \
                    if self._model.mode is GameMode.CAMPAIGN else f" ROUND {self._model.current_round} / ∞",
                    BGColor.WHITE)    
@@ -133,12 +148,12 @@ class HUDRenderer(Renderer):
         lives = self.model.player.lives
         max_lives = self.model.config.lives
 
-        bar_x, bar_y, bar_w, bar_h = 60, HUD_Y + 18, 100, 10
+        bar_x, bar_y, bar_w, bar_h = 100, HUD_Y + 18, 100, 10
         pyxel.rect(bar_x, bar_y, bar_w, bar_h, BGColor.DARK_GRAY)
         filled = int(bar_w * lives / max_lives)
         pyxel.rect(bar_x, bar_y, filled, bar_h, BGColor.GREEN)
 
-        pyxel.text(10, HUD_Y + 18, "Lives left", BGColor.WHITE)
+        pyxel.text(50, HUD_Y + 18, "Lives left", BGColor.WHITE)
         pyxel.text(bar_x, bar_y + 12, f"{lives}/{max_lives}", BGColor.WHITE)
 
     def draw_towers(self) -> None:
@@ -154,6 +169,7 @@ class HUDRenderer(Renderer):
         pyxel.text(550, HUD_Y + 26, "DEFENSE", BGColor.WHITE)
 
     def update(self) -> None:
+        self._pause_button.update()
         for i, btn in enumerate(self._tower_buttons):
             if self.model.exp >= self.model.towers[i].cost:
                 btn.update()
@@ -164,6 +180,7 @@ class HUDRenderer(Renderer):
 
     def draw(self) -> None:
         self.draw_background()
+        self.draw_pause()
         self.draw_lives()
         self.draw_exp()
         self.draw_rounds()
