@@ -20,12 +20,16 @@ class Model:
         self.__exp = 0
         self.__mode = mode
         self.__rng = Random(12) # fixed seed
-        self.__rounds: list[Round] = [self.create_round(i) for i in range(12)] # at least 12 rounds
         self.__config = config
         self.__towers: list[Tower] = [NormalTower()]
         self.__bought_towers: list[Tower] = []
         self.__bullets: list[Bullet] = []
         self.__stage.grid.grid[config.rows >> 1][config.cols >> 1].entity = self.__player.shooter
+
+        self.__rounds: list[Round] = [] 
+
+        if GameMode.ENDLESS:
+            self.create_endless_round()
 
     @property
     def mode(self) -> GameMode:
@@ -82,25 +86,71 @@ class Model:
     @bullets.setter
     def bullets(self, lst: list[Bullet]):
         self.__bullets = lst
-
-    def create_round(self, round: int) -> Round:
-        round_path = FilePath(__file__).parent / "rounds" / "campaign_round_1.json" # should we be able to change this?
-        with open(round_path, "r") as d:
-            data = json.load(d)
-            path_list: list[int] = []
-            enemy_list: list[EnemyType]= []
-            for n, path in enumerate(data["waves"][round]):
-                for enemy in path:
-                    path_list.append(n)
-                    enemy_list.append(EnemyType(enemy))
-
-            config = WaveConfig(
-                self.rng.choices(list(Color), k=len(enemy_list)),
-                path_list,
-                enemy_list
-            )
-        return Round(config, self.__stage.paths)
     
+    def switch_mode(self):
+        self.__rounds = []
+        self.__current_round = 0
+
+        if self.__mode is GameMode.ENDLESS:
+            self.__mode = GameMode.CAMPAIGN # Must load_campaign still
+        else:
+            self.__mode = GameMode.ENDLESS 
+            self.create_endless_round()
+      
+    def load_campaign(self, file: str):
+        if self.__mode is GameMode.ENDLESS:
+            return None
+        
+        path = FilePath(__file__).parent / "rounds" / file
+
+        with open(path, "r") as d:
+            data = json.load(d)
+            
+            for round in range(12):
+                path_list: list[int] = []
+                enemy_list: list[EnemyType]= []
+
+                for n, path in enumerate(data["waves"][round]):
+                    for enemy in path:
+                        path_list.append(n)
+                        enemy_list.append(EnemyType(enemy))
+
+                config = WaveConfig(
+                    self.rng.choices(list(Color), k=len(enemy_list)),
+                    path_list,
+                    enemy_list
+                )
+
+                self.__rounds.append(Round(config, self.__stage.paths))
+    
+    def create_endless_round(self):
+        print("SHELDON COOPER YOU DOG")
+
+        if self.__mode is GameMode.CAMPAIGN:
+            return None
+        
+        cham_ratio = min(
+            self.config.endless_cham_ratio, 
+            (self.current_round/ 40) * self.config.endless_cham_ratio
+            )
+        
+        regen_ratio = min(
+            self.config.endless_cham_ratio, 
+            (self.current_round/ 40) * self.config.endless_cham_ratio
+            )
+        
+        normal_ratio = 1 - (cham_ratio + regen_ratio)
+        count = (self.current_round + 1) * 3 
+        enemy_list = [EnemyType(i) for i in self.rng.choices([1, 2, 3], weights= [normal_ratio, cham_ratio, regen_ratio], k=count)]
+
+        config = WaveConfig(
+            self.rng.choices(list(Color), k = count),
+            self.rng.choices([0, 1], k = count), 
+            enemy_list
+        ) 
+
+        self.__rounds.append(Round(config, self.__stage.paths))
+
     @property
     def is_game_over(self) -> bool:
         return self.__current_round >= len(self.__rounds) if self.mode == GameMode.CAMPAIGN else self.player.lives <= 0
