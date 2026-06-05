@@ -35,10 +35,6 @@ class Model:
     def mode(self) -> GameMode:
         return self.__mode
     
-    @mode.setter
-    def mode(self, new_mode: GameMode) -> None:
-        self.__mode = new_mode
-    
     @property
     def exp(self) -> int:
         return self.__exp
@@ -97,6 +93,7 @@ class Model:
 
         if self.__mode is GameMode.ENDLESS:
             self.__mode = GameMode.CAMPAIGN # Must load_campaign still
+            self.load_campaign("campaign_round_1.json")
         else:
             self.__mode = GameMode.ENDLESS 
             self.create_endless_round()
@@ -128,7 +125,6 @@ class Model:
                 self.__rounds.append(Round(config, self.__stage.paths))
     
     def create_endless_round(self):
-        print("SHELDON COOPER YOU DOG")
 
         if self.__mode is GameMode.CAMPAIGN:
             return None

@@ -26,7 +26,7 @@ class Controller:
         self.__collision_controller = CollisionController(m, self.__sound)
         self.__round_controller = RoundController(m, self.__bullet_speed)
         
-        self.__screen_manager = ScreenManager(Screen.MENU)
+        self.__screen_manager = ScreenManager(Screen.GAME)
         
         self.__entity_renderer = EntityRenderer()
         self.__grid_renderer = GridRenderer(m, self.__screen_manager)
@@ -76,16 +76,4 @@ class Controller:
                 ...
             case _:
                 pass
-
-    def ask_confirmation(self):
-        ...
-
-    # def draw_leaderboard(self):
-    #     ... 
-
-    # def draw_menu(self):
-    #     self.__menu_renderer.draw()
-
-    # def draw_game_over(self):
-    #     ...
 

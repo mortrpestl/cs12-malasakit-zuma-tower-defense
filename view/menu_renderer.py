@@ -5,7 +5,7 @@ import pyxel
 from view.renderer import Renderer
 from model.model import Model
 from model.sprites import menu_sprites
-from model.utils import BGColor, Screen
+from model.utils import BGColor, GameMode, Screen
 
 from view.components.button import ButtonComponent
 from view.screen_manager import ScreenManager
@@ -26,6 +26,7 @@ class MenuRenderer(Renderer):
     def __init__(self, model: Model, screen_manager: ScreenManager):
         super().__init__(model, screen_manager)
         
+        self._clicked: bool = False
         self._buttons: list[ButtonComponent] = [
             ButtonComponent(
                 assoc_func= self.restart_game,
@@ -71,7 +72,8 @@ class MenuRenderer(Renderer):
         self.screen_manager.screen = Screen.LEADERBOARD
         
     def switch_game_mode(self) -> None:
-        print("work?")
+        self._model.switch_mode()
+        self._clicked = True
         
     def open_configure(self) -> None:
         print("work?")
@@ -94,3 +96,8 @@ class MenuRenderer(Renderer):
         self.draw_title()
         for btn in self._buttons:
             btn.draw()
+        if self._clicked:
+            pyxel.text(MENU_X + MENU_W // 2 - 60, MENU_Y + 280, \
+                f"Switched game mode to {'CAMPAIGN' if self._model.mode is GameMode.CAMPAIGN else 'ENDLESS'}",
+                BGColor.WHITE
+            )

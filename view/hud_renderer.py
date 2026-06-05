@@ -141,7 +141,7 @@ class HUDRenderer(Renderer):
     def draw_rounds(self) -> None:
         pyxel.text(290, HUD_Y + 18, \
                    f"ROUND {self._model.current_round + 1} / {len(self._model.rounds)}" \
-                   if self._model.mode is GameMode.CAMPAIGN else f" ROUND {self._model.current_round} / ∞",
+                   if self._model.mode is GameMode.CAMPAIGN else f" ROUND {self._model.current_round + 1} / INF",
                    BGColor.WHITE)    
         
     def draw_lives(self) -> None:
