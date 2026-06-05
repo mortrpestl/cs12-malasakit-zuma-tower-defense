@@ -62,7 +62,7 @@ class View:
         self._sound_fx : Sound = Sound()
 
     def init(self):
-        pyxel.load("view/pyxres_files/pyxel_basic_resources.pyxres", exclude_sounds=True, exclude_musics=True)
+        pyxel.load("view/pyxres_files/pyxel_basic_resources.pyxres")
         pyxel.mouse(True)
 
     @property
