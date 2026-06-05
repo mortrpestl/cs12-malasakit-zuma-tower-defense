@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import TypeVar, Callable
-from model.utils import BGColor
+from model.utils import BGColor, SpriteSet
 
 import pyxel
 
@@ -11,7 +11,7 @@ class ButtonComponent:
     def __init__(
                 self,
                 assoc_func : Callable[[], U],
-                pyxel_set,
+                pyxel_set: SpriteSet,
                 x : int,
                 y : int,
                 w : int = 150,

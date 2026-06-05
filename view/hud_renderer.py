@@ -8,12 +8,11 @@ from view.renderer import Renderer
 from model.model import Model
 from model.cell import Cell
 from model.entities.tower import Tower
-from model.sprites import menu_sprites, tower_sprites
-from model.utils import BGColor, GameMode, Screen, SpriteSet
+from view.sprites import menu_sprites, tower_sprites
+from model.utils import BGColor, GameMode, Screen
 
 from view.components.button import ButtonComponent
 from view.screen_manager import ScreenManager
-
 
 """
 HUD should have:

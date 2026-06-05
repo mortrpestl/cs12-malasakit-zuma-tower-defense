@@ -3,7 +3,7 @@ from __future__ import annotations
 from model.utils import (
     BGColor, Screen
 )
-from model.sprites import menu_sprites
+from view.sprites import menu_sprites
 from view.entity_renderer import EntityRenderer
 from view.components.button import ButtonComponent
 
@@ -62,7 +62,7 @@ class View:
         self._sound_fx : Sound = Sound()
 
     def init(self):
-        pyxel.load("view/pyxres_files/pyxel_basic_resources.pyxres", exclude_sounds=True, exclude_musics=True)
+        pyxel.load("view/pyxres_files/pyxel_basic_resources.pyxres")
         pyxel.mouse(True)
 
     @property

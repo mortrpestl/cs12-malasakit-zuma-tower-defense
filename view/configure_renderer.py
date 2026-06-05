@@ -6,7 +6,7 @@ from view.renderer import Renderer
 from model.game_config import GameConfig
 from model.model import Model
 from model.utils import BGColor, Screen
-from model.sprites import menu_sprites
+from view.sprites import menu_sprites
 
 from view.components.button import ButtonComponent
 from view.screen_manager import ScreenManager

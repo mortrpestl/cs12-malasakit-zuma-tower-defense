@@ -3,7 +3,7 @@
 from model.model import Model
 from model.entities.enemy import Enemy
 from model.entities.tower import Tower
-from model.sprites import enemy_sprites, tower_sprites
+from view.sprites import enemy_sprites, tower_sprites
 from model.utils import BGColor, SpriteSet
 from math import atan2, pi
 
