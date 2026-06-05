@@ -65,7 +65,7 @@ class GameConfig:
     
     @property
     def fps(self) -> int:
-        return 480
+        return 240
     
     @property
     def bullet_speed(self) -> float:
@@ -73,7 +73,7 @@ class GameConfig:
     
     @property
     def min_shooter_interval(self) -> float:
-        return 10/99999999999
+        return 10/9
     
     @property
     def min_tower_interval(self) -> float:
