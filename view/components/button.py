@@ -12,7 +12,6 @@ class ButtonComponent:
                 self,
                 assoc_func : Callable[[], U],
                 pyxel_set,
-                pyxel_scale : float,
                 x : int,
                 y : int,
                 w : int = 150,
@@ -23,7 +22,6 @@ class ButtonComponent:
                 ):
         
         self.__pyxel_set = pyxel_set
-        self.__pyxel_scale = pyxel_scale
         
         self._x = x
         self._y = y
@@ -63,7 +61,16 @@ class ButtonComponent:
             self._assoc_func()
         
     def draw(self):
-        pyxel.blt(self._x - 12, self._y - 12, *self.__pyxel_set, scale=self.__pyxel_scale)
+        mid : float = 0.5 * (self.__pyxel_set.w - self.__pyxel_set.scale * self.__pyxel_set.w)
+        
+        pyxel.blt(self._x - mid, self._y - mid, 
+            self.__pyxel_set.img, 
+            self.__pyxel_set.x, 
+            self.__pyxel_set.y,
+            self.__pyxel_set.w,
+            self.__pyxel_set.h,
+            self.__pyxel_set.bg,
+            scale=self.__pyxel_set.scale)
         pyxel.rectb(self._x, self._y, self._w, self._h, self._button_col)
         pyxel.text(self._x + 20, self._y + 20, self._text, self._text_col)
         

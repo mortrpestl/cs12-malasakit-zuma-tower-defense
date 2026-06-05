@@ -2,7 +2,7 @@
 
 from model.entities.enemy import Enemy
 from model.path import Path
-from model.utils import *
+from model.utils import Color
 from random import Random
 
 class Chameleon(Enemy):                                         

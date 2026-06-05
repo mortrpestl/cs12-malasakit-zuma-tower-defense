@@ -2,7 +2,7 @@
 
 from model.entities.entity import Entity
 from model.path import Path
-from model.utils import *
+from model.utils import Color
 
 class Enemy(Entity):
     def __init__(self, color: Color, path: Path):

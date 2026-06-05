@@ -22,7 +22,7 @@ class Model:
         self.__rng = Random(12) # fixed seed
         self.__rounds: list[Round] = [self.create_round(i) for i in range(12)] # at least 12 rounds
         self.__config = config
-        self.__towers: list[Tower] = [NormalTower(config)]
+        self.__towers: list[Tower] = [NormalTower()]
         self.__bought_towers: list[Tower] = []
         self.__bullets: list[Bullet] = []
         self.__stage.grid.grid[config.rows >> 1][config.cols >> 1].entity = self.__player.shooter

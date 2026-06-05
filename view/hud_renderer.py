@@ -8,6 +8,7 @@ from view.renderer import Renderer
 from model.model import Model
 from model.cell import Cell
 from model.entities.tower import Tower
+from model.sprites import tower_sprites
 from model.utils import BGColor, GameMode
 from view.components.button import ButtonComponent
 
@@ -39,8 +40,7 @@ class HUDRenderer(Renderer):
         self._tower_buttons: list[ButtonComponent] = [
             ButtonComponent( \
                 assoc_func=lambda i=i: self._select_tower(i), 
-                pyxel_set=model.towers[i].pyxel_set,
-                pyxel_scale=model.towers[i].pyxel_scale,
+                pyxel_set=tower_sprites[(type(model.towers[i]), 1)],
                 x=400 + i * 45, 
                 y=HUD_Y, 
                 w=40, h=40, 

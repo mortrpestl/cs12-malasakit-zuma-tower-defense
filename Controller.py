@@ -53,9 +53,6 @@ class Controller:
     def draw_game(self):
         self.__view.reset_screen()
         self.__grid_renderer.draw()
-        # self.__grid_renderer.draw_game_map()
-        # self.__grid_renderer.draw_zuma_tower()
-        # self.__grid_renderer.draw_ball_to_shoot()
         if not self.__model.is_game_over:
             self.__view.entity_renderer.draw(self.__model)
         self.__hud_renderer.draw()

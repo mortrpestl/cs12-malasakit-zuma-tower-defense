@@ -3,29 +3,13 @@
 from model.entities.bullet import Bullet
 from model.entities.tower import Tower
 from model.game_config import GameConfig
-from model.utils import BGColor, Direction, get_next_color
+from model.utils import Direction, get_next_color
 from math import atan2
 
 class NormalTower(Tower):
-    def __init__(self, config: GameConfig):
+    def __init__(self):
         super().__init__()
-        self.__config = config
-        self._width = self.__config.width / self.__config.cols
-        self._height = self.__config.height / self.__config.rows
         self.__direction = Direction.RIGHT
-        
-    @property
-    def pyxel_set(self):
-        return (1, 0, 64, 64, 64, BGColor.RED) if self._level == 1 else \
-            (1, 0, 128, 64, 64, BGColor.RED)
-    
-    @property
-    def pyxel_scale(self) -> float:
-        return self._width / 64
-    
-    @property
-    def midpoint(self) -> float:
-        return 0.5 * (64 - self._width)
     
     @property
     def direction(self) -> Direction:
@@ -39,12 +23,16 @@ class NormalTower(Tower):
     def shoot_interval(self) -> int:
         return 120
 
-    def shoot(self, v: float) -> list[Bullet]:
+    def shoot(self, v: float, config: GameConfig) -> list[Bullet]:
+        
+        width : float = config.width / config.cols
+        height : float = config.height / config.rows
+
         dx, dy = self.__direction.value
         angle = atan2(-dy, dx)
-        x_abs, y_abs = (self.x + 0.5) * self._width, (self.y + 0.5) * self._height + 40
+        x_abs, y_abs = (self.x + 0.5) * width, (self.y + 0.5) * height + 40
         delimiter = self._level == 2
         if self.__direction in (Direction.UP, Direction.DOWN):
-            return [Bullet(x_abs - self._width / 4 * delimiter + self._width / 2 * i, y_abs, angle, get_next_color(), v) for i in range(self.level)]
+            return [Bullet(x_abs - width / 4 * delimiter + width / 2 * i, y_abs, angle, get_next_color(), v) for i in range(self.level)]
         else:
-            return [Bullet(x_abs, y_abs - self._height / 4 * delimiter + self._height / 2 * i, angle, get_next_color(), v) for i in range(self.level)]
+            return [Bullet(x_abs, y_abs - height / 4 * delimiter + height / 2 * i, angle, get_next_color(), v) for i in range(self.level)]

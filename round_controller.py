@@ -30,7 +30,7 @@ class RoundController:
         if self.__tick % self.spawn_timer == 0:
             self.spawn_enemy()
         
-        if pyxel.btnp(pyxel.MOUSE_BUTTON_LEFT):
+        if pyxel.btnp(pyxel.MOUSE_BUTTON_LEFT) and 40 < pyxel.mouse_y < 800:
             self.__model.bullets.append(self.__model.player.shoot(pyxel.mouse_x, pyxel.mouse_y, self.__bullet_speed))
 
         if pyxel.btnr(pyxel.KEY_W):
@@ -52,7 +52,7 @@ class RoundController:
         
         for tower in self.__model.bought_towers:
             if self.__tick % tower.shoot_interval == 0:
-                self.__model.bullets.extend(tower.shoot(self.__bullet_speed))
+                self.__model.bullets.extend(tower.shoot(self.__bullet_speed, self.__model.config))
 
 
         current_round = self.__model.rounds[self.__model.current_round]

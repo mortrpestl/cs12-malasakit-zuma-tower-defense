@@ -3,6 +3,7 @@
 from abc import abstractmethod
 from model.entities.bullet import Bullet
 from model.entities.entity import Entity
+from model.game_config import GameConfig
 from random import Random
 
 # for making more tower classes
@@ -30,5 +31,5 @@ class Tower(Entity):
         self._level = 2
 
     @abstractmethod
-    def shoot(self, v: float) -> list[Bullet]:
+    def shoot(self, v: float, config: GameConfig) -> list[Bullet]:
         ...

@@ -2,7 +2,7 @@
 
 from model.entities.enemy import Enemy
 from model.path import Path
-from model.utils import *
+from model.utils import Color
 
 class Regenerator(Enemy):
     def __init__(self, color: Color, path: Path, regen_interval: int = 2):

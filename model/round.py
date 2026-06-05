@@ -1,10 +1,10 @@
 # pyright: strict
 
-from model.utils import *
 from model.entities.enemy import Enemy
 from model.entities.chameleon import Chameleon
 from model.entities.regenerator import Regenerator
 from model.path import Path
+from model.utils import *
 
 def make_enemy(enemy_type: EnemyType, color: Color, path: Path) -> Enemy:
     # add new enemies here

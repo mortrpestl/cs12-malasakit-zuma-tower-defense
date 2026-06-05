@@ -31,7 +31,7 @@ class Shooter(Entity):
     def update_position(self):
         cell_width = self.__config.width / self.__config.cols
         cell_height = self.__config.height / self.__config.rows
-        self._y_abs = (self._y + 0.25) * cell_height + 40
+        self._y_abs = (self._y + 0.5) * cell_height + 40
         self._x_abs = (self._x + 0.5) * cell_width
 
     def move_left(self):
