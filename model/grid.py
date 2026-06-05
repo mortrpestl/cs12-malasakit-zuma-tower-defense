@@ -6,7 +6,7 @@ import json
 from pathlib import Path as FilePath
 
 class Grid:
-    def __init__(self, config: GameConfig, file: str = "campaign_map_10.json"):
+    def __init__(self, config: GameConfig, file: str):
         self.__config = config
         self.__r = config.rows
         self.__c = config.cols

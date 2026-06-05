@@ -72,7 +72,7 @@ class Settings:
 @dataclass
 class WaveConfig:
     colors: list[Color]
-    paths: list[int]
+    paths: list[int] # where each enemy goes
     special_types: list[EnemyType]
 
 def get_next_color() -> Color:
