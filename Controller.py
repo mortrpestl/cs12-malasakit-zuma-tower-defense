@@ -23,7 +23,7 @@ class Controller:
         self.__fps = m.config.fps
 
         self.__collision_controller = CollisionController(m, self.__sound)
-        self.__round_controller = RoundController(m, self.__bullet_speed)
+        self.__round_controller = RoundController(m)
         
         self.__screen_manager = ScreenManager(Screen.GAME)
         
