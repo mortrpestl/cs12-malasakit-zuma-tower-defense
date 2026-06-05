@@ -2,7 +2,7 @@
 
 from model.model import Model
 from model.entities.normaltower import NormalTower
-from model.utils import Direction
+from model.utils import Direction, GameMode
 
 import pyxel
 
@@ -28,6 +28,7 @@ class RoundController:
 
     def update(self):
         self.__tick += 1
+
         if self.__tick % self.spawn_timer == 0:
             self.spawn_enemy()
         
@@ -71,6 +72,10 @@ class RoundController:
 
         if self.is_round_over:
             self.__model.advance_next_round()
+
+            if self.__model.mode is GameMode.ENDLESS:
+                self.__model.create_endless_round()
+                
             self.__spawn_index = 0
 
     def spawn_enemy(self):

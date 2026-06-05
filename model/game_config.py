@@ -16,6 +16,9 @@ class GameConfig:
         self.__regen_hp = 1 # TODO: maybe GameConfig should take in an "h" parameter? right now the default is 1
         self.__chameleon_freq = 3 # TODO: maybe GameConfig should take in an "f" parameter? right now the default is 3
 
+        self.__max_cham_ratio = 0.4
+        self.__max_regen_ratio = 0.4
+
     @property
     def enemies(self) -> int:
         return self.__enemies
@@ -67,6 +70,12 @@ class GameConfig:
     @property
     def min_tower_interval(self) -> float:
         return 2
+    def endless_regen_ratio(self) -> float:
+        return self.__max_regen_ratio
+    
+    @property
+    def endless_cham_ratio(self) -> float:
+        return self.__max_cham_ratio
 
     def fetch_config(self, file: str) -> None:
         try:
