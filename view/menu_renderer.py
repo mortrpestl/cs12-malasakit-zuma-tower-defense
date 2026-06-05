@@ -75,7 +75,6 @@ class MenuRenderer(Renderer):
     def restart_game(self) -> None:
         self._model.restart_game()
         self.__on_restart()
-        print("work?")
         
     def view_leaderboard(self) -> None:
         self.screen_manager.screen = Screen.LEADERBOARD
@@ -88,6 +87,8 @@ class MenuRenderer(Renderer):
         self.screen_manager.screen = Screen.CONFIGURE
         
     def to_start_menu(self) -> None:
+        self._model.restart_game()
+        self.__on_restart()
         self.screen_manager.screen = Screen.START
         
     def close_menu(self) -> None:
