@@ -5,6 +5,8 @@
     "cols": 15,
     "width": 600,
     "height": 760,
+    "screen_width": 600,
+    "screen_height": 840,
     "paths_count": 2,
     "regen_hp": 5,
     "chameleon_freq": 1

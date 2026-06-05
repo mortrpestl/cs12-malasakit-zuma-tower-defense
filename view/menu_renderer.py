@@ -4,7 +4,7 @@ import pyxel
 
 from view.renderer import Renderer
 from model.model import Model
-from model.sprites import menu_sprites
+from view.sprites import menu_sprites
 from model.utils import BGColor, GameMode, Screen
 from typing import Callable
 from view.components.button import ButtonComponent

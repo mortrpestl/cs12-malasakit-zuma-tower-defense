@@ -12,6 +12,7 @@ from view.grid_renderer import GridRenderer
 from view.hud_renderer import HUDRenderer
 from view.menu_renderer import MenuRenderer
 from view.start_renderer import StartRenderer
+from view.leaderboard_renderer import LeaderboardRenderer
 
 from view.screen_manager import ScreenManager
 
@@ -35,6 +36,7 @@ class Controller:
         self.__hud_renderer = HUDRenderer(m, self.__screen_manager)
         self.__menu_renderer = MenuRenderer(m, self.__screen_manager, self.handle_restart)
         self.__start_renderer = StartRenderer(m, self.__screen_manager)
+        self.__leaderboard_renderer = LeaderboardRenderer(m, self.__screen_manager)
     
     def start_game(self):
         pyxel.init(self.__view.screen_w, self.__view.screen_h, fps=self.__fps)
@@ -56,7 +58,7 @@ class Controller:
             case Screen.MENU:
                 self.__menu_renderer.update()
             case Screen.LEADERBOARD:
-                ...
+                self.__leaderboard_renderer.update()
             case Screen.GAME_OVER:
                 ...
             case Screen.CONFIGURE:
@@ -80,7 +82,7 @@ class Controller:
             case Screen.MENU:
                 self.__menu_renderer.draw()
             case Screen.LEADERBOARD:
-                ...
+                self.__leaderboard_renderer.draw()
             case Screen.GAME_OVER:
                 ...
             case Screen.CONFIGURE:

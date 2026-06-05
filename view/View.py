@@ -3,7 +3,7 @@ from __future__ import annotations
 from model.utils import (
     BGColor, Screen
 )
-from model.sprites import menu_sprites
+from view.sprites import menu_sprites
 from view.entity_renderer import EntityRenderer
 from view.components.button import ButtonComponent
 

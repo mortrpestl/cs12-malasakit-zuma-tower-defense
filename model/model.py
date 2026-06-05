@@ -23,7 +23,8 @@ class Model:
         self.__config = config
         self.__mode = mode
         self.__enemies = config.enemies
-        self.__leaderboard = Leaderboard(mode)
+        self.__leaderboards = {mode: Leaderboard(mode) for mode in list(GameMode)}
+        self.__leaderboard = self.__leaderboards[mode]
         self.__leaderboard.read_file("")
         self.restart_game()
 
@@ -92,9 +93,17 @@ class Model:
         return self.__bought_towers
     
     @property
+    def leaderboard(self) -> Leaderboard:
+        return self.__leaderboard
+    
+    @property
+    def leaderboards(self) -> dict[GameMode, Leaderboard]:
+        return self.__leaderboards
+
+    @property
     def bullets(self) -> list[Bullet]:
         return self.__bullets
-    
+
     @bullets.setter
     def bullets(self, lst: list[Bullet]):
         self.__bullets = lst
@@ -127,6 +136,7 @@ class Model:
         else:
             self.__mode = GameMode.ENDLESS 
             self.create_endless_round()
+        self.__leaderboard = self.__leaderboards[self.__mode]
       
     def load_campaign(self, file: str):
         if self.__mode is GameMode.ENDLESS:

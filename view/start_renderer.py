@@ -5,7 +5,7 @@ import pyxel
 from view.renderer import Renderer
 from model.model import Model
 from model.utils import BGColor, GameMode, Screen
-from model.sprites import menu_sprites
+from view.sprites import menu_sprites
 
 from view.components.button import ButtonComponent
 from view.screen_manager import ScreenManager
@@ -71,7 +71,7 @@ class StartRenderer(Renderer):
         self.screen_manager.screen = Screen.GAME
         
     def view_leaderboard(self) -> None:
-        print("work?")
+        self.screen_manager.screen = Screen.LEADERBOARD
         
     def view_credits(self) -> None:
         print("work?")

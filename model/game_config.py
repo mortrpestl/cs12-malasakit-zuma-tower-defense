@@ -42,6 +42,14 @@ class GameConfig:
     @property
     def height(self) -> int:
         return self.__height
+    
+    @property
+    def screen_width(self) -> int:
+        return self.__screen_width
+    
+    @property
+    def screen_height(self) -> int:
+        return self.__screen_height
 
     @property
     def paths_count(self) -> int:
@@ -91,6 +99,8 @@ class GameConfig:
                 self.__paths_count = data["paths_count"]
                 self.__regen_hp = data["regen_hp"]
                 self.__chameleon_freq = data["chameleon_freq"]
+                self.__screen_width = data["screen_width"]
+                self.__screen_height = data["screen_height"]
         except FileNotFoundError:
             print(f"Config file {file} not found!")
 
