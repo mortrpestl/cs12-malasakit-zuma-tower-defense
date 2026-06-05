@@ -30,7 +30,7 @@ class Controller:
         self.__entity_renderer = EntityRenderer()
         self.__grid_renderer = GridRenderer(m, self.__screen_manager)
         self.__hud_renderer = HUDRenderer(m, self.__screen_manager)
-        self.__menu_renderer = MenuRenderer(m, self.__screen_manager)
+        self.__menu_renderer = MenuRenderer(m, self.__screen_manager, self.handle_restart)
     
     def start_game(self):
         pyxel.init(self.__view.screen_w, self.__view.screen_h, fps=self.__fps)
@@ -48,7 +48,7 @@ class Controller:
                     self.__round_controller.update()
                     self.__hud_renderer.update()
                 else:
-                    print("GAME DONE")
+                    ...
             case Screen.MENU:
                 self.__menu_renderer.update()
             case Screen.LEADERBOARD:
@@ -76,3 +76,7 @@ class Controller:
             case _:
                 pass
 
+    def handle_restart(self):
+        self.__model.restart_game()
+        self.__round_controller.reset()
+        self.__screen_manager.screen = Screen.GAME

@@ -6,7 +6,7 @@ from view.renderer import Renderer
 from model.model import Model
 from model.sprites import menu_sprites
 from model.utils import BGColor, GameMode, Screen
-
+from typing import Callable
 from view.components.button import ButtonComponent
 from view.screen_manager import ScreenManager
 
@@ -23,13 +23,13 @@ BTN_GAP = 40
 
 class MenuRenderer(Renderer):
 
-    def __init__(self, model: Model, screen_manager: ScreenManager):
+    def __init__(self, model: Model, screen_manager: ScreenManager, on_restart: Callable[[], None]):
         super().__init__(model, screen_manager)
-        
+        self.__on_restart = on_restart
         self._clicked: bool = False
         self._buttons: list[ButtonComponent] = [
             ButtonComponent(
-                assoc_func= self.restart_game,
+                assoc_func= self.__on_restart,
                 pyxel_set = menu_sprites["misc"],
                 x=BTN_X, y=MENU_Y + 80,
                 w=BTN_W, h=BTN_H,
@@ -66,6 +66,8 @@ class MenuRenderer(Renderer):
         ]
         
     def restart_game(self) -> None:
+        self._model.restart_game()
+        self.__on_restart()
         print("work?")
         
     def view_leaderboard(self) -> None:

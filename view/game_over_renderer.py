@@ -2,7 +2,8 @@
 
 import pyxel
 
-from Renderer import Renderer
+from renderer import Renderer
+from screen_manager import ScreenManager
 from model.model import Model
 from model.utils import BGColor
 from view.components.button import ButtonComponent
@@ -19,8 +20,8 @@ BTN_H = 30
 
 class GameOverRenderer(Renderer):
 
-    def __init__(self, model: Model):
-        super().__init__(model)
+    def __init__(self, model: Model, sm: ScreenManager):
+        super().__init__(model, sm)
         self._name_input: str = ""
 
         self._btn_yes = ButtonComponent(

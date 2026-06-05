@@ -87,6 +87,10 @@ class RoundController:
             self.__model.stage.grid.grid[enemy.y][enemy.x].entity = enemy
             self.__spawn_index += 1
 
+    def reset(self):
+        self.__tick = 0
+        self.__spawn_index = 0
+
     @property
     def is_round_over(self) -> bool:
         current = self.__model.rounds[self.__model.current_round]

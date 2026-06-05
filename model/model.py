@@ -13,32 +13,37 @@ from pathlib import Path as FilePath
 import json
 
 class Model:
-    def __init__(self, config: GameConfig, mode: GameMode, stage_file: str = ""):
+    def __init__(self, config: GameConfig, mode: GameMode, stage_file: str = "", campaign_file: str = ""):
         if stage_file == "":
             stage_file = "campaign_map_10.json" if mode == GameMode.ENDLESS else "campaign_map_1.json"
-        self.__player = Player(config)
-        self.__stage = Stage(config, stage_file)
+        if campaign_file == "":
+            campaign_file = "campaign_round_1.json"
+        self.__original_stage = stage_file
+        self.__original_campaign = campaign_file
         self.__config = config
-        self.__enemies = config.enemies
-        self.__current_round = 0
-        self.__exp = 0
         self.__mode = mode
-        self.__rng = Random(12) # fixed seed
-        self.__config = config
-        tower = NormalTower(config)
-        self.__towers: list[Tower] = [tower]
-        self.__bought_towers: list[Tower] = []
-        self.__bullets: list[Bullet] = []
-        self.__stage.grid.grid[config.rows >> 1][config.cols >> 1].entity = self.__player.shooter
+        self.__enemies = config.enemies
         self.__leaderboard = Leaderboard(mode)
         self.__leaderboard.read_file("")
-        print(self.__leaderboard.winners)
+        self.restart_game()
 
-        self.__rounds: list[Round] = [] 
-
-        if GameMode.ENDLESS:
+    def restart_game(self):
+        self.__player = Player(self.__config)
+        self.__stage = Stage(self.__config, self.__original_stage)
+        self.__current_round = 0
+        self.__exp = 0
+        self.__rng = Random(12)
+        self.__towers: list[Tower] = [NormalTower(self.__config)]
+        self.__bought_towers: list[Tower] = []
+        self.__bullets: list[Bullet] = []
+        self.__rounds: list[Round] = []
+        self.__stage.grid.grid[self.__config.rows >> 1][self.__config.cols >> 1].entity = self.__player.shooter
+        if self.__mode == GameMode.ENDLESS:
             self.create_endless_round()
-    
+        else:
+            self.load_campaign(self.__original_campaign)
+        print("Resetted, rounds are ", self.__rounds)
+
     @property
     def mode(self) -> GameMode:
         return self.__mode
@@ -129,6 +134,7 @@ class Model:
             return None
         
         path = FilePath(__file__).parent / "rounds" / file
+        print(path)
 
         with open(path, "r") as d:
             data = json.load(d)
