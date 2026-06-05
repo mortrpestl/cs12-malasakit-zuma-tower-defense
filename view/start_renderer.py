@@ -2,45 +2,52 @@
 
 import pyxel
 
-from renderer import Renderer
+from view.renderer import Renderer
 from model.model import Model
-from model.utils import BGColor, GameMode
-from view.components.button import ButtonComponent
+from model.utils import BGColor, GameMode, Screen
+from model.sprites import menu_sprites
 
-PANEL_X = 200
-PANEL_Y = 50
-PANEL_W = 660
-PANEL_H = 500
+from view.components.button import ButtonComponent
+from view.screen_manager import ScreenManager
+
+PANEL_X = 0
+PANEL_Y = 0
+PANEL_W = 600
+PANEL_H = 840
 CENTER_X = PANEL_X + PANEL_W // 2
 
 
 class StartRenderer(Renderer):
 
-    def __init__(self, model: Model):
-        super().__init__(model)
+    def __init__(self, model: Model, screen_manager: ScreenManager):
+        super().__init__(model, screen_manager)
 
         self._btn_campaign = ButtonComponent(
-            assoc_func=lambda: self._model.start_game(GameMode.CAMPAIGN),
-            x=CENTER_X - 160, y=PANEL_Y + 260,
-            w=120, h=40,
+            assoc_func=self.set_campaign,
+            pyxel_set=menu_sprites["misc"],
+            x=CENTER_X - 165, y=PANEL_Y + 260,
+            w=150, h=30,
             text="Campaign"
         )
         self._btn_endless = ButtonComponent(
-            assoc_func=lambda: self._model.start_game(GameMode.ENDLESS),
-            x=CENTER_X + 40, y=PANEL_Y + 260,
-            w=120, h=40,
+            assoc_func=self.set_endless,
+            pyxel_set=menu_sprites["misc"],
+            x=CENTER_X + 15, y=PANEL_Y + 260,
+            w=150, h=30,
             text="Endless"
         )
         self._btn_leaderboard = ButtonComponent(
-            assoc_func=lambda: self._model.set_pending_action(PendingAction.VIEW_LEADERBOARD),
-            x=CENTER_X - 160, y=PANEL_Y + 330,
-            w=320, h=40,
+            assoc_func=self.view_leaderboard,
+            pyxel_set=menu_sprites["misc"],
+            x=CENTER_X - 165, y=PANEL_Y + 320,
+            w=330, h=30,
             text="Leaderboard"
         )
         self._btn_credits = ButtonComponent(
-            assoc_func=self._model.open_credits,
-            x=CENTER_X - 160, y=PANEL_Y + 390,
-            w=320, h=40,
+            assoc_func=self.view_credits,
+            pyxel_set=menu_sprites["misc"],
+            x=CENTER_X - 165, y=PANEL_Y + 380,
+            w=330, h=30,
             text="Credits"
         )
 
@@ -53,6 +60,22 @@ class StartRenderer(Renderer):
         pyxel.text(CENTER_X + 10, PANEL_Y + 80,  "TOWER",   BGColor.WHITE)
         pyxel.text(CENTER_X + 10, PANEL_Y + 100, "DEFENSE", BGColor.WHITE)
 
+    def set_campaign(self) -> None:
+        if self.model.mode is GameMode.ENDLESS:
+            self.model.switch_mode()
+        self.screen_manager.screen = Screen.GAME
+        
+    def set_endless(self) -> None:
+        if self.model.mode is GameMode.CAMPAIGN:
+            self.model.switch_mode()
+        self.screen_manager.screen = Screen.GAME
+        
+    def view_leaderboard(self) -> None:
+        print("work?")
+        
+    def view_credits(self) -> None:
+        print("work?")
+    
     def update(self) -> None:
         self._btn_campaign.update()
         self._btn_endless.update()

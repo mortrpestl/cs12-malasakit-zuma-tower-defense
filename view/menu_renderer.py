@@ -57,9 +57,16 @@ class MenuRenderer(Renderer):
                 text="Configure Game Settings"
             ),
             ButtonComponent(
-                assoc_func= self.close_menu,
+                assoc_func= self.to_start_menu,
                 pyxel_set = menu_sprites["misc"],
                 x=BTN_X, y=MENU_Y + 80 + BTN_GAP * 4,
+                w=BTN_W, h=BTN_H,
+                text="Go to Start Menu"
+            ),
+            ButtonComponent(
+                assoc_func= self.close_menu,
+                pyxel_set = menu_sprites["misc"],
+                x=BTN_X, y=MENU_Y + 80 + BTN_GAP * 5,
                 w=BTN_W, h=BTN_H,
                 text="Back"
             ),
@@ -76,7 +83,10 @@ class MenuRenderer(Renderer):
         self._clicked = True
         
     def open_configure(self) -> None:
-        print("work?")
+        self.screen_manager.screen = Screen.CONFIGURE
+        
+    def to_start_menu(self) -> None:
+        self.screen_manager.screen = Screen.START
         
     def close_menu(self) -> None:
         self.screen_manager.screen = Screen.GAME
@@ -97,7 +107,7 @@ class MenuRenderer(Renderer):
         for btn in self._buttons:
             btn.draw()
         if self._clicked:
-            pyxel.text(MENU_X + MENU_W // 2 - 60, MENU_Y + 280, \
+            pyxel.text(MENU_X + MENU_W // 2 - 60, MENU_Y + 320, \
                 f"Switched game mode to {'CAMPAIGN' if self._model.mode is GameMode.CAMPAIGN else 'ENDLESS'}",
                 BGColor.WHITE
             )

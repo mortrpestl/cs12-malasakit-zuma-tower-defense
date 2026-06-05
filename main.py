@@ -10,7 +10,7 @@ config = GameConfig()
 config.fetch_config("settings.json")
 
 g = Model(config, GameMode.ENDLESS)
-g.load_campaign("campaign_round_1.json")
+g.load_campaign("campaign_round_10.json")
 
 v = View(600, 840, 30)
 c = Controller(g, v)

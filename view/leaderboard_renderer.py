@@ -2,7 +2,7 @@
 
 import pyxel
 
-from Renderer import Renderer
+from view.renderer import Renderer
 from model.leaderboard import Leaderboard
 from model.model import Model
 from model.utils import BGColor, LeaderboardEntry

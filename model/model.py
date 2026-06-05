@@ -31,7 +31,7 @@ class Model:
 
         self.__rounds: list[Round] = [] 
 
-        if GameMode.ENDLESS:
+        if self.__mode is GameMode.ENDLESS:
             self.create_endless_round()
 
     @property
