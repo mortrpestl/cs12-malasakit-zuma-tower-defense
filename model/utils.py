@@ -48,7 +48,7 @@ class EnemyType(IntEnum):
     CHAMELEON = 2
     REGENERATOR = 3
 
-class Screen:
+class Screen(Enum):
     MENU = auto()
     GAME = auto()
     PAUSE = auto()

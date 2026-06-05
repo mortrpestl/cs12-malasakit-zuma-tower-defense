@@ -65,11 +65,12 @@ class GameConfig:
     
     @property
     def min_shooter_interval(self) -> float:
-        return 10 / 9
+        return 0.1 # was 10/9; changed for testing purposes
     
     @property
     def min_tower_interval(self) -> float:
         return 2
+    
     def endless_regen_ratio(self) -> float:
         return self.__max_regen_ratio
     

@@ -7,7 +7,7 @@ import json
 from pathlib import Path as FilePath
 
 class Stage:
-    def __init__(self, config: GameConfig, file: str = "campaign_map_1.json"):
+    def __init__(self, config: GameConfig, file: str = "campaign_map_10.json"):
         self.__config = config
         self.__grid = Grid(config, file)
         self.__paths = [Path(i) for i in self.load_path_from_json(file)]
