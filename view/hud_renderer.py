@@ -9,7 +9,7 @@ from model.model import Model
 from model.cell import Cell
 from model.entities.tower import Tower
 from model.sprites import menu_sprites, tower_sprites
-from model.utils import BGColor, GameMode, Screen
+from model.utils import BGColor, GameMode, Screen, SpriteSet
 
 from view.components.button import ButtonComponent
 from view.screen_manager import ScreenManager
@@ -175,6 +175,14 @@ class HUDRenderer(Renderer):
                 btn.update()
         self._handle_cell_click()
         
+    def draw_selected_tower(self) -> None:
+        if self._selected_tower is not None:
+            spriteset: SpriteSet = tower_sprites[(type(self._selected_tower), 1)]
+            
+            mid : float = 1.5 * (spriteset.w - spriteset.scale * spriteset.w)
+            
+            pyxel.blt(pyxel.mouse_x - mid, pyxel.mouse_y - mid, spriteset.img, spriteset.x, spriteset.y, spriteset.w, spriteset.h, spriteset.bg, scale=spriteset.scale)
+        
     def draw_bottom(self) -> None:
         pyxel.rect(0, HUD_Y + 800, HUD_W, HUD_H, BGColor.DARK_GRAY)
 
@@ -186,6 +194,6 @@ class HUDRenderer(Renderer):
         self.draw_rounds()
         self.draw_towers()
         self.draw_title()
-        
+        self.draw_selected_tower()
         self.draw_bottom()
         

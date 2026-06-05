@@ -31,7 +31,7 @@ class Model:
         self.__player = Player(self.__config)
         self.__stage = Stage(self.__config, self.__original_stage)
         self.__current_round = 0
-        self.__exp = 0
+        self.__exp = 100 # testing
         self.__rng = Random(12)
         self.__towers: list[Tower] = [NormalTower(self.__config)]
         self.__bought_towers: list[Tower] = []
