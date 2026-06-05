@@ -7,11 +7,12 @@ from model.utils import Direction
 import pyxel
 
 class RoundController:
-    def __init__(self, model: Model, bp: float):
+    def __init__(self, model: Model):
         self.__model = model
         self.__tick = 0
         self.__spawn_index = 0
-        self.__bullet_speed: float = bp
+        self.__bullet_speed: float = model.config.bullet_speed
+        self.__interval = model.config.min_shooter_interval
 
     @property
     def spawn_timer(self) -> int:
@@ -30,7 +31,7 @@ class RoundController:
         if self.__tick % self.spawn_timer == 0:
             self.spawn_enemy()
         
-        if pyxel.btnp(pyxel.MOUSE_BUTTON_LEFT) and 40 < pyxel.mouse_y < 800:
+        if self.__model.player.shooter.can_shoot and pyxel.btnp(pyxel.MOUSE_BUTTON_LEFT) and 40 < pyxel.mouse_y < 800:
             self.__model.bullets.append(self.__model.player.shoot(pyxel.mouse_x, pyxel.mouse_y, self.__bullet_speed))
 
         if pyxel.btnr(pyxel.KEY_W):
@@ -51,7 +52,7 @@ class RoundController:
                     tower.direction = Direction.RIGHT
         
         for tower in self.__model.bought_towers:
-            if self.__tick % tower.shoot_interval == 0:
+            if tower.can_shoot:
                 self.__model.bullets.extend(tower.shoot(self.__bullet_speed, self.__model.config))
 
 

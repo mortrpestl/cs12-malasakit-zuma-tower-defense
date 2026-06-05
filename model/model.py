@@ -15,6 +15,7 @@ class Model:
     def __init__(self, config: GameConfig, mode: GameMode):
         self.__player = Player(config)
         self.__stage = Stage(config)
+        self.__config = config
         self.__enemies = config.enemies
         self.__current_round = 0
         self.__exp = 0
@@ -22,7 +23,9 @@ class Model:
         self.__rng = Random(12) # fixed seed
         self.__rounds: list[Round] = [self.create_round(i) for i in range(12)] # at least 12 rounds
         self.__config = config
-        self.__towers: list[Tower] = [NormalTower()]
+        tower = NormalTower(config)
+        tower.x, tower.y = 2, 2
+        self.__towers: list[Tower] = [tower]
         self.__bought_towers: list[Tower] = []
         self.__bullets: list[Bullet] = []
         self.__stage.grid.grid[config.rows >> 1][config.cols >> 1].entity = self.__player.shooter
@@ -99,10 +102,12 @@ class Model:
                 path_list,
                 enemy_list
             )
-        return Round(config, self.__stage.paths)
+        return Round(config, self.__stage.paths, self.__config)
     
     @property
     def is_game_over(self) -> bool:
+        if self.__player.lives <= 0:
+            return True
         return self.__current_round >= len(self.__rounds) if self.mode == GameMode.CAMPAIGN else self.player.lives <= 0
     
     def add_exp(self, amount: int):

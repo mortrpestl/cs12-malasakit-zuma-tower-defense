@@ -4,6 +4,7 @@ from model.game_config import GameConfig
 from math import atan2
 from model.entities.bullet import Bullet
 from model.utils import get_next_color
+import time
 
 # restrict v to [lo, hi]
 def clamp(v: int, lo: int, hi: int):
@@ -19,6 +20,7 @@ class Shooter(Entity):
         self._y_abs = 0
         self._x_abs = 0
         self.update_position()
+        self.__last_shot = float('-inf')
     
     @property
     def y_abs(self) -> float:
@@ -27,6 +29,14 @@ class Shooter(Entity):
     @property
     def x_abs(self) -> float:
         return self._x_abs
+    
+    @property
+    def interval(self) -> float:
+        return self.__config.min_shooter_interval
+
+    @property
+    def can_shoot(self) -> bool:
+        return (time.time() - self.__last_shot) >= self.interval
 
     def update_position(self):
         cell_width = self.__config.width / self.__config.cols
@@ -45,7 +55,8 @@ class Shooter(Entity):
 
     def move_down(self):
         self._y = clamp(self._y + 1, 0, self.__config.rows)
-
+    
     def shoot(self, x: float, y: float, v: float) -> Bullet:
         angle = atan2(y - self._y_abs, x - self._x_abs)
+        self.__last_shot = time.time()
         return Bullet(self._x_abs, self._y_abs, angle, get_next_color(), v)

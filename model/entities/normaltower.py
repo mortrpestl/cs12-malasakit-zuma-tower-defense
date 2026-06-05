@@ -5,11 +5,13 @@ from model.entities.tower import Tower
 from model.game_config import GameConfig
 from model.utils import Direction, get_next_color
 from math import atan2
+import time
 
 class NormalTower(Tower):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, config: GameConfig):
+        super().__init__(config)
         self.__direction = Direction.RIGHT
+        self.__last_shot = float('-inf')
     
     @property
     def direction(self) -> Direction:
@@ -20,13 +22,18 @@ class NormalTower(Tower):
         self.__direction = d
     
     @property
-    def shoot_interval(self) -> int:
-        return 120
+    def shoot_interval(self) -> float:
+        return self.config.min_tower_interval
+
+    @property
+    def can_shoot(self) -> bool:
+        return time.time() - self.__last_shot >= self.shoot_interval
 
     def shoot(self, v: float, config: GameConfig) -> list[Bullet]:
         
         width : float = config.width / config.cols
         height : float = config.height / config.rows
+        self.__last_shot = time.time()
 
         dx, dy = self.__direction.value
         angle = atan2(-dy, dx)
