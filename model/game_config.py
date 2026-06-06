@@ -73,7 +73,7 @@ class GameConfig:
     
     @property
     def min_shooter_interval(self) -> float:
-        return 10/9
+        return 10/999999
     
     @property
     def min_tower_interval(self) -> float:
