@@ -149,17 +149,23 @@ class Model:
                 )
             
             normal_ratio = 1 - (cham_ratio + regen_ratio)
-            count = min(self.__config.enemies, (self.current_round + 1) * 3)
+
+            count = min(self.__config.enemies, (rnd + 1) * 3)
+
             enemy_list = [EnemyType(i) for i in self.rng.choices([1, 2, 3], weights= [normal_ratio, cham_ratio, regen_ratio], k=count)]
 
             config = WaveConfig(
                 self.rng.choices(list(Color), k = count),
-                self.rng.choices(range(self.__stage.path_count), k = count), 
+                self.rng.choices(range(self.__campaign_stages[rnd].path_count), k = count), 
                 enemy_list
             ) 
 
-            self.__rounds.append(Round(config, self.__stage.paths, self.__config))
+            self.__rounds.append(Round(config, self.__campaign_stages[rnd].paths, self.__config))
 
+        for idx, i in enumerate(self.__rounds):
+            print(idx)
+            print(i.config.special_types)
+            print(i.config.paths)
 
     def create_endless_round(self):
         if self.__mode is GameMode.CAMPAIGN:

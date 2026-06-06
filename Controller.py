@@ -29,7 +29,7 @@ class Controller:
         self.__collision_controller = CollisionController(m, self.__sound)
         self.__round_controller = RoundController(m)
         
-        self.__screen_manager = ScreenManager(Screen.GAME_OVER)
+        self.__screen_manager = ScreenManager(Screen.START)
         
         self.__configure_renderer = ConfigureRenderer(m, self.__screen_manager)
         self.__entity_renderer = EntityRenderer()

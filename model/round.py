@@ -24,6 +24,10 @@ class Round:
         ][:game_config.enemies]
         self.__current_enemies: list[Enemy] = []
 
+    @property
+    def config(self) -> WaveConfig:
+        return self.__config
+    
     @property 
     def enemies(self) -> list[Enemy]:
         return self.__enemies
