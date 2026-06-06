@@ -7,20 +7,20 @@ from model.path import Path
 from model.game_config import GameConfig
 from model.utils import *
 
-def make_enemy(enemy_type: EnemyType, color: Color, path: Path, config: GameConfig) -> Enemy:
+def make_enemy(enemy_type: EnemyType, color: Color, path: Path, config: GameConfig, hp_mult: int) -> Enemy:
     # add new enemies here
     enemy_dict = {
-        EnemyType.NORMAL: Enemy(color, path),
-        EnemyType.CHAMELEON: Chameleon(color, path, config.chameleon_freq),
-        EnemyType.REGENERATOR: Regenerator(color, path, config.regen_hp)
+        EnemyType.NORMAL: Enemy(color, path, hp_mult),
+        EnemyType.CHAMELEON: Chameleon(color, path, config.chameleon_freq, hp_mult),
+        EnemyType.REGENERATOR: Regenerator(color, path, config.regen_hp, hp_mult)
     }
     return enemy_dict[enemy_type]
 
 class Round:
-    def __init__(self, config: WaveConfig, paths: list[Path], game_config: GameConfig):
+    def __init__(self, config: WaveConfig, paths: list[Path], game_config: GameConfig, hp_mult: int):
         self.__config = config
         self.__enemies = [
-            make_enemy(enemy_type, color, path, game_config) for enemy_type, color, path in zip(config.special_types, config.colors, [paths[idx] for idx in config.paths])
+            make_enemy(enemy_type, color, path, game_config, hp_mult) for enemy_type, color, path in zip(config.special_types, config.colors, [paths[idx] for idx in config.paths])
         ][:game_config.enemies]
         self.__current_enemies: list[Enemy] = []
 

@@ -138,21 +138,13 @@ class Model:
             return None
         
         for rnd in range(12):
-            cham_ratio = min(
-                self.config.endless_cham_ratio, 
-                (rnd / 12) * self.config.endless_cham_ratio
-                )
-            
-            regen_ratio = min(
-                self.config.endless_cham_ratio, 
-                (rnd / 12) * self.config.endless_cham_ratio
-                )
-            
+            cham_ratio = min(self.config.endless_cham_ratio, (rnd / 12) * self.config.endless_cham_ratio)
+            regen_ratio = min(self.config.endless_cham_ratio, (rnd / 12) * self.config.endless_cham_ratio)
             normal_ratio = 1 - (cham_ratio + regen_ratio)
 
             count = min(self.__config.enemies, (rnd + 1) * 3)
-
             enemy_list = [EnemyType(i) for i in self.rng.choices([1, 2, 3], weights= [normal_ratio, cham_ratio, regen_ratio], k=count)]
+            hp_diff = max(1, min(3, rnd // 3))
 
             config = WaveConfig(
                 self.rng.choices(list(Color), k = count),
@@ -160,30 +152,19 @@ class Model:
                 enemy_list
             ) 
 
-            self.__rounds.append(Round(config, self.__campaign_stages[rnd].paths, self.__config))
-
-        for idx, i in enumerate(self.__rounds):
-            print(idx)
-            print(i.config.special_types)
-            print(i.config.paths)
+            self.__rounds.append(Round(config, self.__campaign_stages[rnd].paths, self.__config, hp_diff))
 
     def create_endless_round(self):
         if self.__mode is GameMode.CAMPAIGN:
             return None
         
-        cham_ratio = min(
-            self.config.endless_cham_ratio, 
-            (self.current_round / 40) * self.config.endless_cham_ratio
-            )
-        
-        regen_ratio = min(
-            self.config.endless_cham_ratio, 
-            (self.current_round / 40) * self.config.endless_cham_ratio
-            )
-        
+        cham_ratio = min(self.config.endless_cham_ratio, (self.current_round / 40) * self.config.endless_cham_ratio)
+        regen_ratio = min(self.config.endless_cham_ratio, (self.current_round / 40) * self.config.endless_cham_ratio)
         normal_ratio = 1 - (cham_ratio + regen_ratio)
+
         count = min(self.__config.enemies, (self.current_round + 1) * 3)
         enemy_list = [EnemyType(i) for i in self.rng.choices([1, 2, 3], weights= [normal_ratio, cham_ratio, regen_ratio], k=count)]
+        hp_diff = max(1, min(4, self.current_round // 10))
 
         config = WaveConfig(
             self.rng.choices(list(Color), k = count),
@@ -191,7 +172,7 @@ class Model:
             enemy_list
         ) 
 
-        self.__rounds.append(Round(config, self.__stage.paths, self.__config))
+        self.__rounds.append(Round(config, self.__stage.paths, self.__config, hp_diff))
 
     @property
     def is_game_over(self) -> bool:

@@ -5,10 +5,10 @@ from model.path import Path
 from model.utils import Color
 
 class Enemy(Entity):
-    def __init__(self, color: Color, path: Path):
+    def __init__(self, color: Color, path: Path, hp_multiplier: int = 1):
         # default settings
         super().__init__()
-        self._lives = 1
+        self._lives = 1 * hp_multiplier
         self._exp = 10
         self._color = color
         self._path = path
