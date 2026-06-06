@@ -6,8 +6,8 @@ from model.utils import Color
 from random import Random
 
 class Chameleon(Enemy):                                         
-    def __init__(self, color: Color, path: Path, color_change_freq: int = 2):
-        super().__init__(color, path)
+    def __init__(self, color: Color, path: Path, color_change_freq: int = 2, hp_multiplier: int = 1):
+        super().__init__(color, path, hp_multiplier)
         self.__tiles_moved = 0
         self.__color_change_freq = color_change_freq
         self.__rng = Random(12) # set seed

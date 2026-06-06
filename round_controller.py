@@ -83,6 +83,7 @@ class RoundController:
                 self.__model.create_endless_round()
             
             self.reset()
+            self.__model.bought_towers.clear()
 
     def spawn_enemy(self):
         current = self.__model.rounds[self.__model.current_round]

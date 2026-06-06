@@ -5,8 +5,8 @@ from model.path import Path
 from model.utils import Color
 
 class Regenerator(Enemy):
-    def __init__(self, color: Color, path: Path, regen_interval: int = 2):
-        super().__init__(color, path)
+    def __init__(self, color: Color, path: Path, regen_interval: int = 2, hp_multiplier: int = 1):
+        super().__init__(color, path, hp_multiplier)
         self.__regen_interval = regen_interval
         self.__tiles_moved = 0
     

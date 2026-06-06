@@ -29,6 +29,8 @@ class CollisionController:
         for bullet in self.__model.bullets[:]:
             for enemy in current_round.current_enemies[:]:
                 enemy_y, enemy_x = self.__model.get_position(enemy.y, enemy.x)
+                enemy_y += self.__model.config.height / (2 * self.__model.config.rows)
+                enemy_x += self.__model.config.width / (2 * self.__model.config.cols)
                 cell = self.__model.stage.grid.grid[enemy.y][enemy.x]
                 if within_radius(bullet.y_abs, bullet.x_abs, enemy_y, enemy_x, HIT_RADIUS) and not cell.is_tunnel:
                     enemy.take_hit(bullet.color)

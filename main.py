@@ -7,7 +7,7 @@ from view.View import View
 from Controller import Controller
 
 config = GameConfig()
-config.fetch_config("settings.json")
+config.fetch_config("settings.json") # preferably make enemies a multiple of 3
 
 g = Model(config, GameMode.ENDLESS, "campaign_round_1.json")
 g.create_campaign_rounds()
