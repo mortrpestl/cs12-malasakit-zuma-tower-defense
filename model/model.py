@@ -25,9 +25,7 @@ class Model:
             leaderboard.read_file("")
 
         self.__campaign_stages = [Stage(self.__config, f"campaign_map_{i}.json") for i in range(1, 13)]
-
-        print(len(self.__campaign_stages))
-        self.__endless_stage = Stage(self.__config, f"campaign_map_10.json")
+        self.__endless_stage = Stage(self.__config, "campaign_map_10.json")
         
         self.restart_game()
 

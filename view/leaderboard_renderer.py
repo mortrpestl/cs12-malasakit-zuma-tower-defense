@@ -27,22 +27,22 @@ class LeaderboardRenderer(Renderer):
         super().__init__(model, sm)
         self.__config = model.config
         self.__sm = sm
-        x1 = (self.__config.screen_width - BOARD_W) // 2 + (BOARD_W - 2 * BUTTON_WIDTH - BUTTON_GAP) // 2
-        x2 = x1 + BUTTON_GAP + BUTTON_WIDTH
+        x = (self.__config.screen_width - BOARD_W) // 2 + (BOARD_W - 2 * BUTTON_WIDTH - BUTTON_GAP) // 2
+        
         y_end = (self.__config.height + BOARD_H) // 2
         self.__go_home_btn = ButtonComponent(
             assoc_func=self.go_start,
             pyxel_set=menu_sprites["misc"],
-            x=x1, y=y_end-BOTTOM_MARGIN,
+            x=x, y=y_end-BOTTOM_MARGIN,
             w=BUTTON_WIDTH, h=BUTTON_HEIGHT,
-            text="Go Home"
+            text="Back to Home"
         )
-        self.__go_game_btn = ButtonComponent(
-            assoc_func=self.go_game,
+        self.__go_menu_btn = ButtonComponent(
+            assoc_func=self.go_menu,
             pyxel_set=menu_sprites["misc"],
-            x=x2, y=y_end-BOTTOM_MARGIN,
+            x=x, y=y_end-BOTTOM_MARGIN,
             w=BUTTON_WIDTH, h=BUTTON_HEIGHT,
-            text="Play Game"
+            text="Back to Menu"
         )
         
     @property
@@ -74,16 +74,19 @@ class LeaderboardRenderer(Renderer):
         self.draw_background()
         self.draw_column(self._model.leaderboards[GameMode.CAMPAIGN].get_winners(), COL_CAMPAIGN_X, "Campaign")
         self.draw_column(self._model.leaderboards[GameMode.ENDLESS].get_winners(), COL_ENDLESS_X, "Endless")
-        self.__go_game_btn.draw()
-        self.__go_home_btn.draw()
+        if self.screen_manager.previous_screen is Screen.MENU:
+            self.__go_menu_btn.draw()
+        else:
+            self.__go_home_btn.draw()
         
     def update(self):
-        self.__go_game_btn.update()
-        self.__go_home_btn.update()
+        if self.screen_manager.previous_screen is Screen.MENU:
+            self.__go_menu_btn.update()
+        else:
+            self.__go_home_btn.update()
 
     def go_start(self):
-        print("set to start oml")
         self.__sm.screen = Screen.START
 
-    def go_game(self):
-        self.__sm.screen = Screen.GAME
+    def go_menu(self):
+        self.__sm.screen = Screen.MENU

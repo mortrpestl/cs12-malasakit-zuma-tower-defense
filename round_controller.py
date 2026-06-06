@@ -16,11 +16,11 @@ class RoundController:
 
     @property
     def spawn_timer(self) -> int:
-        return 480
+        return 60
 
     @property
     def move_timer(self) -> int:
-        return 240
+        return 30
 
     @property
     def tick(self) -> int:

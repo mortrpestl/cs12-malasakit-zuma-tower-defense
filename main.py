@@ -12,7 +12,7 @@ config.fetch_config("settings.json")
 g = Model(config, GameMode.ENDLESS, "campaign_round_1.json")
 g.create_campaign_rounds()
 
-v = View(config.width, config.height, 240)
+v = View(config.screen_width, config.screen_height, 240)
 c = Controller(g, v)
 
 if __name__ == "__main__":

@@ -29,7 +29,7 @@ class Controller:
         self.__collision_controller = CollisionController(m, self.__sound)
         self.__round_controller = RoundController(m)
         
-        self.__screen_manager = ScreenManager(Screen.START)
+        self.__screen_manager = ScreenManager(Screen.GAME_OVER)
         
         self.__configure_renderer = ConfigureRenderer(m, self.__screen_manager)
         self.__entity_renderer = EntityRenderer()
@@ -56,6 +56,7 @@ class Controller:
                     self.__round_controller.update()
                     self.__hud_renderer.update()
                 else:
+                    self.__game_over_renderer.reset()
                     self.__screen_manager.screen = Screen.GAME_OVER
             case Screen.MENU:
                 self.__menu_renderer.update()
