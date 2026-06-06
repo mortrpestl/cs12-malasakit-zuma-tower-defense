@@ -158,7 +158,16 @@ class GameOverRenderer(Renderer):
         self._charnot = False
 
     def quit(self) -> None:
+        self._model.leaderboards[self._model.mode].add_winner(
+            LeaderboardEntry(self._name_input, self._model.current_round, self._model.mode)
+        )        
         pyxel.quit()
+
+    def current_reset(self):
+        self._model.leaderboards[self._model.mode].add_winner(
+            LeaderboardEntry(self._name_input, self._model.current_round, self._model.mode)
+        )
+        self.__on_restart()
     
     def update(self) -> None:
         self._update_name_input()

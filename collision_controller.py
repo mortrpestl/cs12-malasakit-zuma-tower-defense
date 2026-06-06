@@ -2,10 +2,11 @@
 
 from model.model import Model
 from view.View import Sound
-HIT_RADIUS = 30
+CELL_SIZE = 40
+HIT_RADIUS = CELL_SIZE >> 1
 
 def in_bounds(y: float, x: float, height: float, width: float) -> bool:
-    return 0 <= y <= height and 0 <= x <= width
+    return CELL_SIZE <= y <= height + CELL_SIZE and CELL_SIZE <= x <= width + CELL_SIZE
 
 def within_radius(by: float, bx: float, ey: float, ex: float, radius: float) -> bool:
     return (bx - ex)**2 + (by - ey)**2 <= radius**2
@@ -29,11 +30,10 @@ class CollisionController:
         for bullet in self.__model.bullets[:]:
             for enemy in current_round.current_enemies[:]:
                 enemy_y, enemy_x = self.__model.get_position(enemy.y, enemy.x)
-                enemy_y += self.__model.config.height / (2 * self.__model.config.rows)
+                enemy_y += self.__model.config.height / (2 * self.__model.config.rows) + CELL_SIZE
                 enemy_x += self.__model.config.width / (2 * self.__model.config.cols)
                 cell = self.__model.stage.grid.grid[enemy.y][enemy.x]
-                if within_radius(bullet.y_abs, bullet.x_abs, enemy_y, enemy_x, HIT_RADIUS) and not cell.is_tunnel:
-                    enemy.take_hit(bullet.color)
+                if within_radius(bullet.y_abs, bullet.x_abs, enemy_y, enemy_x, HIT_RADIUS) and not cell.is_tunnel and enemy.take_hit(bullet.color):
                     self.__model.bullets.remove(bullet)
                     if enemy.lives <= 0:
                         current_round.current_enemies.remove(enemy)

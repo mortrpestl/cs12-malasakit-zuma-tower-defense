@@ -28,11 +28,13 @@ class Leaderboard:
             return
         self._winners.append(winner)
         self.sort_winners()
+        self.save_to_file()
     
     def save_to_file(self, filename: str = ""):
         if not filename:
             filename = self._mode.value + ".json"
-        with open(filename, 'w') as f:
+        file = FilePath(__file__).parent.parent / "leaderboard" / filename
+        with open(file, 'w') as f:
             entries = {k.name: k.score for k in self._winners}
             f.write(json.dumps(entries))
 

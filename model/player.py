@@ -13,6 +13,10 @@ class Player:
     def lives(self) -> int:
         return self.__lives
     
+    @lives.setter
+    def lives(self, v: int):
+        self.__lives = v
+    
     @property
     def score(self) -> int:
         return self.__score

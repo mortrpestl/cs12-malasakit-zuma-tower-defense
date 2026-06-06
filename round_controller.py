@@ -12,7 +12,6 @@ class RoundController:
         self.__tick = 0
         self.__spawn_index = 0
         self.__bullet_speed: float = model.config.bullet_speed
-        self.__interval = model.config.min_shooter_interval
 
     @property
     def spawn_timer(self) -> int:
@@ -29,9 +28,8 @@ class RoundController:
     def update(self):
         self.__tick += 1
 
-        while self.__model.player.lives > self.__model.config.lives:
-            self.__model.player.lose_life()
-        
+        self.__model.player.lives = min(self.__model.player.lives, self.__model.config.lives)
+
         if self.__tick % self.spawn_timer == 0:
             self.spawn_enemy()
         
