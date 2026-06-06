@@ -56,17 +56,19 @@ class LeaderboardRenderer(Renderer):
 
     def draw_column(self, entries: list[LeaderboardEntry], x: int, label: str) -> None:
         HEADER_Y = (self.__config.height - BOARD_H) // 2 + TOP_MARGIN
+        HEADER2_Y = HEADER_Y + 20
         ENTRY_Y = HEADER_Y + TOP_MARGIN
         pyxel.text(x, HEADER_Y, label, BGColor.WHITE)
+        pyxel.text(x, HEADER2_Y, "#  Username      Rounds", BGColor.WHITE)
 
         if not entries:
             pyxel.text(x, ENTRY_Y, "No players yet!", BGColor.LIGHT_GRAY)
             return
 
         for i, entry in enumerate(entries[:7]): # cap to Top 7 to avoid overflow?
-            # TODO ! also cap the inpu tof player name
+            # TODO ! also cap the input of player name
             y = ENTRY_Y + i * ENTRY_GAP
-            pyxel.text(x, y, f"{i + 1}  {entry.name}  {entry.score}", BGColor.WHITE)
+            pyxel.text(x, y, f"{i + 1}  {entry.name}{' ' * (12 - len(entry.name))}  {entry.score}", BGColor.WHITE)
 
     def draw(self) -> None:
         COL_CAMPAIGN_X = (self.__config.width - BOARD_W) // 2 + (BOARD_W - 2 * COLUMN_WIDTH - MIDDLE_GAP) // 2

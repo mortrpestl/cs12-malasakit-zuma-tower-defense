@@ -7,6 +7,7 @@ from round_controller import RoundController
 from collision_controller import CollisionController
 
 from view.configure_renderer import ConfigureRenderer
+from view.credits_renderer import CreditsRenderer
 from view.entity_renderer import EntityRenderer
 from view.game_over_renderer import GameOverRenderer
 from view.grid_renderer import GridRenderer
@@ -29,10 +30,11 @@ class Controller:
         self.__collision_controller = CollisionController(m, self.__sound)
         self.__round_controller = RoundController(m)
         
-        self.__screen_manager = ScreenManager(Screen.GAME_OVER)
+        self.__screen_manager = ScreenManager(Screen.START)
         
         self.__configure_renderer = ConfigureRenderer(m, self.__screen_manager)
-        self.__entity_renderer = EntityRenderer()
+        self.__credits_renderer = CreditsRenderer(m, self.__screen_manager)
+        self.__entity_renderer = EntityRenderer(m, self.__screen_manager)
         self.__game_over_renderer = GameOverRenderer(m, self.__screen_manager, self.handle_restart)
         self.__grid_renderer = GridRenderer(m, self.__screen_manager)
         self.__hud_renderer = HUDRenderer(m, self.__screen_manager)
@@ -69,7 +71,7 @@ class Controller:
             case Screen.START:
                 self.__start_renderer.update()
             case Screen.CREDITS:
-                ...
+                self.__credits_renderer.update()
             case _:
                 pass
 
@@ -80,7 +82,7 @@ class Controller:
             case Screen.GAME:
                 self.__grid_renderer.draw()
                 if not self.__model.is_game_over:
-                    self.__entity_renderer.draw(self.__model)
+                    self.__entity_renderer.draw()
                 self.__hud_renderer.draw()
             case Screen.MENU:
                 self.__menu_renderer.draw()
@@ -93,7 +95,7 @@ class Controller:
             case Screen.START:
                 self.__start_renderer.draw()
             case Screen.CREDITS:
-                ...
+                self.__credits_renderer.draw()
             case _:
                 pass
 

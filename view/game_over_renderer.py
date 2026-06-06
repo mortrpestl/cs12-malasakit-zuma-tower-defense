@@ -49,8 +49,18 @@ KEYS = [ pyxel.KEY_A
        , pyxel.KEY_X
        , pyxel.KEY_Y
        , pyxel.KEY_Z
+       , pyxel.KEY_0
+       , pyxel.KEY_1
+       , pyxel.KEY_2
+       , pyxel.KEY_3
+       , pyxel.KEY_4
+       , pyxel.KEY_5
+       , pyxel.KEY_6
+       , pyxel.KEY_7
+       , pyxel.KEY_8
+       , pyxel.KEY_9
        ]
-CHAR = [char for char in ascii_uppercase]
+CHAR = [char for char in ascii_uppercase] + list("123456789")
 
 class GameOverRenderer(Renderer):
 
@@ -91,12 +101,13 @@ class GameOverRenderer(Renderer):
             pyxel.text(CENTER_X - 20, PANEL_Y + 80,  "Game Over!", BGColor.WHITE)
 
         mode_str = self._model.mode.value
-        pyxel.text(CENTER_X - len(mode_str) * 3, PANEL_Y + 100, f"({mode_str})", BGColor.LIGHT_GRAY)
+        pyxel.text(CENTER_X - 20, PANEL_Y + 100, f"({mode_str})", BGColor.LIGHT_GRAY)
+        pyxel.text(CENTER_X - 45, PANEL_Y + 110, f"You survived {self._model.current_round} rounds!", BGColor.WHITE)
 
     def draw_name_input(self) -> None:
         pyxel.text(CENTER_X - 10, PANEL_Y + 200, "Name", BGColor.WHITE)
         pyxel.rectb(CENTER_X - 40, PANEL_Y + 215, 80, 25, BGColor.WHITE)
-        pyxel.text(CENTER_X - len(self._name_input) * 2, PANEL_Y + 227.5, self._name_input, BGColor.WHITE)
+        pyxel.text(CENTER_X - len(self._name_input) * 2, PANEL_Y + 226, self._name_input, BGColor.WHITE)
 
     def draw_char_exceeded(self) -> None:
         pyxel.text(CENTER_X - 72.5, PANEL_Y + 250, "Entries cannot exceed 12 characters!", BGColor.WHITE)

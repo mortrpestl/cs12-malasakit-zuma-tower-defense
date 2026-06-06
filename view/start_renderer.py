@@ -74,7 +74,7 @@ class StartRenderer(Renderer):
         self.screen_manager.screen = Screen.LEADERBOARD
         
     def view_credits(self) -> None:
-        print("work?")
+        self.screen_manager.screen = Screen.CREDITS
     
     def update(self) -> None:
         self._btn_campaign.update()
