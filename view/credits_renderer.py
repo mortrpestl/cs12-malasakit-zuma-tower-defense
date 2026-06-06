@@ -67,11 +67,11 @@ class CreditsRenderer(Renderer):
             ],
             [
                 "Model, View, Controller",
-                "Protocols and logic for the model and entities files",
-                "Collision detection for bullets",
-                "Renderer for entities",
+                "implementation of entity (bullet, enemies, etc.) behavior in-game",
+                "Implementations of round controller, collision controller, controller",
+                "Leaderboard renderer, entity renderer, grid renderer",
                 "JSON processing",
-                "Leaderboard saves"
+                "Leaderboard handling"
             ]
         ]
         

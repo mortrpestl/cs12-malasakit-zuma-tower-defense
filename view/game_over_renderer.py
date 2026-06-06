@@ -102,7 +102,7 @@ class GameOverRenderer(Renderer):
 
         mode_str = self._model.mode.value
         pyxel.text(CENTER_X - 20, PANEL_Y + 100, f"({mode_str})", BGColor.LIGHT_GRAY)
-        pyxel.text(CENTER_X - 45, PANEL_Y + 110, f"You survived {self._model.current_round} rounds!", BGColor.WHITE)
+        pyxel.text(CENTER_X - 45, PANEL_Y + 110, f"You survived {self._model.current_round} {'round' if self._model.current_round == 1 else 'rounds'}!", BGColor.WHITE)
 
     def draw_name_input(self) -> None:
         pyxel.text(CENTER_X - 10, PANEL_Y + 200, "Name", BGColor.WHITE)

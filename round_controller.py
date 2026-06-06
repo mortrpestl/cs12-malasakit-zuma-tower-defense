@@ -77,7 +77,6 @@ class RoundController:
             self.__model.advance_next_round()
 
             if self.__model.mode is GameMode.CAMPAIGN:
-                print(self.__model.current_round)
                 self.__model.update_round()
             else:
                 self.__model.create_endless_round()
